@@ -1,16 +1,19 @@
-add_library(project_template
+add_library(${PROJECT_NAME}
   ${CMAKE_CURRENT_SOURCE_DIR}/project_template.cpp
 )
-add_library(project_template::project_template ALIAS project_template)
-target_include_directories(project_template
+add_library(${PROJECT_NAME}::${PROJECT_NAME}
+  ALIAS ${PROJECT_NAME}
+)
+target_link_libraries(${PROJECT_NAME}
   PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+    ${PROJECT_NAME}::${PROJECT_NAME}_headers
+)
+target_include_directories(${PROJECT_NAME}
   PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 install(
-  TARGETS project_template
+  TARGETS ${PROJECT_NAME}
   EXPORT ${PROJECT_NAME}-targets
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}

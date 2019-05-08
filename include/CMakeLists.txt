@@ -1,0 +1,17 @@
+add_library(${PROJECT_NAME}_headers INTERFACE)
+add_library(${PROJECT_NAME}::${PROJECT_NAME}_headers
+  ALIAS ${PROJECT_NAME}_headers
+)
+target_include_directories(${PROJECT_NAME}_headers
+  INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
+install(
+  TARGETS ${PROJECT_NAME}_headers
+  EXPORT ${PROJECT_NAME}-targets
+)
+install(
+  FILES ${CMAKE_CURRENT_SOURCE_DIR}/project_template.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
