@@ -1,0 +1,2 @@
+add_test_executable(greeting greeting.cpp)
+target_link_libraries(greeting project_template::project_template)
