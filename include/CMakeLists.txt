@@ -12,6 +12,8 @@ install(
   EXPORT ${PROJECT_NAME}-targets
 )
 install(
-  FILES ${CMAKE_CURRENT_SOURCE_DIR}/project_template.h
+  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  # Do not install CMakeLists.txt.
+  FILES_MATCHING PATTERN "*.h"
 )
