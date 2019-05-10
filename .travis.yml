@@ -63,6 +63,6 @@ script:
     --setting "build_type=$BUILD_TYPE"
     --build missing
     ..
-  - cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
+  - cmake -DCMAKE_MODULE_PATH=${PWD} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ..
   - cmake --build . --config ${BUILD_TYPE} --parallel $(nproc)
-  - ctest --build-config $BUILD_TYPE --verbose --parallel $(nproc)
+  - ctest --build-config ${BUILD_TYPE} --verbose --parallel $(nproc)
