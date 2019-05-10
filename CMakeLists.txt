@@ -6,7 +6,7 @@ find_package(future REQUIRED)
 future_project_dependency(doctest REQUIRED)
 include(GNUInstallDirs)
 
-add_subdirectory(include)
+future_add_headers(${PROJECT_NAME}_headers DIRECTORY include)
 add_subdirectory(src)
 enable_testing()
 add_subdirectory(tests)
