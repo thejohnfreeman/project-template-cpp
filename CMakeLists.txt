@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.1)
+# 3.12 for --build --parallel.
+cmake_minimum_required(VERSION 3.12)
 project(project_template VERSION 0.1.0 LANGUAGES CXX)
 
 find_package(future REQUIRED)
