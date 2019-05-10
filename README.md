@@ -6,6 +6,8 @@ configurations for [CMake][] and [Conan][].
 [CMake]: https://cmake.org/cmake/help/latest/manual/cmake.1.html
 [Conan]: https://docs.conan.io
 
+[![build status on Linux and OSX with Travis](https://travis-ci.org/thejohnfreeman/project-template-cpp.svg?branch=master)](https://travis-ci.org/thejohnfreeman/project-template-cpp)
+
 
 ## Why?
 
