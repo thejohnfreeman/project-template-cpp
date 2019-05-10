@@ -4,14 +4,14 @@
 GENERATOR ?= Ninja
 BUILD_TYPE ?= Debug
 
-build_dir := .build-${BUILD_TYPE}
-install_dir := .install-${BUILD_TYPE}
+build_dir := $(abspath .build/${BUILD_TYPE})
+install_dir := $(abspath .install/${BUILD_TYPE})
 
 ${install_dir} :
 	umask 0022; mkdir --parents ${install_dir}/lib/cmake
 
 ${build_dir} :
-	mkdir ${build_dir}
+	mkdir --parents ${build_dir}
 
 cmake_files := $(shell find . -name CMakeLists.txt)
 
@@ -21,14 +21,14 @@ ${build_dir}/configured : conanfile.py ${cmake_files} | ${build_dir} ${install_d
 	cd ${build_dir}; conan install \
 		--setting "build_type=${BUILD_TYPE}" \
 		--build missing \
-		..
+		${PWD}
 	cd ${build_dir}; cmake \
 		-Wdev -Werror=dev -Wdeprecated -Werror=deprecated \
 		-G ${GENERATOR} \
 		-DCMAKE_MODULE_PATH=${build_dir} \
 		-DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
-		-DCMAKE_INSTALL_PREFIX=../${install_dir} \
-		..
+		-DCMAKE_INSTALL_PREFIX=${install_dir} \
+		${PWD}
 	touch $@
 
 configure : ${build_dir}/configured
