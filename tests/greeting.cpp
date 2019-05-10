@@ -1,9 +1,8 @@
-#include <cassert>
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include <doctest.h>
 
 #include <project_template.h>
 
-int main() {
-    assert(project_template::greeting() == "hello");
-    // assert(false);
-    return 0;
+TEST_CASE("greeting is hello") {
+    CHECK(project_template::greeting() == "hello");
 }

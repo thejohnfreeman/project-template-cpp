@@ -13,9 +13,11 @@ ${install_dir} :
 ${build_dir} :
 	mkdir ${build_dir}
 
+cmake_files := $(shell find . -name CMakeLists.txt)
+
 # The installation directory needs to exist to avoid a warning.
 # TODO: Find all CMakeLists.txt to be dependencies of the configuration.
-${build_dir}/configured : CMakeLists.txt | ${build_dir} ${install_dir}
+${build_dir}/configured : conanfile.py ${cmake_files} | ${build_dir} ${install_dir}
 	cd ${build_dir}; conan install \
 		--setting "build_type=${BUILD_TYPE}" \
 		--build missing \
@@ -23,6 +25,7 @@ ${build_dir}/configured : CMakeLists.txt | ${build_dir} ${install_dir}
 	cd ${build_dir}; cmake \
 		-Wdev -Werror=dev -Wdeprecated -Werror=deprecated \
 		-G ${GENERATOR} \
+		-DCMAKE_MODULE_PATH=${build_dir} \
 		-DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
 		-DCMAKE_INSTALL_PREFIX=../${install_dir} \
 		..
