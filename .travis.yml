@@ -44,6 +44,11 @@ matrix:
         - LIBCXX=libc++
     # GCC on OSX is just a wrapper for Clang.
 
+addons:
+  homebrew:
+    packages:
+      - cmake
+
 install:
   # The root environment on Travis does not have cmake on its PATH.
   # https://github.com/travis-ci/travis-ci/issues/9113#issuecomment-366448032
