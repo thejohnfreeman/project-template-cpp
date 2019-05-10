@@ -48,6 +48,7 @@ addons:
   homebrew:
     packages:
       - cmake
+    update: true
 
 install:
   # The root environment on Travis does not have cmake on its PATH.
