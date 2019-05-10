@@ -31,7 +31,7 @@ ${build_dir}/configured : CMakeLists.txt | ${build_dir} ${install_dir}
 configure : ${build_dir}/configured
 
 build : configure
-	cd ${build_dir}; cmake --build . --config ${BUILD_TYPE} -- -j $(shell nproc)
+	cd ${build_dir}; cmake --build . --config ${BUILD_TYPE} --parallel $(shell nproc)
 
 test : configure
 	cd ${build_dir}; ctest --build-config ${BUILD_TYPE} --parallel $(shell nproc)
