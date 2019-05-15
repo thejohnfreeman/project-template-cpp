@@ -1,4 +1,4 @@
-from conans import ConanFile
+from conans import ConanFile, CMake
 
 class Project(ConanFile):
     name = 'project_template'
@@ -7,4 +7,12 @@ class Project(ConanFile):
     url = 'https://github.com/thejohnfreeman/project-template-cpp'
     build_requires = ('doctest/2.3.1@bincrafters/stable',)
     requires = tuple()
+    settings = 'arch', 'os', 'compiler', 'build_type'
+    options = {'shared': [True, False]}
+    default_options = {'shared': False}
     generators = 'cmake_find_package'
+
+    def build(self):
+        cmake = CMake(self)
+        cmake.configure()
+        cmake.build()
