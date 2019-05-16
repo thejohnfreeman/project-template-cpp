@@ -88,4 +88,17 @@ or Maven Central.
 [cget]: https://github.com/pfultz2/cget
 [conan-center]: https://bintray.com/conan/conan-center
 
-Conan is much more capable than the basic C++ project requires.
+Conan is much more capable than the basic C++ project requires. We make some
+choices to ease its use and minimize its configuration:
+
+- Recipe and sources in the same repository. You don't need or want to
+  maintain a separate repository to package your own code.
+
+
+
+Conan's `package()` makes you install your exports (copy headers, static
+libraries, shared libraries). Hopefully we can reuse CMake's install.
+
+Conan's `package_info()` makes us redeclare our exports (include directory and
+libraries) so it can generate the right `CFLAGS` and `LDFLAGS` in different
+build systems. We need to generate this info from CMake.
