@@ -1,12 +1,7 @@
 from conans import ConanFile, CMake
 
-def _version():
-    with open('version', 'r') as f:
-        return f.read().strip()
-
 class Project(ConanFile):
     name = 'project_template'
-    version = _version()
     license = 'ISC'
     author = 'John Freeman <jfreeman08@gmail.com>'
     url = 'https://github.com/thejohnfreeman/project-template-cpp'
@@ -16,7 +11,7 @@ class Project(ConanFile):
     options = {'shared': [True, False]}
     default_options = {'shared': False}
     generators = 'cmake_find_package'
-    exports_sources = '.'
+    exports_sources = '*'
 
     def build(self):
         cmake = CMake(self)

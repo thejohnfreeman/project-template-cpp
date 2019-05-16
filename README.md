@@ -102,3 +102,12 @@ libraries, shared libraries). Hopefully we can reuse CMake's install.
 Conan's `package_info()` makes us redeclare our exports (include directory and
 libraries) so it can generate the right `CFLAGS` and `LDFLAGS` in different
 build systems. We need to generate this info from CMake.
+
+The Conan recipe cannot read the version string from another file because it
+is copied by Conan to a work directory without any other files. Not even large
+projects use Conan directly, it seems. Instead, they use
+[`conan-package-tools`](https://github.com/conan-io/conan-package-tools) to
+help craft the right Conan command lines (where you can pass the version
+string instead of including it in the recipe).
+
+Since everyone else is using a layer on top of Conan, why can't we?
