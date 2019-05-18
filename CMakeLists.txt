@@ -1,8 +1,6 @@
 # 3.12 for --build --parallel.
 cmake_minimum_required(VERSION 3.12)
-file(READ version VERSION)
-string(STRIP ${VERSION} VERSION)
-project(project_template VERSION ${VERSION} LANGUAGES CXX)
+project(project_template VERSION 0.1.0 LANGUAGES CXX)
 
 find_package(future REQUIRED)
 future_add_dependency(PRIVATE doctest)
