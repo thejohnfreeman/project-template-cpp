@@ -82,10 +82,9 @@ I want it to be *accessible*:
   overwhelming and brittle. It becomes too much to understand all at once, and
   makes me worry that any slight change will bring the whole thing down.
   No `CMakeLists.txt` in this project exceeds 13 lines, thanks to the
-  abstractions in
-  [`cmake-future`](https://github.com/thejohnfreeman/cmake-future).
+  abstractions in [cmake-future][].
 
-- It should be well documented so that necomers can learn from it.
+- It should be well documented so that newcomers can learn from it.
   If you are left with unanswered questions, please [open an
   issue](https://github.com/thejohnfreeman/project-template-cpp/issues/new) to
   let me know. It is likely someone else will have the same question, and it
