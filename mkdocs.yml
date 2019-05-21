@@ -1,4 +1,0 @@
-site_name: project-template-cpp
-markdown_extensions:
-  - markdown_include.include:
-      base_path: .
