@@ -1,0 +1,5 @@
+[build_requires]
+doctest/2.3.1@bincrafters/stable
+
+[generators]
+cmake_find_package
