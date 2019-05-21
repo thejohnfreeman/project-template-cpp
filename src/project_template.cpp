@@ -1,4 +1,4 @@
-#include <project_template.h>
+#include <project_template/project_template.h>
 
 namespace project_template {
 
