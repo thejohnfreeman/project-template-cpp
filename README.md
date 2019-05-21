@@ -8,7 +8,7 @@ configuration for [CMake][].
 [![build status on Linux and OSX with Travis](https://travis-ci.org/thejohnfreeman/project-template-cpp.svg?branch=master)](https://travis-ci.org/thejohnfreeman/project-template-cpp)
 
 
-## Dependencies
+## Quick start
 
 This project depends on abstractions of CMake best practices that I have
 packaged as CMake extensions in the project [cmake-future][].
@@ -20,7 +20,7 @@ $ curl -L https://raw.githubusercontent.com/thejohnfreeman/cmake-future/master/i
   | sudo env "PATH=$PATH" bash -s -- master
 ```
 
-This project installs its dependency ([doctest][]) with the package manager
+You can install the test framework ([doctest][]) with the package manager
 [Conan][].
 
 [doctest]: https://github.com/onqtam/doctest
@@ -30,8 +30,7 @@ This project installs its dependency ([doctest][]) with the package manager
 $ pip install conan
 ```
 
-
-## Quick start
+Once you have these dependencies, the workflow is easy:
 
 ```sh
 $ git clone https://github.com/thejohnfreeman/project-template-cpp
