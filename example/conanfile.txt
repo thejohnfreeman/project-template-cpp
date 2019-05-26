@@ -1,0 +1,5 @@
+[requires]
+project_template/[>0.0]@demo/testing
+
+[generators]
+cmake_find_package
