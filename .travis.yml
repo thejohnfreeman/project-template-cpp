@@ -1,47 +1,55 @@
 sudo: required
 language: cpp
 
+.xenial: &xenial
+  os: linux
+  dist: xenial
+  addons:
+    apt:
+      sources:
+        - deadsnakes
+      packages:
+        - python3.6-dev
+  before_install:
+    - curl https://bootstrap.pypa.io/get-pip.py | sudo python3.6
+
 matrix:
   include:
     # We need to use Ubuntu Xenial to upgrade pip.
-    - os: linux
-      dist: xenial
+    - <<: *xenial
       compiler: clang
       env:
-        - BUILD_TYPE=Debug
+        - BUILD_TYPE=debug
+        - CONAN_ENV_COMPILER_LIBCXX=libstdc++11
         - CXXFLAGS='-D_GLIBCXX_USE_CXX11_ABI=1'
-        - LIBCXX=libstdc++11
-    - os: linux
-      dist: xenial
+    - <<: *xenial
       compiler: clang
       env:
-        - BUILD_TYPE=Release
+        - BUILD_TYPE=release
+        - CONAN_ENV_COMPILER_LIBCXX=libstdc++11
         - CXXFLAGS='-D_GLIBCXX_USE_CXX11_ABI=1'
-        - LIBCXX=libstdc++11
-    - os: linux
-      dist: xenial
+    - <<: *xenial
       compiler: gcc
       env:
-        - BUILD_TYPE=Debug
+        - BUILD_TYPE=debug
+        - CONAN_ENV_COMPILER_LIBCXX=libstdc++11
         - CXXFLAGS='-D_GLIBCXX_USE_CXX11_ABI=1'
-        - LIBCXX=libstdc++11
-    - os: linux
-      dist: xenial
+    - <<: *xenial
       compiler: gcc
       env:
-        - BUILD_TYPE=Release
+        - BUILD_TYPE=release
+        - CONAN_ENV_COMPILER_LIBCXX=libstdc++11
         - CXXFLAGS='-D_GLIBCXX_USE_CXX11_ABI=1'
-        - LIBCXX=libstdc++11
     - os: osx
       compiler: clang
       env:
-        - BUILD_TYPE=Debug
-        - LIBCXX=libc++
+        - BUILD_TYPE=debug
+        - CONAN_ENV_COMPILER_LIBCXX=libc++
     - os: osx
       compiler: clang
       env:
-        - BUILD_TYPE=Release
-        - LIBCXX=libc++
+        - BUILD_TYPE=release
+        - CONAN_ENV_COMPILER_LIBCXX=libc++
     # GCC on OSX is just a wrapper for Clang.
 
 addons:
@@ -54,21 +62,14 @@ install:
   # The root environment on Travis does not have cmake on its PATH.
   # https://github.com/travis-ci/travis-ci/issues/9113#issuecomment-366448032
   - curl --location https://raw.githubusercontent.com/thejohnfreeman/cmake-future/master/install.sh | sudo env "PATH=$PATH" bash
-  - sudo pip install --upgrade pip
-  - sudo pip install --upgrade conan --ignore-installed
+  - sudo pip3 install --upgrade pip
+  - sudo pip3 install --upgrade conan cupcake --ignore-installed
   - conan user
   - conan --version
   - conan remote list
   - cmake --version
+  - cupcake --version
 
 script:
-  - mkdir build
-  - cd build
-  - conan install
-    --setting "compiler.libcxx=$LIBCXX"
-    --setting "build_type=$BUILD_TYPE"
-    --build missing
-    ..
-  - cmake -DCMAKE_MODULE_PATH=${PWD} -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ..
-  - cmake --build . --config ${BUILD_TYPE} --parallel $(nproc)
-  - ctest --build-config ${BUILD_TYPE} --verbose --parallel $(nproc)
+  - cupcake configure --${BUILD_TYPE} --generator 'Unix Makefiles'
+  - cupcake test --${BUILD_TYPE}
