@@ -20,36 +20,36 @@ matrix:
       compiler: clang
       env:
         - BUILD_TYPE=debug
+        - CONAN_ENV_COMPILER_LIBCXX=libstdc++11
         - CXXFLAGS='-D_GLIBCXX_USE_CXX11_ABI=1'
-        - LIBCXX=libstdc++11
     - <<: *xenial
       compiler: clang
       env:
         - BUILD_TYPE=release
+        - CONAN_ENV_COMPILER_LIBCXX=libstdc++11
         - CXXFLAGS='-D_GLIBCXX_USE_CXX11_ABI=1'
-        - LIBCXX=libstdc++11
     - <<: *xenial
       compiler: gcc
       env:
         - BUILD_TYPE=debug
+        - CONAN_ENV_COMPILER_LIBCXX=libstdc++11
         - CXXFLAGS='-D_GLIBCXX_USE_CXX11_ABI=1'
-        - LIBCXX=libstdc++11
     - <<: *xenial
       compiler: gcc
       env:
         - BUILD_TYPE=release
+        - CONAN_ENV_COMPILER_LIBCXX=libstdc++11
         - CXXFLAGS='-D_GLIBCXX_USE_CXX11_ABI=1'
-        - LIBCXX=libstdc++11
     - os: osx
       compiler: clang
       env:
         - BUILD_TYPE=debug
-        - LIBCXX=libc++
+        - CONAN_ENV_COMPILER_LIBCXX=libc++
     - os: osx
       compiler: clang
       env:
         - BUILD_TYPE=release
-        - LIBCXX=libc++
+        - CONAN_ENV_COMPILER_LIBCXX=libc++
     # GCC on OSX is just a wrapper for Clang.
 
 addons:
@@ -71,5 +71,5 @@ install:
   - cupcake --version
 
 script:
-  - conan profile update "settings.compiler.libcxx=${LIBCXX}" default
+  - cupcake configure --${BUILD_TYPE} --generator 'Unix Makefiles'
   - cupcake test --${BUILD_TYPE}
