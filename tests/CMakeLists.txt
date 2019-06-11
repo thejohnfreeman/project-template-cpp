@@ -1,9 +1,10 @@
-future_get_names_with_file_suffix(TESTS ".cpp")
-foreach(TEST ${TESTS})
-  future_add_test_executable(${TEST} EXCLUDE_FROM_ALL ${TEST}.cpp)
-  set_property(TARGET ${TEST} PROPERTY CXX_STANDARD 11)
-  target_link_libraries(${TEST}
-    project_template::project_template
+future_get_names_with_file_suffix(tests ".cpp")
+foreach(test ${tests})
+  set(target test_${test})
+  future_add_test_executable(${target} EXCLUDE_FROM_ALL ${test}.cpp)
+  set_property(TARGET ${target} PROPERTY CXX_STANDARD 11)
+  target_link_libraries(${target}
+    greetings::greetings
     doctest::doctest
   )
-endforeach(TEST ${TESTS})
+endforeach()
