@@ -56,6 +56,14 @@ addons:
       - cmake
     update: true
 
+before_install:
+  - check() { type $1 || true; $1 --version || true; }
+  - check python
+  - check python3
+  - check python3.6
+  - check pip
+  - check pip3
+
 install:
   # The root environment on Travis does not have cmake on its PATH.
   # https://github.com/travis-ci/travis-ci/issues/9113#issuecomment-366448032
@@ -69,5 +77,5 @@ install:
   - cupcake --version
 
 script:
-  - conan profile update "compiler.libcxx=${LIBCXX}" default
+  - conan profile update "settings.compiler.libcxx=${LIBCXX}" default
   - cupcake test --${BUILD_TYPE}
