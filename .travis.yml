@@ -6,6 +6,8 @@ language: cpp
   dist: xenial
   addons:
     apt:
+      sources:
+        - deadsnakes
       packages:
         - python3.6-dev
 
