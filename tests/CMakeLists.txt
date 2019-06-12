@@ -4,7 +4,7 @@ foreach(test ${tests})
   future_add_test_executable(${target} EXCLUDE_FROM_ALL ${test}.cpp)
   set_property(TARGET ${target} PROPERTY CXX_STANDARD 11)
   target_link_libraries(${target}
-    greetings::greetings
+    ${PROJECT_NAME}::${PROJECT_NAME}
     doctest::doctest
   )
 endforeach()
