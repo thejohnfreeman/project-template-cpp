@@ -6,8 +6,8 @@ project(greetings
   HOMEPAGE_URL https://github.com/thejohnfreeman/project-template-cpp
   LANGUAGES CXX
 )
-set(PROJECT_LICENSE_ID "ISC")
-set(PROJECT_AUTHOR "John Freeman <jfreeman08@gmail.com>")
+set(PROJECT_LICENSE_ID "ISC" CACHE STRING "License")
+set(PROJECT_AUTHOR "John Freeman <jfreeman08@gmail.com>" CACHE STRING "Author")
 
 set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
 set(CMAKE_FIND_PACKAGE_SORT_DIRECTION DEC)
