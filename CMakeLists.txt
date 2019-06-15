@@ -1,17 +1,21 @@
 # future requires 3.7
 cmake_minimum_required(VERSION 3.7)
+
+set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
+set(CMAKE_FIND_PACKAGE_SORT_DIRECTION DEC)
+find_package(future REQUIRED)
+
 project(greetings
   VERSION 0.1.0
   DESCRIPTION "An example library."
   HOMEPAGE_URL https://github.com/thejohnfreeman/project-template-cpp
   LANGUAGES CXX
 )
-set(PROJECT_LICENSE_ID "ISC" CACHE STRING "License")
-set(PROJECT_AUTHOR "John Freeman <jfreeman08@gmail.com>" CACHE STRING "Author")
+future_project(
+  LICENSE "ISC"
+  AUTHORS "John Freeman <jfreeman08@gmail.com>"
+)
 
-set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
-set(CMAKE_FIND_PACKAGE_SORT_DIRECTION DEC)
-find_package(future REQUIRED)
 future_add_dependency(PRIVATE doctest)
 
 future_add_headers(headers DIRECTORY include)
