@@ -59,17 +59,15 @@ addons:
     update: true
 
 install:
-  # The root environment on Travis does not have cmake on its PATH.
-  # https://github.com/travis-ci/travis-ci/issues/9113#issuecomment-366448032
-  - curl --location https://raw.githubusercontent.com/thejohnfreeman/cmake-future/master/install.sh | sudo env "PATH=$PATH" bash
   - sudo pip3 install --upgrade pip
   - sudo pip3 install --upgrade conan cupcake --ignore-installed
   - conan user
   - conan --version
+  - conan remote add jfreeman https://api.bintray.com/conan/jfreeman/jfreeman
   - conan remote list
   - cmake --version
   - cupcake --version
 
 script:
   - cupcake configure --${BUILD_TYPE} --generator 'Unix Makefiles'
-  - cupcake test --${BUILD_TYPE}
+  - cupcake test --${BUILD_TYPE} -- --verbose
