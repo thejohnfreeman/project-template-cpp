@@ -1,5 +1,5 @@
 [build_requires]
-future/[>=2]@jfreeman/testing
+future/[>=3.1]@jfreeman/testing
 doctest/2.3.1@bincrafters/stable
 
 [generators]
