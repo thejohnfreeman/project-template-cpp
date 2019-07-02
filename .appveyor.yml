@@ -17,15 +17,15 @@ environment:
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 
 configuration:
-  - debug
-  - release
+  - Debug
+  - Release
 
 install:
   - ps: |
-      $env:PATH = "$env:PYTHON;$env:PYTHON\Scripts;$env:PATH"
       $ErrorActionPreference = "Stop"
-      pip --disable-pip-version-check install --upgrade pip
-      pip install --upgrade conan cupcake --ignore-installed
+      ${env:PATH} = "${env:PYTHON};${env:PYTHON}\Scripts;${env:PATH}"
+      python -m pip install --upgrade pip
+      pip install --upgrade conan cupcake
       conan user
       conan --version
       conan remote add jfreeman https://api.bintray.com/conan/jfreeman/jfreeman
