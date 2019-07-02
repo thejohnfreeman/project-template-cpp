@@ -3,18 +3,22 @@
 
 environment:
   matrix:
-    - ARCH: x86
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      ARCH: x86
       GENERATOR: Visual Studio 14 2015
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    - ARCH: x86_64
+      PYTHON: "C:\\Python36"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      ARCH: x86_64
       GENERATOR: Visual Studio 14 2015 Win64
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    - ARCH: x86
+      PYTHON: "C:\\Python36-x64"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      ARCH: x86
       GENERATOR: Visual Studio 15 2017
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-    - ARCH: x86_64
+      PYTHON: "C:\\Python36"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      ARCH: x86_64
       GENERATOR: Visual Studio 15 2017 Win64
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      PYTHON: "C:\\Python36-x64"
 
 configuration:
   - Debug
@@ -24,12 +28,6 @@ install:
   - ps: |
       $ErrorActionPreference = "Stop"
       ${env:PATH} = "${env:PYTHON};${env:PYTHON}\Scripts;${env:PATH}"
-      ls "${env:PYTHON}"
-      ls "${env:PYTHON}\Scripts"
-      where.exe python
-      where.exe pip
-      python -m pip --version
-      pip --version
       python -m pip install --upgrade pip
       pip install --upgrade conan cupcake
       conan user
