@@ -1,33 +1,32 @@
 # project-template-cpp
 
 This is a sample C++ project demonstrating a canonical, minimum-boilerplate
-configuration for [CMake][].
+configuration for [CMake][] and [Conan][].
 
 [CMake]: https://cmake.org/cmake/help/latest/manual/cmake.1.html
+[Conan]: https://docs.conan.io/
 
 [![build status on Linux and OSX with Travis](https://travis-ci.org/thejohnfreeman/project-template-cpp.svg?branch=master)](https://travis-ci.org/thejohnfreeman/project-template-cpp)
 
 
 ## Quick start
 
-This project depends on abstractions of CMake best practices that I have
-packaged as CMake extensions in the project [cmake-future][].
+You will need CMake and Conan. CMake is generally installed with your
+platform's package manager, or by downloading from its [website][2].
+If you do not have Conan, it can be installed easily as a Python package:
+
+```sh
+$ pip install conan
+```
+
+This project depends on a package of CMake modules, [cmake-future][], that
+I publish to my [BinTray repository][1].
+Conan will install it for you if you add my repository as a remote:
 
 [cmake-future]: https://github.com/thejohnfreeman/cmake-future
 
 ```sh
-$ curl -L https://raw.githubusercontent.com/thejohnfreeman/cmake-future/master/install.sh \
-  | sudo env "PATH=$PATH" bash -s -- master
-```
-
-You can install the test framework ([doctest][]) with the package manager
-[Conan][].
-
-[doctest]: https://github.com/onqtam/doctest
-[Conan]: https://docs.conan.io/
-
-```sh
-$ pip install conan
+conan remote add jfreeman https://api.bintray.com/conan/jfreeman/jfreeman
 ```
 
 Once you have these dependencies, the workflow is easy:
@@ -38,7 +37,7 @@ $ cd project-template-cpp
 $ mkdir build
 $ cd build
 $ conan install ..
-$ cmake -DCMAKE_MODULE_PATH=${PWD} ..
+$ cmake -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake ..
 $ cmake --build .
 $ ctest .
 ```
@@ -47,8 +46,8 @@ $ ctest .
 ## Why?
 
 I want to make life easy for the developer of what I'm going to call the
-**"Basic C++ Project"**. I know some C++ developers just threw up in their
-mouths a little reading that, but let me explain.
+**"Basic C++ Project"**, or BCP. I know some C++ developers just threw up in
+their mouths a little reading that, but let me explain.
 The Basic C++ Project has these parts:
 
 - A **name** that is a valid C++ identifier.
@@ -60,11 +59,12 @@ The Basic C++ Project has these parts:
 - One **library**, named after the project, that can be linked statically or
   dynamically (with no other options). The library depends on the headers and
   the public dependencies.
-- Zero or more **executables** that depend on the headers, the library,
-  and the public dependencies.
-- Zero or more **private dependencies**. These are often test frameworks.
-  Developers working on the project expect them to be installed for building
-  and testing, but users of the project do not.
+- Zero or more **examples** that depend on the headers, the library,
+  and the public dependencies. These are written as subprojects that can be
+  compiled separately, to test the packaging and installation of the library.
+- Zero or more **private dependencies**. These are often test frameworks or
+  build tools. Developers working on the project expect them to be installed
+  for building and testing, but users of the project do not.
 - Zero or more **tests** that depend on the headers, the library, the
   public dependencies, and the private dependencies.
 
@@ -82,9 +82,11 @@ I want it to be *accessible*:
   overwhelming and brittle. It becomes too much to understand all at once, and
   makes me worry that any slight change will bring the whole thing down.
   No `CMakeLists.txt` in this project exceeds 13 lines, thanks to the
-  abstractions in [cmake-future][].
+  abstractions in [cmake-future][]. Instead of repeating long patterns of
+  CMake code copied from Stack Overflow, they are encapsulated behind
+  well-documented functions with intuitive names.
 
-- It should be well documented so that newcomers can learn from it.
+- It should be well-documented so that newcomers can learn from it.
   If you are left with unanswered questions, please [open an
   issue](https://github.com/thejohnfreeman/project-template-cpp/issues/new) to
   let me know. It is likely someone else will have the same question, and it
@@ -102,14 +104,16 @@ a Basic C++ Project. That is in the pipeline.
 CMake likes to remind everyone that it is a build system *generator*, not
 a *build system*, but it is reaching a level of abstraction that lets us
 think of it as a cross-platform build system. It lets us build, test, and
-install a project without ever knowing what the underlying build system is:
+install a project with the same commands on Linux, OSX, and Windows, without
+ever knowing what the underlying build system is:
 
 ```sh
-$ cmake -DCMAKE_BUILD_TYPE=${build_type} ${source_dir}
+$ cmake -DCMAKE_BUILD_TYPE=${build_type} "${source_dir}"
 $ ncpus=$(python -c 'import multiprocessing as mp; print(mp.cpu_count())')
-$ cmake --build . --parallel ${ncpus}
-$ ctest --parallel ${ncpus}
-$ cmake --build . --target install
+$ export CMAKE_BUILD_PARALLEL_LEVEL=${ncpus} CTEST_PARALLEL_LEVEL=${ncpus}
+$ cmake --build . --config ${build_type}
+$ ctest --build-config ${build_type}
+$ cmake --build . --config ${build_type} --target install
 ```
 
 CMake has become the de facto standard in the C++ community. It has entered
@@ -125,8 +129,12 @@ conventions and more:
 - It installs itself relative to a **prefix**. Headers are
   installed in ``include/``; static and dynamic builds of the library are
   installed in ``lib/``; executables are installed in ``bin/``.
-- It installs a **[CMake package configuration file][PCF]** that exports
+- It installs a **[CMake package configuration file][3]** that exports
   a target for the library. The target is named after the project, and it is
   scoped within a namespace named after the project.
 
-[PCF]: https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html#package-configuration-file
+
+[1]: https://bintray.com/jfreeman/jfreeman
+[2]: https://cmake.org/install/
+[3]: https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html#package-configuration-file
+
