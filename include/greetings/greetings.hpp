@@ -1,5 +1,5 @@
-#ifndef GREETINGS_H
-#define GREETINGS_H
+#ifndef GREETINGS_HPP
+#define GREETINGS_HPP
 
 #include <string>
 

@@ -1,4 +1,4 @@
-#include <greetings/greetings.h>
+#include <greetings/greetings.hpp>
 
 #include <iostream>
 
