@@ -24,6 +24,12 @@ install:
   - ps: |
       $ErrorActionPreference = "Stop"
       ${env:PATH} = "${env:PYTHON};${env:PYTHON}\Scripts;${env:PATH}"
+      ls "${env:PYTHON}"
+      ls "${env:PYTHON}\Scripts"
+      where.exe python
+      where.exe pip
+      python -m pip --version
+      pip --version
       python -m pip install --upgrade pip
       pip install --upgrade conan cupcake
       conan user
@@ -39,6 +45,7 @@ build_script:
       md build
       cd build
       conan install `
+        --build missing `
         --setting "arch=${env:ARCH}" `
         --setting "build_type=${env:CONFIGURATION}" `
         ..
