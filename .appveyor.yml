@@ -32,7 +32,8 @@ install:
       pip install --upgrade conan cupcake
       conan user
       conan --version
-      conan remote add jfreeman https://api.bintray.com/conan/jfreeman/jfreeman
+      conan remote add --force `
+        jfreeman https://api.bintray.com/conan/jfreeman/jfreeman
       conan remote list
       cmake --version
       cupcake --version
