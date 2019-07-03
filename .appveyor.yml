@@ -31,7 +31,9 @@ install:
       python -m pip install --upgrade pip
       pip install --upgrade conan cupcake
       conan --version
-      conan user -ErrorAction Continue
+      $ErrorActionPreference = "Continue"
+      conan user
+      $ErrorActionPreference = "Stop"
       conan remote add jfreeman https://api.bintray.com/conan/jfreeman/jfreeman
       conan remote list
       cmake --version
