@@ -30,11 +30,9 @@ install:
       ${env:PATH} = "${env:PYTHON};${env:PYTHON}\Scripts;${env:PATH}"
       python -m pip install --upgrade pip
       pip install --upgrade conan cupcake
-      conan user
       conan --version
-      Invoke-Command { `
-        conan remote add jfreeman https://api.bintray.com/conan/jfreeman/jfreeman `
-      } -ErrorAction Continue
+      Invoke-Command { conan user } -ErrorAction Continue
+      conan remote add jfreeman https://api.bintray.com/conan/jfreeman/jfreeman
       conan remote list
       cmake --version
       cupcake --version
