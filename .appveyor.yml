@@ -31,7 +31,7 @@ install:
       python -m pip install --upgrade pip
       pip install --upgrade conan cupcake
       conan --version
-      Invoke-Command { conan user } -ErrorAction Continue
+      conan user -ErrorAction Continue
       conan remote add jfreeman https://api.bintray.com/conan/jfreeman/jfreeman
       conan remote list
       cmake --version
