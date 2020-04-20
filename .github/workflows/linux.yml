@@ -11,13 +11,12 @@ jobs:
           python-version: '3.7'
       - name: install environment
         run: |
-          gcc --version
-          clang --version
-          python --version
-          cmake --version
-          pip install --upgrade pip
           pip install conan
+          python --version
           conan --version
+          cmake --version
+          gcc --version
+          conan remote add jfreeman https://api.bintray.com/conan/jfreeman/jfreeman
       - name: checkout
         uses: actions/checkout@v2
       - name: build
