@@ -36,7 +36,7 @@ $ git clone https://github.com/thejohnfreeman/project-template-cpp
 $ cd project-template-cpp
 $ mkdir build
 $ cd build
-$ conan install ..
+$ conan install .. --build missing
 $ cmake -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake ..
 $ cmake --build .
 $ ctest .
