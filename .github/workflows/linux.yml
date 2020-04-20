@@ -22,8 +22,27 @@ jobs:
       - name: build
         run: |
           mkdir build
+          mkdir --parents install/lib/cmake
           cd build
           conan install .. --build missing
-          cmake -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake -DCMAKE_INSTALL_PREFIX=$PWD/../install ..
+          cmake \
+            -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake \
+            -DCMAKE_INSTALL_PREFIX=$PWD/../install \
+            ..
           cmake --build .
-          ctest .
+      - name: test
+        run: ctest build
+      - name: install
+        run: cmake --build build --target install
+      - name: build example
+        run: |
+          cd examples/english
+          mkdir build
+          mkdir --parents install/lib/cmake
+          cd build
+          conan install .. --build missing
+          cmake \
+            -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake \
+            -DCMAKE_INSTALL_PREFIX=$PWD/../install \
+            -DCMAKE_PREFIX_PATH=$PWD/../../../install \
+            ..
