@@ -19,12 +19,36 @@ jobs:
           conan remote add jfreeman https://api.bintray.com/conan/jfreeman/jfreeman
       - name: checkout
         uses: actions/checkout@v2
-      - name: build
+      - name: configure
         run: |
           mkdir build
+          mkdir --parents install/lib/cmake
           cd build
           conan install .. --build missing
-          cmake -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake -DCMAKE_INSTALL_PREFIX=$PWD/../install ..
-          cmake --build .
-          ctest .
-
+          cmake \
+            -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake \
+            -DCMAKE_INSTALL_PREFIX=$PWD/../install \
+            ..
+      - name: build
+        run: cmake --build build
+      - name: test
+        run: cmake --build build --target test
+      - name: install
+        run: cmake --build build --target install
+      - name: configure example
+        run: |
+          cd examples/english
+          mkdir build
+          mkdir --parents install/lib/cmake
+          cd build
+          conan install .. --build missing
+          cmake \
+            -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake \
+            -DCMAKE_INSTALL_PREFIX=$PWD/../install \
+            -DCMAKE_PREFIX_PATH=$PWD/../../../install \
+            ..
+      - name: build example
+        run: cmake --build examples/english/build
+      - name: test example
+        run: |
+          [ "$(examples/english/build/main)" == "hello, world!" ]
