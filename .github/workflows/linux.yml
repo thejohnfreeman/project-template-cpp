@@ -22,7 +22,7 @@ jobs:
       - name: configure
         run: |
           mkdir build
-          mkdir --parents install/lib/cmake
+          mkdir -p install/lib/cmake
           cd build
           conan install .. --build missing
           cmake \
@@ -39,7 +39,7 @@ jobs:
         run: |
           cd examples/english
           mkdir build
-          mkdir --parents install/lib/cmake
+          mkdir -p install/lib/cmake
           cd build
           conan install .. --build missing
           cmake \
