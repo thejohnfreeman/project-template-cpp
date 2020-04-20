@@ -50,4 +50,4 @@ jobs:
       - name: build example
         run: cmake --build examples/english/build
       - name: test example
-        run: cmake --build examples/english/build --target test
+        run: [ "$(examples/english/build/main)" == "hello, world!" ]
