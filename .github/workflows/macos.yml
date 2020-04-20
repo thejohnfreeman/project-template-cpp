@@ -1,0 +1,30 @@
+name: Build and test on MacOS
+on: [push, pull_request]
+
+jobs:
+  job:
+    runs-on: macos-10.15
+    steps:
+      - name: install Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.7'
+      - name: install environment
+        run: |
+          pip install conan
+          python --version
+          conan --version
+          cmake --version
+          gcc --version
+          conan remote add jfreeman https://api.bintray.com/conan/jfreeman/jfreeman
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: build
+        run: |
+          mkdir build
+          cd build
+          conan install .. --build missing
+          cmake -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake -DCMAKE_INSTALL_PREFIX=$PWD/../install ..
+          cmake --build .
+          ctest .
+
