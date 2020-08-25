@@ -28,6 +28,5 @@ future_add_headers(headers DIRECTORY include)
 add_subdirectory(src)
 enable_testing()
 add_subdirectory(tests)
-add_subdirectory(examples)
 
 future_install_project()
