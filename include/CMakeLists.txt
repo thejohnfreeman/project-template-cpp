@@ -1,0 +1,15 @@
+include(GNUInstallDirs)
+
+add_library(headers INTERFACE)
+add_library(${PROJECT_NAME}::headers ALIAS headers)
+target_include_directories(headers
+  INTERFACE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
+install(TARGETS headers EXPORT ${PROJECT_EXPORT_SET})
+install(
+  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  FILES_MATCHING PATTERN "*.h" PATTERN "*.hpp"
+)

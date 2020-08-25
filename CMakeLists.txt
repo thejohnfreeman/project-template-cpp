@@ -1,4 +1,3 @@
-# future requires 3.7
 cmake_minimum_required(VERSION 3.7)
 
 project(greetings
@@ -10,23 +9,14 @@ project(greetings
 
 set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
 set(CMAKE_FIND_PACKAGE_SORT_DIRECTION DEC)
-find_package(future CONFIG REQUIRED)
+# <dependencies>
+# </dependencies>
 
-future_project(
-  LICENSE ISC
-  REPOSITORY_URL https://github.com/thejohnfreeman/project-template-cpp.git
-  AUTHORS "John Freeman <jfreeman08@gmail.com>"
-)
+find_package(doctest REQUIRED)
 
-future_add_dependency(PRIVATE doctest)
+set(PROJECT_EXPORT_SET ${PROJECT_NAME}_targets)
 
-# We could create `include/CMakeLists.txt` and `add_subdirectory(include)`,
-# but it would only have this next line,
-# so I've decided to just inline it here.
-future_add_headers(headers DIRECTORY include)
-
+add_subdirectory(include)
 add_subdirectory(src)
 enable_testing()
 add_subdirectory(tests)
-
-future_install_project()
