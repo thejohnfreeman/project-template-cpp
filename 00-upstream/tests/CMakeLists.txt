@@ -1,13 +1,13 @@
-add_executable(test_greetings EXCLUDE_FROM_ALL greetings.cpp)
-set_property(TARGET test_greetings PROPERTY CXX_STANDARD 11)
+add_executable(tests greetings.cpp)
+set_property(TARGET tests PROPERTY CXX_STANDARD 11)
 target_link_libraries(
-  test_greetings
-  ${PROJECT_NAME}::${PROJECT_NAME}
+  tests
+  ${PROJECT_NAME}::library
   doctest::doctest
 )
-add_test(NAME test_greetings COMMAND test_greetings)
+add_test(NAME tests COMMAND tests)
 set_tests_properties(
-  test_greetings PROPERTIES
+  tests PROPERTIES
   FIXTURES_REQUIRED test_greetings_fixture
 )
 
@@ -17,7 +17,7 @@ add_test(
     ${CMAKE_COMMAND}
     --build ${CMAKE_BINARY_DIR}
     --config $<CONFIG>
-    --target test_greetings
+    --target tests
 )
 set_tests_properties(test_greetings_build PROPERTIES
   FIXTURES_SETUP test_greetings_fixture

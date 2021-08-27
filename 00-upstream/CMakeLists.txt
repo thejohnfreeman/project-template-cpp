@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.7)
 
+# Choose different defaults.
+set(CMAKE_EXPORT_COMPILE_COMMANDS YES)
+
 project(greetings
   VERSION 0.1.0
   DESCRIPTION "An example library."

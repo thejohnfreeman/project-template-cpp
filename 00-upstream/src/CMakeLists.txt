@@ -2,19 +2,23 @@ include(GNUInstallDirs)
 
 add_library(static STATIC)
 add_library(${PROJECT_NAME}::static ALIAS static)
-target_sources(static greetings.cpp)
+target_sources(static PRIVATE greetings.cpp)
 # Let the library include "private" headers if it wants.
 target_include_directories(static PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(static PUBLIC ${PROJECT_NAME}::headers)
 
 add_library(shared SHARED)
 add_library(${PROJECT_NAME}::shared ALIAS shared)
-target_sources(shared greetings.cpp)
+target_sources(shared PRIVATE greetings.cpp)
 target_include_directories(shared PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(shared PUBLIC ${PROJECT_NAME}::headers)
 
-add_library(${PROJECT_NAME}::library ALIAS
-  $<IF:$<BOOL:BUILD_SHARED_LIBS>,shared,static>)
+if(BUILD_SHARED_LIBS)
+  set(DEFAULT_LINKAGE shared)
+else()
+  set(DEFAULT_LINKAGE static)
+endif()
+add_library(${PROJECT_NAME}::library ALIAS ${DEFAULT_LINKAGE})
 
 install(
   TARGETS static shared
