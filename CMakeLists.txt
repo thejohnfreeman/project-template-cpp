@@ -9,8 +9,8 @@ project(greetings
 
 set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
 set(CMAKE_FIND_PACKAGE_SORT_DIRECTION DEC)
-# <dependencies>
-# </dependencies>
+# dependencies {
+# }
 
 find_package(doctest REQUIRED)
 
