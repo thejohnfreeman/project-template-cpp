@@ -8,6 +8,9 @@ jobs:
         platform:
           - ubuntu-latest
           - macos-latest
+        generator:
+          - Ninja
+          - Unix Makefiles
         shared:
           - ON
           - OFF
@@ -20,6 +23,10 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: '3.7'
+      - if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'ubuntu')
+        run: sudo apt install ninja-build
+      - if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'macos')
+        run: brew install ninja
       - name: install environment
         run: |
           pip install conan
@@ -30,7 +37,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: configure
-        run: cd 00-upstream && make shared=${{ matrix.shared }} flavor=${{ matrix.flavor }} configure
+        run: cd 00-upstream && make generator=${{ matrix.generator }} shared=${{ matrix.shared }} flavor=${{ matrix.flavor }} configure
       - name: build
         run: cd 00-upstream && make build
       - name: run
