@@ -1,4 +1,4 @@
-name: Build and test on Linux
+name: Build, run, test, and install on Linux and MacOS
 on: [push, pull_request]
 
 jobs:
