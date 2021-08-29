@@ -23,7 +23,7 @@ ${build_dir}/conaninfo.txt : conanfile.txt | ${build_dir}
 conan : ${build_dir}/conaninfo.txt
 
 ${build_dir}/CMakeCache.txt : ${build_dir}/conaninfo.txt Makefile | ${build_dir}
-	cd ${build_dir}; ${CMAKE_COMMAND} -G ${generator} \
+	cd ${build_dir}; ${CMAKE_COMMAND} -G "${generator}" \
 		-DCMAKE_MODULE_PATH=${build_dir} \
 		-DCMAKE_INSTALL_PREFIX=${install_dir} \
 		-DCMAKE_BUILD_TYPE=${flavor} \
