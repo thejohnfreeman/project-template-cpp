@@ -5,6 +5,8 @@ SHELL=/bin/bash -o pipefail
 source_dir := ${CURDIR}
 build_dir := ${source_dir}/.build
 install_dir := ${source_dir}/../prefix
+flavor ?= Debug
+shared ?= OFF
 generator := Ninja
 options :=
 
@@ -24,6 +26,8 @@ ${build_dir}/CMakeCache.txt : ${build_dir}/conaninfo.txt Makefile | ${build_dir}
 	cd ${build_dir}; ${CMAKE_COMMAND} -G ${generator} \
 		-DCMAKE_MODULE_PATH=${build_dir} \
 		-DCMAKE_INSTALL_PREFIX=${install_dir} \
+		-DCMAKE_BUILD_TYPE=${flavor} \
+		-DBUILD_SHARED_LIBS=${shared} \
 		${options} \
 		${source_dir} 2>&1 | tee ${build_dir}/configure.log
 	touch $@
@@ -32,6 +36,7 @@ configure : ${build_dir}/CMakeCache.txt
 
 ${build_dir}/src/executable ${build_dir}/tests/tests : ${build_dir}/CMakeCache.txt
 	time ${CMAKE_COMMAND} --build ${build_dir} --parallel $(shell nproc) 2>&1 | tee ${build_dir}/build.log
+	ls -l $@
 	touch $@
 
 build : ${build_dir}/src/executable
@@ -50,4 +55,4 @@ install : ${build_dir}/src/executable
 	time ${CMAKE_COMMAND} --build ${build_dir} --target install
 
 clean :
-	time ${CMAKE_COMMAND} --build ${build_dir} --target clean
+	rm -rf ${build_dir}
