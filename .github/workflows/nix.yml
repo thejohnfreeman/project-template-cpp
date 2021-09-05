@@ -19,10 +19,6 @@ jobs:
           - Release
     runs-on: ${{ matrix.platform }}
     steps:
-      - name: install Python
-        uses: actions/setup-python@v1
-        with:
-          python-version: '3.7'
       - if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'ubuntu')
         run: sudo apt install ninja-build
       - if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'macos')
