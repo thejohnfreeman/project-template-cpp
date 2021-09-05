@@ -12,7 +12,7 @@ endif
 
 source_dir := ${CURDIR}
 build_dir := ${source_dir}/.build
-install_dir := ${source_dir}/../prefix
+install_dir ?= ${source_dir}/../prefix
 flavor ?= Debug
 shared ?= OFF
 generator ?= Ninja

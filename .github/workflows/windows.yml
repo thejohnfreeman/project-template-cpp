@@ -19,6 +19,7 @@ jobs:
           iwr -useb get.scoop.sh | iex
           scoop install make
           pip install conan
+          $env:PATH -split ';'
           python --version
           conan --version
           cmake --version
@@ -26,7 +27,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: configure
-        run: cd 00-upstream && make generator='${{ matrix.generator }}' shared=${{ matrix.shared }} flavor=${{ matrix.flavor }} configure
+        run: cd 00-upstream && make generator='${{ matrix.generator }}' shared=${{ matrix.shared }} flavor=${{ matrix.flavor }} install_dir=C:/Windows/System32 configure
       - name: build
         run: cd 00-upstream && make build
       - name: run
@@ -34,4 +35,4 @@ jobs:
       - name: test
         run: cd 00-upstream && make test
       - name: install
-        run: cd 00-upstream && make install
+        run: cd 00-upstream && make install && executable

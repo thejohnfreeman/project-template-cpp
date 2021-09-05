@@ -30,6 +30,7 @@ jobs:
       - name: install environment
         run: |
           pip install conan
+          echo $PATH | tr ':' '\n'
           python --version
           conan --version
           cmake --version
@@ -38,7 +39,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: configure
-        run: cd 00-upstream && make generator='${{ matrix.generator }}' shared=${{ matrix.shared }} flavor=${{ matrix.flavor }} configure
+        run: cd 00-upstream && make generator='${{ matrix.generator }}' shared=${{ matrix.shared }} flavor=${{ matrix.flavor }} install_dir=/usr/local/bin configure
       - name: build
         run: cd 00-upstream && make build
       - name: run
@@ -46,4 +47,4 @@ jobs:
       - name: test
         run: cd 00-upstream && make test
       - name: install
-        run: cd 00-upstream && make install
+        run: cd 00-upstream && sudo make install && executable
