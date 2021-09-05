@@ -1,4 +1,4 @@
-include(GNUInstallDirs)
+include(FutureInstallDirs)
 
 add_library(headers INTERFACE)
 add_library(${PROJECT_NAME}::headers ALIAS headers)

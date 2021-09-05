@@ -2,15 +2,17 @@ cmake_minimum_required(VERSION 3.7)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-# Choose different defaults.
-set(CMAKE_EXPORT_COMPILE_COMMANDS YES)
-
 project(greetings
   VERSION 0.1.0
   DESCRIPTION "An example library."
   HOMEPAGE_URL https://github.com/thejohnfreeman/project-template-cpp
   LANGUAGES CXX
 )
+
+# Choose different defaults.
+set(CMAKE_EXPORT_COMPILE_COMMANDS YES)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH YES)
+include(FutureInstallDirs)
 
 set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
 set(CMAKE_FIND_PACKAGE_SORT_DIRECTION DEC)
