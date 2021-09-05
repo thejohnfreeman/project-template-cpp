@@ -39,7 +39,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: configure
-        run: cd 00-upstream && make generator='${{ matrix.generator }}' shared=${{ matrix.shared }} flavor=${{ matrix.flavor }} install_dir=/usr/local/bin configure
+        run: cd 00-upstream && make generator='${{ matrix.generator }}' shared=${{ matrix.shared }} flavor=${{ matrix.flavor }} install_dir=/usr/local configure
       - name: build
         run: cd 00-upstream && make build
       - name: run

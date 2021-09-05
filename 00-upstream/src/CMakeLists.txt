@@ -1,4 +1,4 @@
-include(GNUInstallDirs)
+include(FutureInstallDirs)
 
 add_library(static STATIC)
 add_library(${PROJECT_NAME}::static ALIAS static)

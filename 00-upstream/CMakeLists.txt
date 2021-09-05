@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
 # Choose different defaults.
 set(CMAKE_EXPORT_COMPILE_COMMANDS YES)
 
