@@ -2,6 +2,7 @@ ifeq ($(OS),Windows_NT)
 	SHELL := powershell.exe
 	EXE := .exe
 	NPROC := $(shell (Get-WmiObject -class Win32_processor).NumberOfLogicalProcessors)
+	multi ?= true
 else
 	SHELL := /bin/bash -o pipefail -c
 	NPROC := $(shell nproc)
@@ -31,7 +32,7 @@ ${build_dir}/conaninfo.txt : conanfile.txt | ${build_dir}
 conan : ${build_dir}/conaninfo.txt
 
 ${build_dir}/CMakeCache.txt : ${build_dir}/conaninfo.txt Makefile | ${build_dir}
-	${CMAKE} -E chdir ${build_dir} ${CMAKE} -G "${generator}" -DCMAKE_MODULE_PATH="${build_dir}" -DCMAKE_INSTALL_PREFIX="${install_dir}" -DCMAKE_BUILD_TYPE=${flavor} -DBUILD_SHARED_LIBS=${shared} ${options} ${source_dir} 2>&1 | tee ${build_dir}/configure.log
+	${CMAKE} -E chdir ${build_dir} ${CMAKE} -G "${generator}" -DCMAKE_MODULE_PATH="${build_dir}" -DCMAKE_INSTALL_PREFIX="${install_dir}" $(if ${multi},,-DCMAKE_BUILD_TYPE=${flavor}) -DBUILD_SHARED_LIBS=${shared} ${options} ${source_dir} 2>&1 | tee ${build_dir}/configure.log
 	${CMAKE} -E touch $@
 
 configure : ${build_dir}/CMakeCache.txt
@@ -40,7 +41,7 @@ executable := ${build_dir}/src/executable${EXE}
 tests := ${build_dir}/tests/tests${EXE}
 
 ${executable} ${tests}  : ${build_dir}/CMakeCache.txt
-	${CMAKE} -E time ${CMAKE} --build ${build_dir} --parallel ${NPROC} 2>&1 | tee ${build_dir}/build.log
+	${CMAKE} -E time ${CMAKE} --build ${build_dir} $(if ${multi},--config ${flavor}) --parallel ${NPROC} 2>&1 | tee ${build_dir}/build.log
 	${SHELL} ls -l $@
 	${CMAKE} -E touch $@
 
@@ -57,7 +58,7 @@ test : ${tests}
 	-${CMAKE} -E time ${tests} 2>&1 | tee ${build_dir}/test.log
 
 install : ${build_dir}/src/executable
-	${CMAKE} -E time ${CMAKE} --build ${build_dir} --target install
+	${CMAKE} -E time ${CMAKE} --build ${build_dir} --target install $(if ${multi},--config ${flavor})
 
 clean :
 	${CMAKE} -E rm -rf ${build_dir}
