@@ -37,8 +37,9 @@ ${build_dir}/CMakeCache.txt : ${build_dir}/conaninfo.txt Makefile | ${build_dir}
 
 configure : ${build_dir}/CMakeCache.txt
 
-executable := ${build_dir}/src/executable${EXE}
-tests := ${build_dir}/tests/tests${EXE}
+config_dir := $(if ${multi},${flavor}/)
+executable := ${build_dir}/src/${config_dir}executable${EXE}
+tests := ${build_dir}/tests/${config_dir}tests${EXE}
 
 ${executable} ${tests}  : ${build_dir}/CMakeCache.txt
 	${CMAKE} -E time ${CMAKE} --build ${build_dir} $(if ${multi},--config ${flavor}) --parallel ${NPROC} 2>&1 | tee ${build_dir}/build.log
