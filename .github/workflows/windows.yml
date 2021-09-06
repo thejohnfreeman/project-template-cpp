@@ -9,6 +9,7 @@ jobs:
           - Visual Studio 16 2019
         shared:
           - OFF
+          - ON
         flavor:
           - Debug
           - Release
