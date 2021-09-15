@@ -1,5 +1,3 @@
-#include "shared_export.h"
-
 #include <greetings/greetings.hpp>
 
 namespace greetings {
