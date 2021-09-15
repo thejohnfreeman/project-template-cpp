@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.7)
 
+# To make things easy for callers, we must normalize some paths that may be
+# passed on the command line.
+file(TO_CMAKE_PATH "${CMAKE_MODULE_PATH}" CMAKE_MODULE_PATH)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 project(greetings
