@@ -1,10 +1,12 @@
 ifeq ($(OS),Windows_NT)
 	SHELL := powershell.exe
+	.SHELLFLAGS :=
 	EXE := .exe
 	NPROC := $(shell (Get-WmiObject -class Win32_processor).NumberOfLogicalProcessors)
 	multi ?= true
 else
-	SHELL := /bin/bash -o pipefail -c
+	SHELL := /bin/bash
+	.SHELLFLAGS := -o pipefail -c
 	NPROC := $(shell nproc)
 endif
 
@@ -41,9 +43,9 @@ config_dir := $(if ${multi},${flavor}/)
 executable := ${build_dir}/src/${config_dir}executable${EXE}
 tests := ${build_dir}/tests/${config_dir}tests${EXE}
 
-${executable} ${tests}  : ${build_dir}/CMakeCache.txt
+${executable} ${tests} : ${build_dir}/CMakeCache.txt
 	${CMAKE} -E time ${CMAKE} --build ${build_dir} $(if ${multi},--config ${flavor}) --parallel ${NPROC} 2>&1 | tee ${build_dir}/build.log
-	${SHELL} ls -l $@
+	${SHELL} ${.SHELLFLAGS} "ls -l ${executable} ${tests}"
 	${CMAKE} -E touch $@
 
 build : ${executable}
