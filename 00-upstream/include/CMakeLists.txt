@@ -17,10 +17,11 @@ install(
 
 # We can only call `generate_export_header` on a shared library,
 # forcing us to declare one here.
-add_library(dummy SHARED IMPORTED)
+# It must have the same name as the shared library we build
+# for the `#ifndef` guard to match.
+add_library(shared SHARED IMPORTED)
 # Isolate the generated header to a subdirectory.
-generate_export_header(dummy
-  BASE_NAME shared
+generate_export_header(shared
   EXPORT_FILE_NAME include/shared_export.h
 )
 # We must add the generated header to the include path

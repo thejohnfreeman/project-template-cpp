@@ -44,7 +44,7 @@ executable := ${build_dir}/src/${config_dir}executable${EXE}
 tests := ${build_dir}/tests/${config_dir}tests${EXE}
 
 ${executable} ${tests} : ${build_dir}/CMakeCache.txt
-	${CMAKE} -E time ${CMAKE} --build ${build_dir} $(if ${multi},--config ${flavor}) --parallel ${NPROC} 2>&1 | tee ${build_dir}/build.log
+	${CMAKE} -E time ${CMAKE} --build ${build_dir} --verbose $(if ${multi},--config ${flavor}) --parallel ${NPROC} 2>&1 | tee ${build_dir}/build.log
 	${SHELL} ${.SHELLFLAGS} "ls -l ${executable} ${tests}"
 	${CMAKE} -E touch $@
 
@@ -61,7 +61,7 @@ test : ${tests}
 	-${CMAKE} -E time ${tests} 2>&1 | tee ${build_dir}/test.log
 
 install : ${executable}
-	${CMAKE} -E time ${CMAKE} --build ${build_dir} --target install $(if ${multi},--config ${flavor})
+	${CMAKE} -E time ${CMAKE} --build ${build_dir} --verbose --target install $(if ${multi},--config ${flavor})
 
 clean :
 	${CMAKE} -E rm -rf ${build_dir}
