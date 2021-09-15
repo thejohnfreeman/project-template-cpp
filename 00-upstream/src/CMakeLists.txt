@@ -1,4 +1,5 @@
 include(FutureInstallDirs)
+include(GenerateExportHeader)
 
 add_library(static STATIC)
 add_library(${PROJECT_NAME}::static ALIAS static)
@@ -12,6 +13,13 @@ add_library(${PROJECT_NAME}::shared ALIAS shared)
 target_sources(shared PRIVATE greetings.cpp)
 target_include_directories(shared PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(shared PUBLIC ${PROJECT_NAME}::headers)
+
+generate_export_header(shared)
+# We have to add this header to the include path for an out-of-source build.
+target_include_directories(static PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(shared PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+# Disable the definitions for the static library.
+target_compile_definitions(static PUBLIC SHARED_STATIC_DEFINE)
 
 if(BUILD_SHARED_LIBS)
   set(DEFAULT_LINKAGE shared)
