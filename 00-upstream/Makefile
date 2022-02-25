@@ -60,7 +60,7 @@ force :
 test :
 	-${CMAKE} -E time ${CMAKE} --build ${build_dir} --target test 2>&1 | tee ${build_dir}/test.log
 
-install : executable
+install : ${executable}
 	${CMAKE} -E time ${CMAKE} --build ${build_dir} --verbose --target install $(if ${multi},--config ${flavor})
 
 clean :
