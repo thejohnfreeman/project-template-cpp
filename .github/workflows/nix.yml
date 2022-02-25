@@ -1,0 +1,55 @@
+name: Build, run, test, and install on Linux and MacOS
+on: [push, pull_request]
+
+jobs:
+  job:
+    strategy:
+      matrix:
+        platform:
+          - ubuntu-latest
+          - macos-latest
+        generator:
+          - Ninja
+          - Unix Makefiles
+        shared:
+          - ON
+          - OFF
+        flavor:
+          - Debug
+          - Release
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: install Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+      - if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'ubuntu')
+        run: sudo apt install ninja-build
+      - if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'macos')
+        run: brew install ninja
+      - name: install environment
+        run: |
+          pip install conan
+          echo $PATH | tr ':' '\n'
+          python --version
+          conan --version
+          cmake --version
+          gcc --version
+          make --version
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: configure
+        working-directory: 00-upstream
+        run: make generator='${{ matrix.generator }}' shared=${{ matrix.shared }} flavor=${{ matrix.flavor }} install_dir=/usr/local configure
+      - name: build
+        working-directory: 00-upstream
+        run: make build
+      - name: run
+        working-directory: 00-upstream
+        run: make run
+      - name: test
+        working-directory: 00-upstream
+        run: make test
+      - name: install
+        working-directory: 00-upstream
+        run: sudo make install && executable

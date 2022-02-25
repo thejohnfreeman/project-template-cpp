@@ -1,0 +1,44 @@
+name: Build, run, test, and install on Windows
+on: [push, pull_request]
+
+jobs:
+  job:
+    strategy:
+      matrix:
+        generator:
+          - Visual Studio 16 2019
+        shared:
+          - OFF
+          - ON
+        flavor:
+          - Debug
+          - Release
+    runs-on: windows-2019
+    steps:
+      - name: install environment
+        run: |
+          iwr -useb get.scoop.sh | iex
+          scoop install make
+          pip install conan
+          $env:PATH -split ';'
+          python --version
+          conan --version
+          cmake --version
+          make --version
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: configure
+        working-directory: 00-upstream
+        run: make generator='${{ matrix.generator }}' shared=${{ matrix.shared }} flavor=${{ matrix.flavor }} install_dir=C:/Windows/System32 configure
+      - name: build
+        working-directory: 00-upstream
+        run: make build
+      - name: run
+        working-directory: 00-upstream
+        run: make run
+      - name: test
+        working-directory: 00-upstream
+        run: make test
+      - name: install
+        working-directory: 00-upstream
+        run: make install && executable
