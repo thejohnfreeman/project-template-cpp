@@ -33,12 +33,17 @@ jobs:
       - name: build
         working-directory: 00-upstream
         run: make build
-      - name: run
+      - name: built
         working-directory: 00-upstream
-        run: make run
+        run: make built
       - name: test
         working-directory: 00-upstream
         run: make test
       - name: install
         working-directory: 00-upstream
-        run: make install && executable
+        run: sudo make install
+      - name: installed
+        working-directory: 00-upstream
+        run: make installed
+      - name: path
+        run: executable
