@@ -14,6 +14,8 @@ jobs:
           - Debug
           - Release
     runs-on: windows-2019
+    env:
+      install_dir: C:\\Windows\\System32 
     steps:
       - name: install environment
         run: |
@@ -29,7 +31,7 @@ jobs:
         uses: actions/checkout@v2
       - name: configure
         working-directory: 00-upstream
-        run: make generator='${{ matrix.generator }}' shared=${{ matrix.shared }} flavor=${{ matrix.flavor }} install_dir=C:/Windows/System32 configure
+        run: make generator='${{ matrix.generator }}' shared=${{ matrix.shared }} flavor=${{ matrix.flavor }} configure
       - name: build
         working-directory: 00-upstream
         run: make build
