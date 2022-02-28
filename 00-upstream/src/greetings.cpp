@@ -1,8 +1,9 @@
+#include <greetings/export.hpp>
 #include <greetings/greetings.hpp>
 
 namespace greetings {
 
-std::string english() {
+GREETINGS_EXPORT std::string english() {
     return "hello";
 }
 
