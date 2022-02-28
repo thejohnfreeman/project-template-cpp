@@ -1,3 +1,9 @@
+# This is a cross-platform Makefile.
+# It is written to work exactly the same on Linux, OSX, and Windows,
+# with CMake as its only dependency.
+# In addition to a build system, CMake is used as a cross-platform coreutils,
+# with subcommands for, e.g., mkdir, touch, and rm.
+
 ifeq ($(OS),Windows_NT)
 	SHELL := powershell.exe
 	.SHELLFLAGS :=
@@ -41,16 +47,16 @@ configure : ${build_dir}/CMakeCache.txt
 
 config_dir := $(if ${multi},${flavor}/)
 
-executable := ${build_dir}/src/${config_dir}executable${EXE}
+built_executable := ${build_dir}/src/${config_dir}executable${EXE}
 
-${executable} : ${build_dir}/CMakeCache.txt
+${built_executable} : ${build_dir}/CMakeCache.txt
 	${CMAKE} -E time ${CMAKE} --build ${build_dir} --verbose $(if ${multi},--config ${flavor}) --parallel ${NPROC} --target executable 2>&1 | tee ${build_dir}/build.log
 	${SHELL} ${.SHELLFLAGS} "ls -l $@"
 	${CMAKE} -E touch $@
 
-build : ${executable}
+build : ${built_executable}
 
-run : ${executable}
+built : ${built_executable}
 	$^
 
 force :
@@ -60,8 +66,18 @@ force :
 test :
 	-${CMAKE} -E time ${CMAKE} --build ${build_dir} --target test 2>&1 | tee ${build_dir}/test.log
 
-install : ${executable}
+installed_executable := ${install_dir}/bin/executable${EXE}
+
+${installed_executable} :
 	${CMAKE} -E time ${CMAKE} --build ${build_dir} --verbose --target install $(if ${multi},--config ${flavor})
+
+install : ${installed_executable}
+
+installed : ${installed_executable}
+	$^
 
 clean :
 	${CMAKE} -E rm -rf ${build_dir}
+
+uninstall :
+	${CMAKE} -E rm -rf ${install_dir}
