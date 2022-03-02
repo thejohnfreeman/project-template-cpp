@@ -25,13 +25,16 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: '3.x'
-      - if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'ubuntu')
+      - name: install Ninja on Linux
+        if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'ubuntu')
         run: sudo apt install ninja-build
-      - if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'macos')
+      - name: install Ninja on OSX
+        if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'macos')
         run: brew install ninja
-      - name: install environment
+      - name: install Conan
+        run: pip install conan
+      - name: check environment
         run: |
-          pip install conan
           echo $PATH | tr ':' '\n'
           python --version
           conan --version

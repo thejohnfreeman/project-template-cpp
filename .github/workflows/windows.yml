@@ -17,11 +17,13 @@ jobs:
     env:
       install_dir: C:\\Windows\\System32 
     steps:
-      - name: install environment
+      - name: install tools
         run: |
           iwr -useb get.scoop.sh | iex
           scoop install make
           pip install conan
+      - name: check environment
+        run: |
           $env:PATH -split ';'
           python --version
           conan --version
