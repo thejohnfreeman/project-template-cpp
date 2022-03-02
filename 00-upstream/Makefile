@@ -9,11 +9,15 @@ ifeq ($(OS),Windows_NT)
 	.SHELLFLAGS :=
 	EXE := .exe
 	NPROC := $(shell (Get-WmiObject -class Win32_processor).NumberOfLogicalProcessors)
+	generator ?= Visual Studio 16 2019
+	test_target ?= RUN_TESTS
 	multi ?= true
 else
 	SHELL := /bin/bash
 	.SHELLFLAGS := -o pipefail -c
 	NPROC := $(shell nproc)
+	generator ?= Ninja
+	test_target ?= test
 endif
 
 .PHONY : run
@@ -23,7 +27,6 @@ build_dir := ${source_dir}/.build
 install_dir ?= ${source_dir}/.install
 flavor ?= Release
 shared ?= OFF
-generator ?= Ninja
 options ?=
 
 CMAKE := cmake
@@ -66,7 +69,7 @@ force :
 	${MAKE} build
 
 test :
-	-${CMAKE} -E time ${CMAKE} --build ${build_dir} --target test 2>&1 | tee ${build_dir}/test.log
+	-${CMAKE} -E time ${CMAKE} --build ${build_dir} --target ${test_target} 2>&1 | tee ${build_dir}/test.log
 
 installed_executable := ${install_dir}/bin/executable${EXE}
 
