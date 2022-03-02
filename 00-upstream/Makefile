@@ -68,10 +68,10 @@ force :
 	${CMAKE} -E touch ${cache}
 	${MAKE} build
 
-test :
+test : ${cache}
 	${CMAKE} -E time ${CMAKE} --build ${build_dir} --target $(if ${multi},RUN_TESTS,test) 2>&1 | tee ${build_dir}/test.log
 
-ctest :
+ctest : ${cache}
 	${CMAKE} -E chdir ${build_dir} ${CTEST}
 
 installed_executable := ${install_dir}/bin/executable${EXE}

@@ -1,33 +1,31 @@
 add_custom_target(tests)
 
-# Set parameters for adding a test.
-# Convention is to name tests after their main source file.
-set(test_name test_greetings)
-set(test_sources greetings.cpp)
+function(add_test_executable target)
+  add_executable(${target} EXCLUDE_FROM_ALL ${ARGN})
+  add_test(NAME ${target} COMMAND ${target})
+  set_tests_properties(
+    ${target} PROPERTIES
+    FIXTURES_REQUIRED ${target}_fixture
+  )
 
-add_executable(${test_name} EXCLUDE_FROM_ALL ${test_sources})
-add_test(NAME ${test_name} COMMAND ${test_name})
-set_tests_properties(
-  ${test_name} PROPERTIES
-  FIXTURES_REQUIRED ${test_name}_fixture
-)
+  add_test(
+    NAME ${target}_build
+    COMMAND
+      ${CMAKE_COMMAND}
+      --build ${CMAKE_BINARY_DIR}
+      --config $<CONFIG>
+      --target ${target}
+  )
+  set_tests_properties(${target}_build PROPERTIES
+    FIXTURES_SETUP ${target}_fixture
+  )
 
-add_test(
-  NAME ${test_name}_build
-  COMMAND
-    ${CMAKE_COMMAND}
-    --build ${CMAKE_BINARY_DIR}
-    --config $<CONFIG>
-    --target ${test_name}
-)
-set_tests_properties(${test_name}_build PROPERTIES
-  FIXTURES_SETUP ${test_name}_fixture
-)
+  add_dependencies(tests ${target})
+endfunction()
 
-add_dependencies(tests ${test_name})
-
+add_test_executable(test_greetings greetings.cpp)
 target_link_libraries(
-  ${test_name}
+  test_greetings
   ${PROJECT_NAME}::library
   doctest::doctest
 )
