@@ -26,8 +26,6 @@ shared ?= OFF
 generator ?= Ninja
 options ?=
 
-$(info install_dir=${install_dir})
-
 CMAKE := cmake
 CONAN := conan
 

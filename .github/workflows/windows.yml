@@ -46,7 +46,7 @@ jobs:
         run: make test
       - name: install
         working-directory: 00-upstream
-        run: sudo make install
+        run: sudo install_dir=${install_dir} make install
       - name: installed
         working-directory: 00-upstream
         run: make installed
