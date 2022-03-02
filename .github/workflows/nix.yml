@@ -19,9 +19,9 @@ jobs:
           - Release
     runs-on: ${{ matrix.platform }}
     env:
-      generator: {{ matrix.generator }}
-      shared: {{ matrix.shared }}
-      flavor: {{ matrix.flavor }}
+      generator: ${{ matrix.generator }}
+      shared: ${{ matrix.shared }}
+      flavor: ${{ matrix.flavor }}
       install_dir: /usr/local
     steps:
       - name: install Python
