@@ -70,6 +70,7 @@ installed_executable := ${install_dir}/bin/executable${EXE}
 
 ${installed_executable} :
 	${CMAKE} -E time ${CMAKE} --build ${build_dir} --verbose --target install $(if ${multi},--config ${flavor})
+	${SHELL} ${.SHELLFLAGS} "ls -l $@"
 
 install : ${installed_executable}
 

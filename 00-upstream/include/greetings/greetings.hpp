@@ -2,10 +2,11 @@
 #define GREETINGS_HPP
 
 #include <string>
+#include <greetings/export.hpp>
 
 namespace greetings {
 
-std::string english();
+GREETINGS_EXPORT std::string english();
 
 }
 
