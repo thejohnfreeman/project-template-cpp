@@ -10,14 +10,12 @@ ifeq ($(OS),Windows_NT)
 	EXE := .exe
 	NPROC := $(shell (Get-WmiObject -class Win32_processor).NumberOfLogicalProcessors)
 	generator ?= Visual Studio 16 2019
-	test_target ?= RUN_TESTS
 	multi ?= true
 else
 	SHELL := /bin/bash
 	.SHELLFLAGS := -o pipefail -c
 	NPROC := $(shell nproc)
 	generator ?= Ninja
-	test_target ?= test
 endif
 
 .PHONY : run
@@ -30,6 +28,7 @@ shared ?= OFF
 options ?=
 
 CMAKE := cmake
+CTEST := ctest
 CONAN := conan
 
 .DEFAULT_GOAL := test
@@ -69,7 +68,10 @@ force :
 	${MAKE} build
 
 test :
-	-${CMAKE} -E time ${CMAKE} --build ${build_dir} --target ${test_target} 2>&1 | tee ${build_dir}/test.log
+	${CMAKE} -E time ${CMAKE} --build ${build_dir} --target $(if ${multi},RUN_TESTS,test) 2>&1 | tee ${build_dir}/test.log
+
+ctest :
+	${CMAKE} -E chdir ${build_dir} ${CTEST}
 
 installed_executable := ${install_dir}/bin/executable${EXE}
 
