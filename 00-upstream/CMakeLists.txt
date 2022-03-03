@@ -67,6 +67,7 @@ include(CMakePackageConfigHelpers)
 configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/package-config.cmake.in"
   "${CMAKE_CURRENT_EXPORT_DIR}/${PROJECT_NAME}-config.cmake"
   INSTALL_DESTINATION "${CMAKE_INSTALL_EXPORTDIR}/${PROJECT_SLUG}"
+  NO_SET_AND_CHECK_MACRO
 )
 
 set(PROJECT_COMPATIBILITY SameMajorVersion)
