@@ -14,6 +14,10 @@ target_include_directories(${PROJECT_NAME}_library
 )
 target_link_libraries(${PROJECT_NAME}_library PUBLIC ${PROJECT_NAME}::headers)
 
+if(${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME})
+  add_custom_target(library DEPENDS ${PROJECT_NAME}_library)
+endif()
+
 # In order to include the generated header by a path starting with a directory
 # matching the package name like all other package headers, we must pass the
 # `EXPORT_FILE_NAME` option.
@@ -53,11 +57,17 @@ set_target_properties(${PROJECT_NAME}_executable PROPERTIES
 )
 target_sources(${PROJECT_NAME}_executable PRIVATE greet.cpp)
 add_executable(${PROJECT_NAME}::executable ALIAS ${PROJECT_NAME}_executable)
-target_link_libraries(${PROJECT_NAME}_executable
-  PRIVATE ${PROJECT_NAME}::library
-)
+
+if(${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME})
+  add_custom_target(executable DEPENDS ${PROJECT_NAME}_executable)
+endif()
+
 install(
   TARGETS ${PROJECT_NAME}_executable
   EXPORT ${PROJECT_EXPORT_SET}
   RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+)
+
+target_link_libraries(${PROJECT_NAME}_executable
+  PRIVATE ${PROJECT_NAME}::library
 )
