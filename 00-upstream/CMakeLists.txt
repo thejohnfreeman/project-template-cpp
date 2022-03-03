@@ -49,3 +49,33 @@ add_subdirectory(include)
 add_subdirectory(src)
 enable_testing()
 add_subdirectory(tests)
+
+set(PROJECT_SLUG ${PROJECT_NAME}-${PROJECT_VERSION_MAJOR})
+set(CMAKE_CURRENT_EXPORT_DIR "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_SLUG}")
+set(CMAKE_INSTALL_EXPORTDIR "${CMAKE_INSTALL_LIBDIR}/cmake")
+if(WIN32)
+  set(CMAKE_INSTALL_EXPORTDIR .)
+endif()
+
+export(EXPORT ${PROJECT_EXPORT_SET}
+  FILE "${CMAKE_CURRENT_EXPORT_DIR}/${PROJECT_NAME}-targets.cmake"
+  NAMESPACE ${PROJECT_NAME}::
+)
+
+include(CMakePackageConfigHelpers)
+
+configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/package-config.cmake.in"
+  "${CMAKE_CURRENT_EXPORT_DIR}/${PROJECT_NAME}-config.cmake"
+  INSTALL_DESTINATION "${CMAKE_INSTALL_EXPORTDIR}/${PROJECT_SLUG}"
+)
+
+write_basic_package_version_file(
+  "${CMAKE_CURRENT_EXPORT_DIR}/${PROJECT_NAME}-config-version.cmake"
+  VERSION ${PROJECT_VERSION}
+  COMPATIBILITY SameMajorVersion
+)
+
+install(
+  DIRECTORY "${CMAKE_CURRENT_EXPORT_DIR}"
+  DESTINATION "${CMAKE_INSTALL_EXPORTDIR}"
+)

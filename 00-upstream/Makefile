@@ -74,6 +74,7 @@ ctest : ${cache}
 
 installed_executable := ${install_dir}/bin/executable${EXE}
 
+# The --install option was added in CMake 3.15.
 ${installed_executable} : ${cache}
 	${CMAKE} -E time ${CMAKE} --build ${build_dir} --verbose --target install $(if ${multi},--config ${flavor})
 	${SHELL} ${.SHELLFLAGS} "ls -l '$@'"

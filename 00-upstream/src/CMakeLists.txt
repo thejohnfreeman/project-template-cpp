@@ -2,7 +2,10 @@ include(GenerateExportHeader)
 include(GNUInstallDirs)
 
 add_library(${PROJECT_NAME}_library)
-set_target_properties(${PROJECT_NAME}_library PROPERTIES EXPORT_NAME library)
+set_target_properties(${PROJECT_NAME}_library PROPERTIES
+  OUTPUT_NAME library
+  EXPORT_NAME library
+)
 add_library(${PROJECT_NAME}::library ALIAS ${PROJECT_NAME}_library)
 target_sources(${PROJECT_NAME}_library PRIVATE greetings.cpp)
 # Let the library include "private" headers if it wants.
