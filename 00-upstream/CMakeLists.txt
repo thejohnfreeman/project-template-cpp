@@ -69,10 +69,14 @@ configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/package-config.
   INSTALL_DESTINATION "${CMAKE_INSTALL_EXPORTDIR}/${PROJECT_SLUG}"
 )
 
+set(PROJECT_COMPATIBILITY SameMajorVersion)
+if(${PROJECT_VERSION_MAJOR} EQUAL 0)
+  set(PROJECT_COMPATIBILITY SameMinorVersion)
+endif()
 write_basic_package_version_file(
   "${CMAKE_CURRENT_EXPORT_DIR}/${PROJECT_NAME}-config-version.cmake"
   VERSION ${PROJECT_VERSION}
-  COMPATIBILITY SameMajorVersion
+  COMPATIBILITY ${PROJECT_COMPATIBILITY}
 )
 
 install(
