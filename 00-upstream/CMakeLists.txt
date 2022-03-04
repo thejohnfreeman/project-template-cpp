@@ -7,6 +7,8 @@ project(greetings
   LANGUAGES CXX
 )
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+
 include(GNUInstallDirs)
 
 # Need to make sure executables end up next to shared libraries on Windows.
