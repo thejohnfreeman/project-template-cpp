@@ -62,7 +62,7 @@ jobs:
         run: make test
       - name: install
         working-directory: 00-upstream
-        run: sudo PATH="${PATH}" install_dir="${install_dir}" make install
+        run: sudo install_dir="${install_dir}" make install
       - name: installed
         working-directory: 00-upstream
         run: make installed
@@ -118,7 +118,9 @@ jobs:
         uses: actions/checkout@v2
       - name: install
         working-directory: 00-upstream
-        run: sudo PATH="${PATH}" install_dir="${install_dir}" make install
+        run: |
+          make build
+          sudo install_dir="${install_dir}" make install
       - name: configure
         working-directory: 01-find-package
         run: make configure
