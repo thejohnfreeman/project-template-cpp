@@ -9,8 +9,7 @@ project(greetings
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
-include(cupcake_project)
-include(cupcake_install_project)
+include(cupcake)
 
 cupcake_project()
 

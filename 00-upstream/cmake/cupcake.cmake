@@ -1,0 +1,11 @@
+if(INCLUDED_CUPCAKE)
+  return()
+endif()
+set(INCLUDED_CUPCAKE TRUE)
+
+include(cupcake_project)
+include(cupcake_install_project)
+include(cupcake_add_headers)
+include(cupcake_add_library)
+include(cupcake_add_executable)
+include(cupcake_add_test_executable)

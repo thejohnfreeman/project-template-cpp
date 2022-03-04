@@ -1,6 +1,3 @@
-include(cupcake_add_library)
-include(cupcake_add_executable)
-
 cupcake_add_library(library)
 target_sources(${this} PRIVATE greetings.cpp)
 
