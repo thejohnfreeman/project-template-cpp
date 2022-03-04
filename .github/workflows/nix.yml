@@ -2,15 +2,15 @@ name: Build, run, test, and install on Linux and MacOS
 on: [push, pull_request]
 
 jobs:
-  job:
+  upstream:
     strategy:
       matrix:
         platform:
           - ubuntu-latest
           - macos-latest
         generator:
-          - Ninja
-          - Unix Makefiles
+          - { name: Ninja, multi: false }
+          - { name: Unix Makefiles, multi: false }
         shared:
           - ON
           - OFF
@@ -19,7 +19,8 @@ jobs:
           - Release
     runs-on: ${{ matrix.platform }}
     env:
-      generator: ${{ matrix.generator }}
+      generator: ${{ matrix.generator.name }}
+      multi: ${{ matrix.generator.multi }}
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: /usr/local
@@ -67,3 +68,62 @@ jobs:
         run: make installed
       - name: path
         run: executable
+  find-package:
+    needs: upstream
+    strategy:
+      matrix:
+        platform:
+          - ubuntu-latest
+          - macos-latest
+        generator:
+          - { name: Ninja, multi: false }
+          - { name: Unix Makefiles, multi: false }
+        shared:
+          - ON
+          - OFF
+        flavor:
+          - Debug
+          - Release
+    runs-on: ${{ matrix.platform }}
+    env:
+      generator: ${{ matrix.generator.name }}
+      multi: ${{ matrix.generator.multi }}
+      shared: ${{ matrix.shared }}
+      flavor: ${{ matrix.flavor }}
+      install_dir: /usr/local
+    steps:
+      - name: install Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+      - name: install Ninja on Linux
+        if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'ubuntu')
+        run: sudo apt install ninja-build
+      - name: install Ninja on OSX
+        if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'macos')
+        run: brew install ninja
+      - name: install Conan
+        run: pip install conan
+      - name: check environment
+        run: |
+          echo $PATH | tr ':' '\n'
+          python --version
+          conan --version
+          cmake --version
+          gcc --version
+          make --version
+          env
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: install
+        working-directory: 00-upstream
+        run: sudo install_dir=${install_dir} make install
+      - name: configure
+        working-directory: 01-find-package
+        run: make configure
+      - name: build
+        working-directory: 01-find-package
+        run: make build
+      - name: built
+        working-directory: 01-find-package
+        run: make built

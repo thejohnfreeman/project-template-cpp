@@ -6,7 +6,7 @@ jobs:
     strategy:
       matrix:
         generator:
-          - Visual Studio 16 2019
+          - { name: Visual Studio 16 2019, multi: true }
         shared:
           - OFF
           - ON
@@ -15,7 +15,8 @@ jobs:
           - Release
     runs-on: windows-2019
     env:
-      generator: ${{ matrix.generator }}
+      generator: ${{ matrix.generator.name }}
+      multi: ${{ matrix.generator.multi }}
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: C:\\

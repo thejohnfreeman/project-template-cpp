@@ -18,14 +18,13 @@ else
 	generator ?= Ninja
 endif
 
-.PHONY : run
-
-source_dir := ${CURDIR}
-build_dir := ${source_dir}/.build
-install_dir ?= ${source_dir}/.install
 flavor ?= Release
 shared ?= OFF
-options ?= -DCMAKE_PREFIX_PATH=../00-upstream/.install
+options ?=
+
+source_dir := ${CURDIR}
+build_dir := ${source_dir}/.build$(if ${multi},,${flavor}/)
+install_dir ?= ${source_dir}/.install
 
 CMAKE := cmake
 CTEST := ctest
