@@ -30,10 +30,10 @@ jobs:
         with:
           python-version: '3.x'
       - name: install Ninja on Linux
-        if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'ubuntu')
+        if: matrix.generator.name == 'Ninja' && startsWith(matrix.platform, 'ubuntu')
         run: sudo apt install ninja-build
       - name: install Ninja on OSX
-        if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'macos')
+        if: matrix.generator.name == 'Ninja' && startsWith(matrix.platform, 'macos')
         run: brew install ninja
       - name: install Conan
         run: pip install conan
