@@ -16,6 +16,7 @@ else
 	.SHELLFLAGS := -o pipefail -c
 	NPROC := $(shell nproc)
 	generator ?= Ninja
+	multi ?=
 endif
 
 flavor ?= Release
@@ -23,7 +24,7 @@ shared ?= OFF
 options ?=
 
 source_dir := ${CURDIR}
-build_dir := ${source_dir}/.build$(if ${multi},,${flavor}/)
+build_dir := ${source_dir}/.build
 install_dir ?= ${source_dir}/.install
 
 CMAKE := cmake
@@ -36,7 +37,7 @@ ${build_dir} :
 	${CMAKE} -E make_directory $@
 
 ${build_dir}/conaninfo.txt : conanfile.txt | ${build_dir}
-	${CMAKE} -E chdir ${build_dir} ${CONAN} install ..
+	${CMAKE} -E chdir ${build_dir} ${CONAN} install ${source_dir}
 
 conan : ${build_dir}/conaninfo.txt
 

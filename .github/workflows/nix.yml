@@ -20,7 +20,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
     env:
       generator: ${{ matrix.generator.name }}
-      multi: ${{ matrix.generator.multi }}
+      multi: ${{ matrix.generator.multi && 'true' || '' }}
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: /usr/local
@@ -87,7 +87,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
     env:
       generator: ${{ matrix.generator.name }}
-      multi: ${{ matrix.generator.multi }}
+      multi: ${{ matrix.generator.multi && 'true' || '' }}
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: /usr/local
