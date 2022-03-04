@@ -25,18 +25,22 @@ jobs:
       flavor: ${{ matrix.flavor }}
       install_dir: /usr/local
     steps:
+      - name: checkout
+        uses: actions/checkout@v3
       - name: install Python
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v2
         with:
           python-version: '3.x'
+          cache: pip
+          cache-dependency-path: .github/workflows/cache-python
+      - name: install Conan
+        run: pip install conan
       - name: install Ninja on Linux
         if: matrix.generator.name == 'Ninja' && startsWith(matrix.platform, 'ubuntu')
         run: sudo apt install ninja-build
       - name: install Ninja on OSX
         if: matrix.generator.name == 'Ninja' && startsWith(matrix.platform, 'macos')
         run: brew install ninja
-      - name: install Conan
-        run: pip install conan
       - name: check environment
         run: |
           echo $PATH | tr ':' '\n'
@@ -46,8 +50,6 @@ jobs:
           gcc --version
           make --version
           env
-      - name: checkout
-        uses: actions/checkout@v2
       - name: configure
         working-directory: 00-upstream
         run: make configure
@@ -93,18 +95,22 @@ jobs:
       flavor: ${{ matrix.flavor }}
       install_dir: /usr/local
     steps:
+      - name: checkout
+        uses: actions/checkout@v3
       - name: install Python
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v2
         with:
           python-version: '3.x'
+          cache: pip
+          cache-dependency-path: .github/workflows/cache-python
+      - name: install Conan
+        run: pip install conan
       - name: install Ninja on Linux
         if: matrix.generator.name == 'Ninja' && startsWith(matrix.platform, 'ubuntu')
         run: sudo apt install ninja-build
       - name: install Ninja on OSX
         if: matrix.generator.name == 'Ninja' && startsWith(matrix.platform, 'macos')
         run: brew install ninja
-      - name: install Conan
-        run: pip install conan
       - name: check environment
         run: |
           echo $PATH | tr ':' '\n'
@@ -114,8 +120,6 @@ jobs:
           gcc --version
           make --version
           env
-      - name: checkout
-        uses: actions/checkout@v2
       - name: install
         working-directory: 00-upstream
         run: |

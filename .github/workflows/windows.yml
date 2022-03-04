@@ -21,6 +21,8 @@ jobs:
       flavor: ${{ matrix.flavor }}
       install_dir: C:\\
     steps:
+      - name: checkout
+        uses: actions/checkout@v3
       - name: install tools
         run: |
           iwr -useb get.scoop.sh | iex
@@ -34,8 +36,6 @@ jobs:
           cmake --version
           make --version
           dir env:
-      - name: checkout
-        uses: actions/checkout@v2
       - name: configure
         working-directory: 00-upstream
         run: make configure
