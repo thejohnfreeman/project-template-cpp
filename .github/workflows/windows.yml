@@ -37,7 +37,7 @@ jobs:
               ${{ steps.env.outputs.USERPROFILE }}\scoop
             key: ${{ secrets.CACHE_SCOOP }}
       - name: install tools from internet
-        if: !steps.cache-scoop.outputs.cache-hit
+        if: steps.cache-scoop.outputs.cache-hit != 'true'
         run: |
           iwr -useb get.scoop.sh | iex
           scoop install make
@@ -107,7 +107,7 @@ jobs:
               ${{ steps.env.outputs.USERPROFILE }}\scoop
             key: ${{ secrets.CACHE_SCOOP }}
       - name: install tools from internet
-        if: !steps.cache-scoop.outputs.cache-hit
+        if: steps.cache-scoop.outputs.cache-hit != 'true'
         run: |
           iwr -useb get.scoop.sh | iex
           scoop install make
