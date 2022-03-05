@@ -1,2 +1,2 @@
-add_executable(executable executable.cpp)
-target_link_libraries(executable greetings::library)
+cupcake_add_executable(executable executable.cpp)
+target_link_libraries(${this} greetings::library)
