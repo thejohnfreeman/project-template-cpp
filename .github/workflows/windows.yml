@@ -23,7 +23,21 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      - name: install tools
+      - name: read environment
+        id: env
+        run: |
+          echo "::set-output name=PROGRAMDATA::%PROGRAMDATA%"
+          echo "::set-output name=USERPROFILE::%USERPROFILE%"
+      - name: install tools from cache
+        id: cache-scoop
+        uses: actions/cache@v2
+        with:
+            path: |
+              ${{ steps.env.outputs.PROGRAMDATA }}\scoop
+              ${{ steps.env.outputs.USERPROFILE }}\scoop
+            key: ${{ secrets.CACHE_SCOOP }}
+      - name: install tools from internet
+        if: !steps.cache-scoop.outputs.cache-hit
         run: |
           iwr -useb get.scoop.sh | iex
           scoop install make
@@ -79,7 +93,21 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      - name: install tools
+      - name: read environment
+        id: env
+        run: |
+          echo "::set-output name=PROGRAMDATA::%PROGRAMDATA%"
+          echo "::set-output name=USERPROFILE::%USERPROFILE%"
+      - name: install tools from cache
+        id: cache-scoop
+        uses: actions/cache@v2
+        with:
+            path: |
+              ${{ steps.env.outputs.PROGRAMDATA }}\scoop
+              ${{ steps.env.outputs.USERPROFILE }}\scoop
+            key: ${{ secrets.CACHE_SCOOP }}
+      - name: install tools from internet
+        if: !steps.cache-scoop.outputs.cache-hit
         run: |
           iwr -useb get.scoop.sh | iex
           scoop install make
