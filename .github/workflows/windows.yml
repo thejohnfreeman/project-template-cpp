@@ -28,7 +28,7 @@ jobs:
         run: |
           echo "::set-output name=PROGRAMDATA::%PROGRAMDATA%"
           echo "::set-output name=USERPROFILE::%USERPROFILE%"
-      - name: install tools from cache
+      - name: install Make from cache
         id: cache-scoop
         uses: actions/cache@v2
         with:
@@ -36,11 +36,13 @@ jobs:
               ${{ steps.env.outputs.PROGRAMDATA }}\scoop
               ${{ steps.env.outputs.USERPROFILE }}\scoop
             key: ${{ secrets.CACHE_SCOOP }}
-      - name: install tools from internet
+      - name: install Make with Scoop
         if: steps.cache-scoop.outputs.cache-hit != 'true'
         run: |
           iwr -useb get.scoop.sh | iex
           scoop install make
+      - name: install Conan
+        run: |
           pip install conan
       - name: check environment
         run: |
@@ -98,7 +100,7 @@ jobs:
         run: |
           echo "::set-output name=PROGRAMDATA::%PROGRAMDATA%"
           echo "::set-output name=USERPROFILE::%USERPROFILE%"
-      - name: install tools from cache
+      - name: install Make from cache
         id: cache-scoop
         uses: actions/cache@v2
         with:
@@ -106,11 +108,13 @@ jobs:
               ${{ steps.env.outputs.PROGRAMDATA }}\scoop
               ${{ steps.env.outputs.USERPROFILE }}\scoop
             key: ${{ secrets.CACHE_SCOOP }}
-      - name: install tools from internet
+      - name: install Make with Scoop
         if: steps.cache-scoop.outputs.cache-hit != 'true'
         run: |
           iwr -useb get.scoop.sh | iex
           scoop install make
+      - name: install Conan
+        run: |
           pip install conan
       - name: check environment
         run: |
