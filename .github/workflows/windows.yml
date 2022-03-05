@@ -41,9 +41,17 @@ jobs:
         run: |
           iwr -useb get.scoop.sh | iex
           scoop install make
+      - name: download Conan from cache
+        id: cache-python
+        uses: actions/cache@v2
+        with:
+            path: .cache-python
+            key: ${{ secrets.CACHE_PYTHON }}
+      - name: download Conan with pip
+        if: steps.cache-python.outputs.cache-hit != 'true'
+        run: pip download conan --dest .cache-python
       - name: install Conan
-        run: |
-          pip install conan
+        run: pip install conan --no-index --find-links .cache-python
       - name: check environment
         run: |
           $env:PATH -split ';'
@@ -113,9 +121,17 @@ jobs:
         run: |
           iwr -useb get.scoop.sh | iex
           scoop install make
+      - name: download Conan from cache
+        id: cache-python
+        uses: actions/cache@v2
+        with:
+            path: .cache-python
+            key: ${{ secrets.CACHE_PYTHON }}
+      - name: download Conan with pip
+        if: steps.cache-python.outputs.cache-hit != 'true'
+        run: pip download conan --dest .cache-python
       - name: install Conan
-        run: |
-          pip install conan
+        run: pip install conan --no-index --find-links .cache-python
       - name: check environment
         run: |
           $env:PATH -split ';'
