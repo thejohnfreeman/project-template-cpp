@@ -102,7 +102,7 @@ jobs:
         working-directory: 01-find-package
         run: make build
       - name: built
-        if: ${{ matrix.shared }} == "OFF"
+        if: matrix.shared == 'OFF'
         working-directory: 01-find-package
         run: make built
       - name: install
