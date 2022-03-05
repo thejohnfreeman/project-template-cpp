@@ -6,6 +6,8 @@ set(DEFINED_CUPCAKE_INSTALL_PROJECT TRUE)
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 
+set(package_config_input "${CMAKE_CURRENT_LIST_DIR}/package-config.cmake.in")
+
 macro(cupcake_install_project)
   set(CMAKE_INSTALL_EXPORTDIR "${CMAKE_INSTALL_LIBDIR}/cmake")
   if(WIN32)
@@ -19,7 +21,7 @@ macro(cupcake_install_project)
     NAMESPACE ${PROJECT_NAME}::
   )
 
-  configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake/package-config.cmake.in"
+  configure_package_config_file("${package_config_input}"
     "${CMAKE_CURRENT_EXPORT_DIR}/${PROJECT_NAME}-config.cmake"
     INSTALL_DESTINATION "${CMAKE_INSTALL_EXPORTDIR}/${PROJECT_NAME}}"
     NO_SET_AND_CHECK_MACRO
