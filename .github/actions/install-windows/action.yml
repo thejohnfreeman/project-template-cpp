@@ -1,4 +1,6 @@
 name: install Windows environment
+description: |
+  Install the common environment shared by all jobs in the windows workflow.
 inputs:
   cache-key-scoop:
     required: true

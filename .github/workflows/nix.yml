@@ -27,29 +27,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      - name: install Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-          cache: pip
-          cache-dependency-path: .github/workflows/cache-python
-      - name: install Conan
-        run: pip install conan
-      - name: install Ninja on Linux
-        if: matrix.generator.name == 'Ninja' && startsWith(matrix.platform, 'ubuntu')
-        run: sudo apt install ninja-build
-      - name: install Ninja on OSX
-        if: matrix.generator.name == 'Ninja' && startsWith(matrix.platform, 'macos')
-        run: brew install ninja
-      - name: check environment
-        run: |
-          echo $PATH | tr ':' '\n'
-          python --version
-          conan --version
-          cmake --version
-          gcc --version
-          make --version
-          env
+      - name: install environment
+        uses: ./.github/actions/install-nix
       - name: configure
         working-directory: 00-upstream
         run: make configure
@@ -97,30 +76,9 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      - name: install Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-          cache: pip
-          cache-dependency-path: .github/workflows/cache-python
-      - name: install Conan
-        run: pip install conan
-      - name: install Ninja on Linux
-        if: matrix.generator.name == 'Ninja' && startsWith(matrix.platform, 'ubuntu')
-        run: sudo apt install ninja-build
-      - name: install Ninja on OSX
-        if: matrix.generator.name == 'Ninja' && startsWith(matrix.platform, 'macos')
-        run: brew install ninja
-      - name: check environment
-        run: |
-          echo $PATH | tr ':' '\n'
-          python --version
-          conan --version
-          cmake --version
-          gcc --version
-          make --version
-          env
-      - name: install
+      - name: install environment
+        uses: ./.github/actions/install-nix
+      - name: install upstream
         working-directory: 00-upstream
         run: |
           make build
