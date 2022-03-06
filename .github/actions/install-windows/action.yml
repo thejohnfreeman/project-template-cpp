@@ -1,0 +1,41 @@
+name: install Windows environment
+runs:
+  using: composite
+  steps:
+    - name: read environment
+      id: env
+      run: |
+        echo "::set-output name=PROGRAMDATA::%PROGRAMDATA%"
+        echo "::set-output name=USERPROFILE::%USERPROFILE%"
+    - name: install Make from cache
+      id: cache-scoop
+      uses: actions/cache@v2
+      with:
+          path: |
+            ${{ steps.env.outputs.PROGRAMDATA }}\scoop
+            ${{ steps.env.outputs.USERPROFILE }}\scoop
+          key: ${{ secrets.CACHE_SCOOP }}
+    - name: install Make with Scoop
+      if: steps.cache-scoop.outputs.cache-hit != 'true'
+      run: |
+        iwr -useb get.scoop.sh | iex
+        scoop install make
+    - name: download Conan from cache
+      id: cache-python
+      uses: actions/cache@v2
+      with:
+          path: .cache-python
+          key: ${{ secrets.CACHE_PYTHON }}
+    - name: download Conan with pip
+      if: steps.cache-python.outputs.cache-hit != 'true'
+      run: pip download conan --dest .cache-python
+    - name: install Conan
+      run: pip install conan --no-index --find-links .cache-python
+    - name: check environment
+      run: |
+        $env:PATH -split ';'
+        python --version
+        conan --version
+        cmake --version
+        make --version
+        dir env:
