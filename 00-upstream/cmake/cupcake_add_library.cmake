@@ -6,6 +6,9 @@ set(DEFINED_CUPCAKE_ADD_LIBRARY TRUE)
 include(GenerateExportHeader)
 include(GNUInstallDirs)
 
+# A target representing all libraries declared with the function below.
+add_custom_target(libraries)
+
 function(cupcake_add_library name)
   set(target ${PROJECT_NAME}_${name})
   set(this ${target} PARENT_SCOPE)
@@ -26,11 +29,26 @@ function(cupcake_add_library name)
   # Add a convenient target for the first library in this project.
   if(NOT TARGET ${PROJECT_NAME}::library)
     add_library(${PROJECT_NAME}::library ALIAS ${target})
+    # We can use an INTERFACE library to effectively export an ALIAS library.
+    set(alias ${PROJECT_NAME}_library)
+    add_library(${alias} INTERFACE)
+    target_link_libraries(${alias} INTERFACE ${target})
+    set_target_properties(${alias} PROPERTIES
+      EXPORT_NAME library
+    )
+    install(
+      TARGETS ${alias}
+      EXPORT ${PROJECT_EXPORT_SET}
+    )
   endif()
 
-  # Add a convenient target for the first top-level library.
-  if(${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME} AND NOT TARGET library)
-    add_custom_target(library DEPENDS ${target})
+  # if(NOT PROJECT_IS_TOP_LEVEL)
+  if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
+    add_dependencies(libraries ${target})
+    # Add a convenient target for the first library in the main project.
+    if(NOT TARGET library)
+      add_custom_target(library DEPENDS ${target})
+    endif()
   endif()
 
   # In order to include the generated header by a path starting with a directory

@@ -5,6 +5,9 @@ set(DEFINED_CUPCAKE_ADD_EXECUTABLE TRUE)
 
 include(GNUInstallDirs)
 
+# A target representing all executables declared with the function below.
+add_custom_target(executables)
+
 function(cupcake_add_executable name)
   set(target ${PROJECT_NAME}_${name})
   set(this ${target} PARENT_SCOPE)
@@ -18,11 +21,17 @@ function(cupcake_add_executable name)
   # Add a convenient target for the first executable in this project.
   if(NOT TARGET ${PROJECT_NAME}::executable)
     add_executable(${PROJECT_NAME}::executable ALIAS ${target})
+    # TODO: How to export this alias? We do not have INTERFACE for executable
+    # like we do for library.
   endif()
 
-  # Add a convenient target for the first top-level executable.
-  if(${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME} AND NOT TARGET executable)
-    add_custom_target(executable DEPENDS ${target})
+  # if(NOT PROJECT_IS_TOP_LEVEL)
+  if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
+    add_dependencies(executables ${target})
+    # Add a convenient target for the first executable in the main project.
+    if(NOT TARGET executable)
+      add_custom_target(executable DEPENDS ${target})
+    endif()
   endif()
 
   install(
