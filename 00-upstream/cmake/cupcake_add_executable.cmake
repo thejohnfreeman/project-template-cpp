@@ -15,6 +15,11 @@ function(cupcake_add_executable name)
   )
   add_executable(${PROJECT_NAME}::${name} ALIAS ${target})
 
+  # Add a convenient target for the first executable in this project.
+  if(NOT TARGET ${PROJECT_NAME}::executable)
+    add_executable(${PROJECT_NAME}::executable ALIAS ${target})
+  endif()
+
   # Add a convenient target for the first top-level executable.
   if(${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME} AND NOT TARGET executable)
     add_custom_target(executable DEPENDS ${target})

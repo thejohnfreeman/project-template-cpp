@@ -48,7 +48,7 @@ jobs:
         working-directory: 00-upstream
         run: make installed
       - name: path
-        run: executable
+        run: greet
 
   find-package:
     needs: upstream

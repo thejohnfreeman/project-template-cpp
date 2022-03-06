@@ -1,6 +1,6 @@
-cupcake_add_library(library)
+cupcake_add_library(greetings)
 target_sources(${this} PRIVATE greetings.cpp)
 
-cupcake_add_executable(executable)
+cupcake_add_executable(greet)
 target_sources(${this} PRIVATE greet.cpp)
-target_link_libraries(${this} PRIVATE ${PROJECT_NAME}::library)
+target_link_libraries(${this} PRIVATE ${PROJECT_NAME}::greetings)

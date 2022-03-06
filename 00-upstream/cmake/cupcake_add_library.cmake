@@ -23,6 +23,11 @@ function(cupcake_add_library name)
   # and every binary library depends on it.
   target_link_libraries(${target} PUBLIC ${PROJECT_NAME}::headers)
 
+  # Add a convenient target for the first library in this project.
+  if(NOT TARGET ${PROJECT_NAME}::library)
+    add_library(${PROJECT_NAME}::library ALIAS ${target})
+  endif()
+
   # Add a convenient target for the first top-level library.
   if(${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME} AND NOT TARGET library)
     add_custom_target(library DEPENDS ${target})
