@@ -100,3 +100,53 @@ jobs:
         run: make installed
       - name: path
         run: executable
+
+  add-subdirectory:
+    needs: upstream
+    strategy:
+      matrix:
+        platform:
+          - ubuntu-latest
+          - macos-latest
+        generator:
+          - { name: Ninja, multi: false }
+          - { name: Unix Makefiles, multi: false }
+        shared:
+          - ON
+          - OFF
+        flavor:
+          - Debug
+          - Release
+    runs-on: ${{ matrix.platform }}
+    env:
+      generator: ${{ matrix.generator.name }}
+      multi: ${{ matrix.generator.multi && 'true' || '' }}
+      shared: ${{ matrix.shared }}
+      flavor: ${{ matrix.flavor }}
+      install_dir: /usr/local
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install environment
+        uses: ./.github/actions/install-nix
+      - name: copy upstream
+        run: |
+          mkdir 02-add-subdirectory/external
+          cp -r 00-upstream 02-add-subdirectory/external
+      - name: configure
+        working-directory: 02-add-subdirectory
+        run: make configure
+      - name: build
+        working-directory: 02-add-subdirectory
+        run: make build
+      - name: built
+        working-directory: 02-add-subdirectory
+        run: make built
+      - name: install
+        working-directory: 02-add-subdirectory
+        run: sudo install_dir="${install_dir}" make install
+      - name: installed
+        working-directory: 02-add-subdirectory
+        run: make installed
+      - name: path
+        run: executable

@@ -76,7 +76,7 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: install
+      - name: install upstream
         working-directory: 00-upstream
         run: make install
       - name: configure
@@ -85,6 +85,8 @@ jobs:
       - name: build
         working-directory: 01-find-package
         run: make build
+      # We cannot test the executable in the build directory until it is
+      # installed next to the shared libraries that it requires.
       - name: built
         if: matrix.shared == 'OFF'
         working-directory: 01-find-package
@@ -94,6 +96,55 @@ jobs:
         run: make install
       - name: installed
         working-directory: 01-find-package
+        run: make installed
+      - name: path
+        run: $env:PATH = "C:\\bin;$env:PATH"; executable
+
+  add-subdirectory:
+    needs: upstream
+    strategy:
+      matrix:
+        generator:
+          - { name: Visual Studio 16 2019, multi: true }
+        shared:
+          - OFF
+          - ON
+        flavor:
+          - Debug
+          - Release
+    runs-on: windows-2019
+    env:
+      generator: ${{ matrix.generator.name }}
+      multi: ${{ matrix.generator.multi && 'true' || '' }}
+      shared: ${{ matrix.shared }}
+      flavor: ${{ matrix.flavor }}
+      install_dir: C:\\
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install environment
+        uses: ./.github/actions/install-windows
+        with:
+          cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
+          cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: copy upstream
+        run: |
+          mkdir 02-add-subdirectory\external
+          cp -r 00-upstream 02-add-subdirectory\external
+      - name: configure
+        working-directory: 02-add-subdirectory
+        run: make configure
+      - name: build
+        working-directory: 02-add-subdirectory
+        run: make build
+      - name: built
+        working-directory: 02-add-subdirectory
+        run: make built
+      - name: install
+        working-directory: 02-add-subdirectory
+        run: make install
+      - name: installed
+        working-directory: 02-add-subdirectory
         run: make installed
       - name: path
         run: $env:PATH = "C:\\bin;$env:PATH"; executable
