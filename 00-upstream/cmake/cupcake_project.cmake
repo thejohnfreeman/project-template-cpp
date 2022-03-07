@@ -25,6 +25,7 @@ macro(cupcake_project)
 
   set(CMAKE_CXX_VISIBILITY_PRESET hidden)
   set(CMAKE_VISIBILITY_INLINES_HIDDEN YES)
+  set(CMAKE_EXPORT_COMPILE_COMMANDS YES)
 
   # Enable deterministic relocatable builds.
   set(CMAKE_BUILD_RPATH_USE_ORIGIN TRUE)
