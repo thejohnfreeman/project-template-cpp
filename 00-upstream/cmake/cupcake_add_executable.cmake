@@ -8,6 +8,7 @@ include(GNUInstallDirs)
 # A target representing all executables declared with the function below.
 add_custom_target(executables)
 
+# add_executable(<name> [<source>...])
 function(cupcake_add_executable name)
   set(target ${PROJECT_NAME}_${name})
   set(this ${target} PARENT_SCOPE)

@@ -9,6 +9,7 @@ include(GNUInstallDirs)
 # A target representing all libraries declared with the function below.
 add_custom_target(libraries)
 
+# add_library(<name> [<source>...])
 function(cupcake_add_library name)
   set(target ${PROJECT_NAME}_${name})
   set(this ${target} PARENT_SCOPE)
