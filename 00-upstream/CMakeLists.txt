@@ -20,9 +20,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
 set(CMAKE_FIND_PACKAGE_SORT_DIRECTION DEC)
 # dependencies {
+find_package(doctest 2.4 REQUIRED)
 # }
-
-find_package(doctest REQUIRED)
 
 add_subdirectory(include)
 add_subdirectory(src)
