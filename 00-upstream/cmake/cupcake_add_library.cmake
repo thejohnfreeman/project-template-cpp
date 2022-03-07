@@ -15,6 +15,8 @@ function(cupcake_add_library name)
   set(this ${target} PARENT_SCOPE)
   add_library(${target} ${ARGN})
   set_target_properties(${target} PROPERTIES
+    VERSION ${PROJECT_VERSION}
+    SOVERSION ${PROJECT_VERSION_MAJOR}
     OUTPUT_NAME ${name}
     EXPORT_NAME ${name}
   )
