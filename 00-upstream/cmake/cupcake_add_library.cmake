@@ -45,7 +45,7 @@ function(cupcake_add_library name)
     )
   endif()
 
-  # if(NOT PROJECT_IS_TOP_LEVEL)
+  # if(PROJECT_IS_TOP_LEVEL)
   if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
     add_dependencies(libraries ${target})
     # Add a convenient target for the first library in the main project.

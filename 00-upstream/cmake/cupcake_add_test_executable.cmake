@@ -27,6 +27,9 @@ function(cupcake_add_test_executable name)
     FIXTURES_SETUP ${target}_fixture
   )
 
-  add_dependencies(tests ${target})
+  # if(PROJECT_IS_TOP_LEVEL)
+  if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
+    add_dependencies(tests ${target})
+  endif()
 endfunction()
 

@@ -26,7 +26,7 @@ function(cupcake_add_executable name)
     # like we do for library.
   endif()
 
-  # if(NOT PROJECT_IS_TOP_LEVEL)
+  # if(PROJECT_IS_TOP_LEVEL)
   if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
     add_dependencies(executables ${target})
     # Add a convenient target for the first executable in the main project.
