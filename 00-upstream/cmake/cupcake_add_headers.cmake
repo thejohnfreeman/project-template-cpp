@@ -24,7 +24,7 @@ function(cupcake_add_headers)
     EXPORT ${PROJECT_EXPORT_SET}
     INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
   )
-  # We must include a separate command to install the headers because
+  # We must install the headers with install(DIRECTORY) because
   # installing a target does not install its include directories.
   install(
     DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/"
@@ -34,10 +34,10 @@ function(cupcake_add_headers)
 
   cupcake_generate_version_header()
   target_include_directories(${target}
-    INTERFACE "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/generated/include>"
+    INTERFACE "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include/generated>"
   )
   install(
-    DIRECTORY "${PROJECT_BINARY_DIR}/generated/include/"
+    DIRECTORY "${PROJECT_BINARY_DIR}/include/generated/"
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
   )
 endfunction()

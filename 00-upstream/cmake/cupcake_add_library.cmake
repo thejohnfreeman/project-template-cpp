@@ -63,7 +63,7 @@ function(cupcake_add_library name)
   if(NOT ${PROJECT_NAME}_GENERATED_EXPORT_HEADER)
     generate_export_header(${target}
       BASE_NAME ${PROJECT_NAME}
-      EXPORT_FILE_NAME "${PROJECT_BINARY_DIR}/generated/include/${PROJECT_NAME}/export.hpp"
+      EXPORT_FILE_NAME "${PROJECT_BINARY_DIR}/include/generated/${PROJECT_NAME}/export.hpp"
     )
     set(${PROJECT_NAME}_GENERATED_EXPORT_HEADER TRUE)
   endif()

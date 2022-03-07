@@ -13,14 +13,16 @@ macro(cupcake_project)
 
   # On Windows, we need to make sure that shared libraries end up next to the
   # executables that require them.
+  # Without setting these variables, multi-config generators generally place
+  # targets in ${subdirectory}/${target}.dir/${config}.
   if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/$<CONFIG>/bin")
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/output/$<CONFIG>/bin")
   endif()
   if(NOT CMAKE_LIBRARY_OUTPUT_DIRECTORY)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/$<CONFIG>/lib")
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/output/$<CONFIG>/lib")
   endif()
   if(NOT CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/$<CONFIG>/lib")
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/output/$<CONFIG>/lib")
   endif()
 
   set(CMAKE_CXX_VISIBILITY_PRESET hidden)

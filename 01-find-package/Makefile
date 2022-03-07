@@ -49,7 +49,7 @@ ${cache} : ${build_dir}/conaninfo.txt Makefile | ${build_dir}
 
 configure : ${cache}
 
-built_executable := ${build_dir}/${flavor}/bin/executable${EXE}
+built_executable := ${build_dir}/output/${flavor}/bin/executable${EXE}
 
 ${built_executable} : ${cache}
 	${CMAKE} -E time ${CMAKE} --build ${build_dir} --verbose $(if ${multi},--config ${flavor}) --parallel ${NPROC} --target executable 2>&1 | tee ${build_dir}/build.log
