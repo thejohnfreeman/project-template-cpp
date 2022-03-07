@@ -52,6 +52,9 @@ function(cupcake_add_library name)
     endif()
   endif()
 
+  # We cannot call this function for the headers library because it is
+  # INTERFACE, but we only want to call it once and share the header among all
+  # libraries in the project.
   # In order to include the generated header by a path starting with a directory
   # matching the package name like all other package headers, we must pass the
   # `EXPORT_FILE_NAME` option.
@@ -62,13 +65,6 @@ function(cupcake_add_library name)
     )
     set(${PROJECT_NAME}_GENERATED_EXPORT_HEADER TRUE)
   endif()
-  target_include_directories(${target}
-    PUBLIC "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/generated/include>"
-  )
-  install(
-    DIRECTORY "${PROJECT_BINARY_DIR}/generated/include/"
-    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
-  )
 
   get_target_property(library_type ${target} TYPE)
   if(NOT library_type STREQUAL SHARED_LIBRARY)

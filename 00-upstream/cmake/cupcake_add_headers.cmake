@@ -3,6 +3,7 @@ if(DEFINED_CUPCAKE_ADD_HEADERS)
 endif()
 set(DEFINED_CUPCAKE_ADD_HEADERS TRUE)
 
+include(cupcake_generate_version_header)
 include(GNUInstallDirs)
 
 function(cupcake_add_headers)
@@ -29,5 +30,14 @@ function(cupcake_add_headers)
     DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/"
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
     PATTERN CMakeLists.txt EXCLUDE
+  )
+
+  cupcake_generate_version_header()
+  target_include_directories(${target}
+    INTERFACE "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/generated/include>"
+  )
+  install(
+    DIRECTORY "${PROJECT_BINARY_DIR}/generated/include/"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
   )
 endfunction()
