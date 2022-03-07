@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.7)
 
-project(greetings
+project(zero
   VERSION 0.1.0
   DESCRIPTION "An example library and executable, with tests."
   HOMEPAGE_URL https://github.com/thejohnfreeman/project-template-cpp

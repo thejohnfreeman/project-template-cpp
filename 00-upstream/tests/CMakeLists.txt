@@ -1,4 +1,4 @@
-cupcake_add_test_executable(greetings greetings.cpp)
+cupcake_add_test_executable(zero zero.cpp)
 target_link_libraries(
   ${this}
   ${PROJECT_NAME}::library

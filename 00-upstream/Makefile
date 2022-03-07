@@ -22,7 +22,7 @@ endif
 flavor ?= Release
 shared ?= OFF
 options ?=
-executable := greet
+executable := true
 
 source_dir := ${CURDIR}
 build_dir := ${source_dir}/.build
