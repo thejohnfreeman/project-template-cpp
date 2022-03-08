@@ -14,7 +14,7 @@ runs:
       uses: actions/cache@v2
       with:
           path: .cache-python
-          key: ${{ inputs.cache-key-python }}
+          key: ${{ runner.os }}-${{ inputs.cache-key-python }}
     - name: debug
       shell: bash
       run: echo shell = "${{ inputs.shell }}"
