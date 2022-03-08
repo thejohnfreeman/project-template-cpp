@@ -19,29 +19,20 @@ runs:
       id: cache-scoop
       uses: actions/cache@v2
       with:
-          path: |
-            ${{ steps.env.outputs.PROGRAMDATA }}\scoop
-            ${{ steps.env.outputs.USERPROFILE }}\scoop
-          key: ${{ inputs.cache-key-scoop }}
+        path: |
+          ${{ steps.env.outputs.PROGRAMDATA }}\scoop
+          ${{ steps.env.outputs.USERPROFILE }}\scoop
+        key: ${{ inputs.cache-key-scoop }}
     - name: install Make with Scoop
       if: steps.cache-scoop.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
         iwr -useb get.scoop.sh | iex
         scoop install make
-    - name: download Conan from cache
-      id: cache-python
-      uses: actions/cache@v2
+    - name: install Python packages
+      uses: ./.github/actions/install-python
       with:
-          path: .cache-python
-          key: ${{ inputs.cache-key-python }}
-    - name: download Conan with pip
-      if: steps.cache-python.outputs.cache-hit != 'true'
-      shell: pwsh
-      run: pip download conan --dest .cache-python
-    - name: install Conan
-      shell: pwsh
-      run: pip install conan --no-index --find-links .cache-python
+        cache-key-python: ${{ inputs.cache-key-python }}
     - name: check environment
       shell: pwsh
       run: |

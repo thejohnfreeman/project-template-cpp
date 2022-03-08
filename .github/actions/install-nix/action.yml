@@ -1,6 +1,9 @@
 name: install Unix environment
 description: |
   Install the common environment shared by all jobs in the nix workflow.
+inputs:
+  cache-key-python:
+    required: true
 runs:
   using: composite
   steps:
@@ -10,9 +13,10 @@ runs:
         python-version: '3.x'
         cache: pip
         cache-dependency-path: .github/workflows/cache-python
-    - name: install Conan
-      shell: bash
-      run: pip install conan
+    - name: install Python packages
+      uses: ./.github/actions/install-python
+      with:
+        cache-key-python: ${{ inputs.cache-key-python }}
     - name: install Ninja on Linux
       if: matrix.generator.name == 'Ninja' && startsWith(matrix.platform, 'ubuntu')
       shell: bash

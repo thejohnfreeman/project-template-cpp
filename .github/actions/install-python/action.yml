@@ -1,0 +1,24 @@
+name: install Python packages
+description: |
+  Install the common Python packages shared by all jobs.
+inputs:
+  cache-key-python:
+    required: true
+  shell:
+    default: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
+runs:
+  using: composite
+  steps:
+    - name: download Conan from cache
+      id: cache-python
+      uses: actions/cache@v2
+      with:
+          path: .cache-python
+          key: ${{ inputs.cache-key-python }}
+    - name: download Conan with pip
+      if: steps.cache-python.outputs.cache-hit != 'true'
+      shell: ${{ inputs.shell }}
+      run: pip download conan --dest .cache-python
+    - name: install Conan
+      shell: ${{ inputs.shell }}
+      run: pip install conan --no-index --find-links .cache-python
