@@ -15,6 +15,9 @@ runs:
       with:
           path: .cache-python
           key: ${{ inputs.cache-key-python }}
+    - name: debug
+      shell: bash
+      run: echo ${{ inputs.shell }}
     - name: download Conan with pip
       if: steps.cache-python.outputs.cache-hit != 'true'
       shell: ${{ inputs.shell }}
