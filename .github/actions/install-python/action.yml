@@ -17,11 +17,11 @@ runs:
           key: ${{ inputs.cache-key-python }}
     - name: debug
       shell: bash
-      run: echo ${{ inputs.shell }}
+      run: echo shell = "${{ inputs.shell }}"
     - name: download Conan with pip
       if: steps.cache-python.outputs.cache-hit != 'true'
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: pip download conan --dest .cache-python
     - name: install Conan
-      shell: ${{ inputs.shell }}
+      shell: bash
       run: pip install conan --no-index --find-links .cache-python
