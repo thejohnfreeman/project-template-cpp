@@ -24,6 +24,7 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: /usr/local
+      executable: 'true'
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -48,7 +49,7 @@ jobs:
         working-directory: 00-upstream
         run: make installed
       - name: path
-        run: greet
+        run: ${executable}
 
   find-package:
     needs: upstream
@@ -73,6 +74,7 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: /usr/local
+      executable: hello
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -99,7 +101,7 @@ jobs:
         working-directory: 01-find-package
         run: make installed
       - name: path
-        run: executable
+        run: ${executable}
 
   add-subdirectory:
     needs: upstream
@@ -124,6 +126,7 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: /usr/local
+      executable: goodbye
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -149,4 +152,4 @@ jobs:
         working-directory: 02-add-subdirectory
         run: make installed
       - name: path
-        run: executable
+        run: ${executable}

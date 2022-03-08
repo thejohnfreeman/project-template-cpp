@@ -1,2 +1,2 @@
-cupcake_add_executable(executable executable.cpp)
+cupcake_add_executable(goodbye goodbye.cpp)
 target_link_libraries(${this} zero::library)
