@@ -52,16 +52,16 @@ configure : ${cache}
 
 built_executable := ${build_dir}/output/${flavor}/bin/${executable}${EXE}
 
-${built_executable} : ${cache}
+${built_executable} : ${cache} $(wildcard ${source_dir}/src/*.cpp)
 	${CMAKE} -E time ${CMAKE} --build ${build_dir} --verbose $(if ${multi},--config ${flavor}) --parallel ${NPROC} --target executable 2>&1 | tee ${build_dir}/build.log
 	${SHELL} ${.SHELLFLAGS} "ls -l '$@'"
-	${SHELL} ${.SHELLFLAGS} "ls -l '$^'"
+	${SHELL} ${.SHELLFLAGS} "ls -l '$<'"
 	${CMAKE} -E touch $@
 
 build : ${built_executable}
 
 built : ${built_executable}
-	$^
+	$<
 
 force :
 	${CMAKE} -E touch ${cache}
@@ -79,13 +79,13 @@ installed_executable := ${install_dir}/bin/${executable}${EXE}
 ${installed_executable} : ${cache}
 	${CMAKE} -E time ${CMAKE} --build ${build_dir} --verbose --target install $(if ${multi},--config ${flavor})
 	${SHELL} ${.SHELLFLAGS} "ls -l '$@'"
-	${SHELL} ${.SHELLFLAGS} "ls -l '$^'"
+	${SHELL} ${.SHELLFLAGS} "ls -l '$<'"
 	${CMAKE} -E touch $@
 
 install : ${installed_executable}
 
 installed : ${installed_executable}
-	$^
+	$<
 
 clean :
 	${CMAKE} -E rm -rf ${build_dir}

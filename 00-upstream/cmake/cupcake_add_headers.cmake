@@ -8,6 +8,7 @@ include(GNUInstallDirs)
 
 function(cupcake_add_headers)
   set(target ${PROJECT_NAME}_headers)
+  set(this ${target} PARENT_SCOPE)
   add_library(${target} INTERFACE)
   set_target_properties(${target} PROPERTIES EXPORT_NAME headers)
   add_library(${PROJECT_NAME}::headers ALIAS ${target})

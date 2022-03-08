@@ -1,7 +1,8 @@
-#include <greetings/greetings.hpp>
+#include <cstdio>
 
-#include <iostream>
+#include <zero/zero.hpp>
 
 int main() {
-  std::cout << greetings::english() << ", add-subdirectory!" << std::endl;
+    std::printf("goodbye!\n");
+    return zero::zero();
 }
