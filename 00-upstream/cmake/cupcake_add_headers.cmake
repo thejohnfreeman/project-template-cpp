@@ -16,7 +16,8 @@ function(cupcake_add_headers)
     INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
   )
 
-  if(${PROJECT_NAME} STREQUAL ${CMAKE_PROJECT_NAME} AND NOT TARGET headers)
+  # if(PROJECT_IS_TOP_LEVEL AND ...)
+  if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME AND NOT TARGET headers)
     add_custom_target(headers DEPENDS ${target})
   endif()
 

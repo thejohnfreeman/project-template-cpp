@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.7)
 
 project(two
   VERSION 0.1.0
-  DESCRIPTION "An example project that imports another through find_package."
+  DESCRIPTION "An example project that imports another through add_subdirectory."
   HOMEPAGE_URL https://github.com/thejohnfreeman/project-template-cpp
   LANGUAGES CXX
 )

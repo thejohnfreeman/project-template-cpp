@@ -1,2 +1,10 @@
 @PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+set(dependencies "@CUPCAKE_PROJECT_DEPENDENCIES@")
+foreach(args ${dependencies})
+  find_dependency(${args})
+endforeach()
+
 include("${CMAKE_CURRENT_LIST_DIR}/@PROJECT_NAME@-targets.cmake")

@@ -17,8 +17,8 @@ cupcake_project()
 set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
 set(CMAKE_FIND_PACKAGE_SORT_DIRECTION DEC)
 # dependencies {
-find_package(doctest 2.4 REQUIRED)
-find_package(zero 0.1 REQUIRED)
+cupcake_find_package(doctest 2.4 PRIVATE)
+cupcake_find_package(zero 0.1)
 # }
 
 add_subdirectory(include)

@@ -21,6 +21,8 @@ macro(cupcake_install_project)
     NAMESPACE ${PROJECT_NAME}::
   )
 
+  get_property(CUPCAKE_PROJECT_DEPENDENCIES
+    GLOBAL PROPERTY CUPCAKE_PROJECT_DEPENDENCIES)
   configure_package_config_file("${package_config_input}"
     "${CMAKE_CURRENT_EXPORT_DIR}/${PROJECT_NAME}-config.cmake"
     INSTALL_DESTINATION "${CMAKE_INSTALL_EXPORTDIR}/${PROJECT_NAME}}"

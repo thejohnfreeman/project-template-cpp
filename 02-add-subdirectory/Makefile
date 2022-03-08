@@ -26,7 +26,7 @@ executable := goodbye
 
 source_dir := ${CURDIR}
 build_dir := ${source_dir}/.build
-install_dir ?= ${source_dir}/.install
+install_dir ?= ${source_dir}/../.install
 
 CMAKE := cmake
 CTEST := ctest
