@@ -32,7 +32,7 @@ runs:
     - name: install Python packages
       uses: ./.github/actions/install-python
       with:
-        cache-key-python: ${{ inputs.cache-key-python }}
+        key: ${{ inputs.cache-key-python }}
     - name: check environment
       shell: pwsh
       run: |

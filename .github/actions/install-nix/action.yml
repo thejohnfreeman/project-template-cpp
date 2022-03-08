@@ -16,7 +16,7 @@ runs:
     - name: install Python packages
       uses: ./.github/actions/install-python
       with:
-        cache-key-python: ${{ inputs.cache-key-python }}
+        key: ${{ inputs.cache-key-python }}
     - name: install Ninja on Linux
       if: matrix.generator.name == 'Ninja' && startsWith(matrix.platform, 'ubuntu')
       shell: bash
