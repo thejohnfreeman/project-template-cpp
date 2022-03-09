@@ -46,7 +46,9 @@ jobs:
         run: make test
       - name: install
         working-directory: 00-upstream
-        run: sudo install_dir="${install_dir}" make install
+        run: |
+          sudo install_dir="${install_dir}" make install
+          make clean
       - name: installed
         working-directory: 00-upstream
         run: make installed
@@ -103,7 +105,9 @@ jobs:
         run: make test
       - name: install
         working-directory: 01-find-package
-        run: sudo install_dir="${install_dir}" make install
+        run: |
+          sudo install_dir="${install_dir}" make install
+          make clean
       - name: installed
         working-directory: 01-find-package
         run: make installed
@@ -159,7 +163,9 @@ jobs:
         run: make test
       - name: install
         working-directory: 02-add-subdirectory
-        run: sudo install_dir="${install_dir}" make install
+        run: |
+          sudo install_dir="${install_dir}" make install
+          make clean
       - name: installed
         working-directory: 02-add-subdirectory
         run: make installed
@@ -202,11 +208,13 @@ jobs:
         run: |
           make build
           sudo install_dir="${install_dir}" make install
+          make clean
       - name: install one
         working-directory: 01-find-package
         run: |
           make build
           sudo install_dir="${install_dir}" make install
+          make clean
       - name: configure
         working-directory: 03-fp-fp
         run: make configure
@@ -221,7 +229,9 @@ jobs:
         run: make test
       - name: install
         working-directory: 03-fp-fp
-        run: sudo install_dir="${install_dir}" make install
+        run: |
+          sudo install_dir="${install_dir}" make install
+          make clean
       - name: installed
         working-directory: 03-fp-fp
         run: make installed
