@@ -9,6 +9,15 @@ function(cupcake_add_test_executable name)
   set(target test_${name})
   set(this ${target} PARENT_SCOPE)
   add_executable(${target} EXCLUDE_FROM_ALL ${ARGN})
+
+  # if(PROJECT_IS_TOP_LEVEL)
+  if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
+    add_dependencies(tests ${target})
+  else()
+    # Do not include tests of dependencies added as subdirectories.
+    return()
+  endif()
+
   add_test(NAME ${target} COMMAND ${target})
   set_tests_properties(
     ${target} PROPERTIES
@@ -26,10 +35,5 @@ function(cupcake_add_test_executable name)
   set_tests_properties(${target}_build PROPERTIES
     FIXTURES_SETUP ${target}_fixture
   )
-
-  # if(PROJECT_IS_TOP_LEVEL)
-  if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
-    add_dependencies(tests ${target})
-  endif()
 endfunction()
 
