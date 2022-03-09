@@ -2,7 +2,7 @@
 
 include(CMakeFindDependencyMacro)
 
-set(dependencies "@CUPCAKE_PROJECT_DEPENDENCIES@")
+set(dependencies "@PROJECT_DEPENDENCIES@")
 foreach(args ${dependencies})
   find_dependency(${args})
 endforeach()

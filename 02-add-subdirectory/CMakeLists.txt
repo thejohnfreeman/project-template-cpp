@@ -20,8 +20,7 @@ set(CMAKE_FIND_PACKAGE_SORT_DIRECTION DEC)
 cupcake_find_package(doctest 2.4 PRIVATE)
 # }
 
-add_subdirectory(external/00-upstream)
-
+add_subdirectory(external)
 add_subdirectory(include)
 add_subdirectory(src)
 enable_testing()

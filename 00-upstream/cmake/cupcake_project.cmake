@@ -9,6 +9,11 @@ macro(cupcake_project)
   # Define more project variables.
   set(PROJECT_EXPORT_SET ${PROJECT_NAME}_targets)
 
+  #if(PROJECT_IS_TOP_LEVEL)
+  if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
+    set(CMAKE_PROJECT_EXPORT_SET ${PROJECT_EXPORT_SET})
+  endif()
+
   # Change defaults to follow recommended best practices.
 
   # On Windows, we need to make sure that shared libraries end up next to the

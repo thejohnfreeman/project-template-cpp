@@ -8,6 +8,8 @@ include(GNUInstallDirs)
 
 set(package_config_input "${CMAKE_CURRENT_LIST_DIR}/package-config.cmake.in")
 
+# This macro must be called last in the project's root CMakeLists.txt,
+# after the PROJECT_DEPENDENCIES variable has been populated.
 macro(cupcake_install_project)
   set(CMAKE_INSTALL_EXPORTDIR "${CMAKE_INSTALL_LIBDIR}/cmake")
   if(WIN32)
@@ -31,8 +33,9 @@ macro(cupcake_install_project)
     NAMESPACE ${PROJECT_NAME}::
   )
 
-  get_property(CUPCAKE_PROJECT_DEPENDENCIES
-    GLOBAL PROPERTY CUPCAKE_PROJECT_DEPENDENCIES)
+  get_property(PROJECT_DEPENDENCIES
+    DIRECTORY "${PROJECT_SOURCE_DIR}"
+    PROPERTY PROJECT_DEPENDENCIES)
   configure_package_config_file("${package_config_input}"
     "${CMAKE_CURRENT_EXPORT_DIR}/${PROJECT_NAME}-config.cmake"
     INSTALL_DESTINATION "${CMAKE_INSTALL_EXPORTDIR}/${PROJECT_NAME}"

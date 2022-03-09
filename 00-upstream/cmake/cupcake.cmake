@@ -5,6 +5,7 @@ set(INCLUDED_CUPCAKE TRUE)
 
 include(cupcake_project)
 include(cupcake_find_package)
+include(cupcake_add_subproject)
 include(cupcake_install_project)
 include(cupcake_add_headers)
 include(cupcake_add_library)
