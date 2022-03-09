@@ -147,7 +147,6 @@ jobs:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
       - name: copy zero
         run: |
-          mkdir 02-add-subdirectory/external
           cp -r 00-upstream 02-add-subdirectory/external
       - name: configure
         working-directory: 02-add-subdirectory
