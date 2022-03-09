@@ -60,8 +60,8 @@ ${built_executable} : ${cache} $(wildcard ${source_dir}/src/*.cpp)
 
 build : ${built_executable}
 
-built : ${built_executable}
-	$<
+built :
+	${built_executable}
 
 force :
 	${CMAKE} -E touch ${cache}
@@ -84,8 +84,8 @@ ${installed_executable} : ${cache}
 
 install : ${installed_executable}
 
-installed : ${installed_executable}
-	$<
+installed :
+	${installed_executable}
 
 clean :
 	${CMAKE} -E rm -rf ${build_dir}
