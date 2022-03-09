@@ -193,6 +193,7 @@ jobs:
         working-directory: 03-fp-fp
         run: make build
       - name: built
+        if: matrix.shared == 'OFF'
         working-directory: 03-fp-fp
         run: make built
       - name: install
