@@ -98,6 +98,9 @@ jobs:
       - name: built
         working-directory: 01-find-package
         run: make built
+      - name: test
+        working-directory: 01-find-package
+        run: make test
       - name: install
         working-directory: 01-find-package
         run: sudo install_dir="${install_dir}" make install
@@ -151,6 +154,9 @@ jobs:
       - name: built
         working-directory: 02-add-subdirectory
         run: make built
+      - name: test
+        working-directory: 02-add-subdirectory
+        run: make test
       - name: install
         working-directory: 02-add-subdirectory
         run: sudo install_dir="${install_dir}" make install
@@ -210,6 +216,9 @@ jobs:
       - name: built
         working-directory: 03-fp-fp
         run: make built
+      - name: test
+        working-directory: 03-fp-fp
+        run: make test
       - name: install
         working-directory: 03-fp-fp
         run: sudo install_dir="${install_dir}" make install

@@ -93,6 +93,10 @@ jobs:
         if: matrix.shared == 'OFF'
         working-directory: 01-find-package
         run: make built
+      - name: test
+        if: matrix.shared == 'OFF'
+        working-directory: 01-find-package
+        run: make test
       - name: install
         working-directory: 01-find-package
         run: make install
@@ -143,6 +147,10 @@ jobs:
       - name: built
         working-directory: 02-add-subdirectory
         run: make built
+      - name: test
+        if: matrix.shared == 'OFF'
+        working-directory: 02-add-subdirectory
+        run: make test
       - name: install
         working-directory: 02-add-subdirectory
         run: make install
@@ -196,6 +204,10 @@ jobs:
         if: matrix.shared == 'OFF'
         working-directory: 03-fp-fp
         run: make built
+      - name: test
+        if: matrix.shared == 'OFF'
+        working-directory: 03-fp-fp
+        run: make test
       - name: install
         working-directory: 03-fp-fp
         run: make install
