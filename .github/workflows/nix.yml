@@ -197,7 +197,7 @@ jobs:
           make build
           sudo install_dir="${install_dir}" make install
       - name: install one
-        working-directory: 01-upstream
+        working-directory: 01-find-package
         run: |
           make build
           sudo install_dir="${install_dir}" make install

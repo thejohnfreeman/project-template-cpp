@@ -187,19 +187,19 @@ jobs:
         working-directory: 01-find-package
         run: make install
       - name: configure
-        working-directory: 02-add-subdirectory
+        working-directory: 03-fp-fp
         run: make configure
       - name: build
-        working-directory: 02-add-subdirectory
+        working-directory: 03-fp-fp
         run: make build
       - name: built
-        working-directory: 02-add-subdirectory
+        working-directory: 03-fp-fp
         run: make built
       - name: install
-        working-directory: 02-add-subdirectory
+        working-directory: 03-fp-fp
         run: make install
       - name: installed
-        working-directory: 02-add-subdirectory
+        working-directory: 03-fp-fp
         run: make installed
       - name: path
         run: $env:PATH = "C:\\bin;$env:PATH"; $env:executable
