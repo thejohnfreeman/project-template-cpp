@@ -2,7 +2,7 @@ name: Build, run, test, and install on Linux and MacOS
 on: [push, pull_request]
 
 jobs:
-  upstream:
+  zero:
     strategy:
       matrix:
         platform:
@@ -53,8 +53,8 @@ jobs:
       - name: path
         run: ${executable}
 
-  find-package:
-    needs: upstream
+  one:
+    needs: zero
     strategy:
       matrix:
         platform:
@@ -84,7 +84,7 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: install upstream
+      - name: install zero
         working-directory: 00-upstream
         run: |
           make build
@@ -107,8 +107,8 @@ jobs:
       - name: path
         run: ${executable}
 
-  add-subdirectory:
-    needs: upstream
+  two:
+    needs: zero
     strategy:
       matrix:
         platform:
@@ -138,7 +138,7 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: copy upstream
+      - name: copy zero
         run: |
           mkdir 02-add-subdirectory/external
           cp -r 00-upstream 02-add-subdirectory/external
@@ -156,6 +156,65 @@ jobs:
         run: sudo install_dir="${install_dir}" make install
       - name: installed
         working-directory: 02-add-subdirectory
+        run: make installed
+      - name: path
+        run: ${executable}
+
+  three:
+    needs: one
+    strategy:
+      matrix:
+        platform:
+          - ubuntu-latest
+          - macos-latest
+        generator:
+          - { name: Ninja, multi: false }
+          - { name: Unix Makefiles, multi: false }
+        shared:
+          - ON
+          - OFF
+        flavor:
+          - Debug
+          - Release
+    runs-on: ${{ matrix.platform }}
+    env:
+      generator: ${{ matrix.generator.name }}
+      multi: ${{ matrix.generator.multi && 'true' || '' }}
+      shared: ${{ matrix.shared }}
+      flavor: ${{ matrix.flavor }}
+      install_dir: /usr/local
+      executable: aloha
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install environment
+        uses: ./.github/actions/install-nix
+        with:
+          cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install zero
+        working-directory: 00-upstream
+        run: |
+          make build
+          sudo install_dir="${install_dir}" make install
+      - name: install one
+        working-directory: 01-upstream
+        run: |
+          make build
+          sudo install_dir="${install_dir}" make install
+      - name: configure
+        working-directory: 03-fp-fp
+        run: make configure
+      - name: build
+        working-directory: 03-fp-fp
+        run: make build
+      - name: built
+        working-directory: 03-fp-fp
+        run: make built
+      - name: install
+        working-directory: 03-fp-fp
+        run: sudo install_dir="${install_dir}" make install
+      - name: installed
+        working-directory: 03-fp-fp
         run: make installed
       - name: path
         run: ${executable}

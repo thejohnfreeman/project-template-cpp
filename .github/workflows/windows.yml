@@ -2,7 +2,7 @@ name: Build, run, test, and install on Windows
 on: [push, pull_request]
 
 jobs:
-  upstream:
+  zero:
     strategy:
       matrix:
         generator:
@@ -50,8 +50,8 @@ jobs:
       - name: path
         run: $env:PATH = "C:\\bin;$env:PATH"; $env:executable
 
-  find-package:
-    needs: upstream
+  one:
+    needs: zero
     strategy:
       matrix:
         generator:
@@ -78,7 +78,7 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: install upstream
+      - name: install zero
         working-directory: 00-upstream
         run: make install
       - name: configure
@@ -102,8 +102,8 @@ jobs:
       - name: path
         run: $env:PATH = "C:\\bin;$env:PATH"; $env:executable
 
-  add-subdirectory:
-    needs: upstream
+  two:
+    needs: zero
     strategy:
       matrix:
         generator:
@@ -130,10 +130,62 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: copy upstream
+      - name: copy zero
         run: |
           mkdir 02-add-subdirectory\external
           cp -r 00-upstream 02-add-subdirectory\external
+      - name: configure
+        working-directory: 02-add-subdirectory
+        run: make configure
+      - name: build
+        working-directory: 02-add-subdirectory
+        run: make build
+      - name: built
+        working-directory: 02-add-subdirectory
+        run: make built
+      - name: install
+        working-directory: 02-add-subdirectory
+        run: make install
+      - name: installed
+        working-directory: 02-add-subdirectory
+        run: make installed
+      - name: path
+        run: $env:PATH = "C:\\bin;$env:PATH"; $env:executable
+
+  three:
+    needs: one
+    strategy:
+      matrix:
+        generator:
+          - { name: Visual Studio 16 2019, multi: true }
+        shared:
+          - OFF
+          - ON
+        flavor:
+          - Debug
+          - Release
+    runs-on: windows-2019
+    env:
+      generator: ${{ matrix.generator.name }}
+      multi: ${{ matrix.generator.multi && 'true' || '' }}
+      shared: ${{ matrix.shared }}
+      flavor: ${{ matrix.flavor }}
+      install_dir: C:\\
+      executable: aloha
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install environment
+        uses: ./.github/actions/install-windows
+        with:
+          cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
+          cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install zero
+        working-directory: 00-upstream
+        run: make install
+      - name: install one
+        working-directory: 01-find-package
+        run: make install
       - name: configure
         working-directory: 02-add-subdirectory
         run: make configure
