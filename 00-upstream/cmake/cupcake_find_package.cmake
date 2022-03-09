@@ -5,6 +5,7 @@ set(DEFINED_CUPCAKE_FIND_PACKAGE TRUE)
 
 set_property(GLOBAL PROPERTY CUPCAKE_PROJECT_DEPENDENCIES "")
 
+# cupcake_find_package(<package-name> <version> [PRIVATE])
 function(cupcake_find_package name version)
   cmake_parse_arguments(ARG "PRIVATE" "" "" ${ARGN})
 
