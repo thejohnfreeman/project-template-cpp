@@ -16,26 +16,31 @@ function(cupcake_add_subproject name)
   endif()
 
   set(CMAKE_PROJECT_${name}_INCLUDE "${set_subproject_variables}")
+  message(STATUS "Entering subproject '${name}' depended by '${PROJECT_NAME}'...")
   add_subdirectory(${ARG_UNPARSED_ARGUMENTS})
 
   if(ARG_PRIVATE)
     return()
   endif()
 
-  get_property(SUBPROJECT_SOURCE_DIR
-    GLOBAL PROPERTY SUBPROJECT_SOURCE_DIR)
   list(GET ARG_UNPARSED_ARGUMENTS 0 path)
-  get_filename_component(expected "${path}" ABSOLUTE)
-  if(NOT SUBPROJECT_SOURCE_DIR STREQUAL expected)
-    message(FATAL_ERROR "Subproject '${name}' not found at '${expected}'.")
+  get_filename_component(path "${path}" ABSOLUTE)
+  get_property(SUBPROJECT_NAME
+    DIRECTORY "${path}"
+    PROPERTY PROJECT_NAME
+  )
+  if(NOT SUBPROJECT_NAME STREQUAL name)
+    message(FATAL_ERROR "Subproject '${name}' not found at '${path}'.")
   endif()
 
-  get_property(SUBPROJECT_NAME
-    GLOBAL PROPERTY SUBPROJECT_NAME)
   get_property(SUBPROJECT_VERSION_MAJOR
-    GLOBAL PROPERTY SUBPROJECT_VERSION_MAJOR)
+    DIRECTORY "${path}"
+    PROPERTY PROJECT_VERSION_MAJOR
+  )
   get_property(SUBPROJECT_VERSION_MINOR
-    GLOBAL PROPERTY SUBPROJECT_VERSION_MINOR)
+    DIRECTORY "${path}"
+    PROPERTY PROJECT_VERSION_MINOR
+  )
   cupcake_add_dependency(
     ${SUBPROJECT_NAME}
     ${SUBPROJECT_VERSION_MAJOR}.${SUBPROJECT_VERSION_MINOR}

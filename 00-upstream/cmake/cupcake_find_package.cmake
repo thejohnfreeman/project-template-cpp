@@ -7,6 +7,8 @@ include(cupcake_add_dependency)
 
 # cupcake_find_package(<package-name> <version> [PRIVATE])
 function(cupcake_find_package name version)
+  message(STATUS "Finding package '${name}' depended by '${PROJECT_NAME}'...")
+
   cmake_parse_arguments(ARG "PRIVATE" "" "" ${ARGN})
 
   # if(PROJECT_IS_TOP_LEVEL AND ...)
