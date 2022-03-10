@@ -8,14 +8,15 @@ include(cupcake_add_dependency)
 set(set_subproject_variables
   "${CMAKE_CURRENT_LIST_DIR}/set_subproject_variables.cmake")
 
-function(cupcake_add_subproject path)
-  cmake_parse_arguments(ARG "PRIVATE" "PROJECT_NAME" "" ${ARGN})
-  if(NOT ARG_PROJECT_NAME)
-    set(ARG_PROJECT_NAME ${path})
+# cupcake_add_subproject(<name> [<path>] [PRIVATE] [...])
+function(cupcake_add_subproject name)
+  cmake_parse_arguments(ARG "PRIVATE" "" "" ${ARGN})
+  if(NOT ARG_UNPARSED_ARGUMENTS)
+    set(ARG_UNPARSED_ARGUMENTS ${name})
   endif()
 
-  set(CMAKE_PROJECT_${ARG_PROJECT_NAME}_INCLUDE "${set_subproject_variables}")
-  add_subdirectory(${path} ${ARG_UNPARSED_ARGUMENTS})
+  set(CMAKE_PROJECT_${name}_INCLUDE "${set_subproject_variables}")
+  add_subdirectory(${ARG_UNPARSED_ARGUMENTS})
 
   if(ARG_PRIVATE)
     return()
@@ -23,9 +24,10 @@ function(cupcake_add_subproject path)
 
   get_property(SUBPROJECT_SOURCE_DIR
     GLOBAL PROPERTY SUBPROJECT_SOURCE_DIR)
-  set(expected "${CMAKE_CURRENT_LIST_DIR}/${path}")
+  list(GET ARG_UNPARSED_ARGUMENTS 0 path)
+  get_filename_component(expected "${path}" ABSOLUTE)
   if(NOT SUBPROJECT_SOURCE_DIR STREQUAL expected)
-    message(FATAL_ERROR "Project '${ARG_PROJECT_NAME}' not found at ${expected}.")
+    message(FATAL_ERROR "Subproject '${name}' not found at '${expected}'.")
   endif()
 
   get_property(SUBPROJECT_NAME

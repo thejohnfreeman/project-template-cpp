@@ -1,1 +1,1 @@
-cupcake_add_subproject(00-upstream PROJECT_NAME zero)
+cupcake_add_subproject(zero 00-upstream)
