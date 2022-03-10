@@ -3,6 +3,8 @@ if(DEFINED_CUPCAKE_ADD_SUBPROJECT)
 endif()
 set(DEFINED_CUPCAKE_ADD_SUBPROJECT TRUE)
 
+include(cupcake_add_dependency)
+
 set(set_subproject_variables
   "${CMAKE_CURRENT_LIST_DIR}/set_subproject_variables.cmake")
 
@@ -32,8 +34,8 @@ function(cupcake_add_subproject path)
     GLOBAL PROPERTY SUBPROJECT_VERSION_MAJOR)
   get_property(SUBPROJECT_VERSION_MINOR
     GLOBAL PROPERTY SUBPROJECT_VERSION_MINOR)
-  set_property(DIRECTORY "${PROJECT_SOURCE_DIR}"
-    APPEND PROPERTY PROJECT_DEPENDENCIES
-    "${SUBPROJECT_NAME}\;${SUBPROJECT_VERSION_MAJOR}.${SUBPROJECT_VERSION_MINOR}"
+  cupcake_add_dependency(
+    ${SUBPROJECT_NAME}
+    ${SUBPROJECT_VERSION_MAJOR}.${SUBPROJECT_VERSION_MINOR}
   )
 endfunction()
