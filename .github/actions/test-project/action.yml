@@ -1,0 +1,52 @@
+name: test project
+description: Test a project by trying all the common developer workflows.
+inputs:
+  working-directory:
+    required: true
+  shell:
+    default: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
+runs:
+  using: composite
+  steps:
+    - name: configure
+      working-directory: ${{ inputs.working-directory }}
+      run: make configure
+      shell: bash
+    - name: build
+      working-directory: ${{ inputs.working-directory }}
+      run: make build
+      shell: bash
+    - name: built
+      working-directory: ${{ inputs.working-directory }}
+      run: make built
+      shell: bash
+    - name: test
+      working-directory: ${{ inputs.working-directory }}
+      run: make test
+      shell: bash
+    - name: install on non-Windows
+      if: runner.os != 'Windows'
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        sudo install_dir="${install_dir}" make install
+        make clean
+      shell: bash
+    - name: install on Windows
+      if: runner.os == 'Windows'
+      working-directory: ${{ inputs.working-directory }}
+      run: |
+        make install
+        make clean
+      shell: pwsh
+    - name: installed
+      working-directory: ${{ inputs.working-directory }}
+      run: make installed
+      shell: bash
+    - name: path on non-Windows
+      if: runner.os != 'Windows'
+      run: ${executable}
+      shell: bash
+    - name: path on Windows
+      if: runner.os == 'Windows'
+      run: $env:PATH = "C:\\bin;$env:PATH"; $env:executable
+      shell: pwsh
