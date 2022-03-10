@@ -4,34 +4,24 @@ description: |
 inputs:
   key:
     required: true
-  path:
-    default: .cache-python
   shell:
     default: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
 runs:
   using: composite
   steps:
-    - name: download Conan from cache
-      id: cache-python
-      uses: actions/cache@v2
-      with:
-          path: ${{ inputs.path }}
-          key: ${{ runner.os }}-${{ inputs.key }}
     - name: debug
       shell: bash
       run: echo shell = "${{ inputs.shell }}"
-    - name: download Conan with pip
-      if: steps.cache-python.outputs.cache-hit != 'true'
+    - name: learn Python cache directory
+      id: pip-cache
       shell: bash
-      # We must install to get the full set of dependencies because some
-      # packages express their dependencies through setup.py which pip
-      # download does not execute.
-      # https://stackoverflow.com/a/32302448/618906
-      run: |
-        pip install conan
-        mkdir ${{ inputs.path }}
-        pip freeze > ${{ inputs.path }}/requirements.txt
-        pip download --requirement ${{ inputs.path }}/requirements.txt --dest ${{ inputs.path }}
+      run: echo "::set-output name=dir::$(pip cache dir)"
+    - name: restore Python cache directory
+      id: cache
+      uses: actions/cache@v2
+      with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: ${{ runner.os }}-${{ inputs.key }}
     - name: install Conan
       shell: bash
-      run: pip install conan --no-index --find-links ${{ inputs.path }}
+      run: pip install conan
