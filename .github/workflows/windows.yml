@@ -229,3 +229,61 @@ jobs:
         run: make installed
       - name: path
         run: $env:PATH = "C:\\bin;$env:PATH"; $env:executable
+
+  four:
+    needs: two
+    strategy:
+      matrix:
+        generator:
+          - { name: Visual Studio 16 2019, multi: true }
+        shared:
+          - OFF
+          - ON
+        flavor:
+          - Debug
+          - Release
+    runs-on: windows-2019
+    env:
+      generator: ${{ matrix.generator.name }}
+      multi: ${{ matrix.generator.multi && 'true' || '' }}
+      shared: ${{ matrix.shared }}
+      flavor: ${{ matrix.flavor }}
+      install_dir: C:\\
+      executable: aloha
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install environment
+        uses: ./.github/actions/install-windows
+        with:
+          cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
+          cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install two
+        working-directory: 02-add-subdirectory
+        run: |
+          make install
+          make clean
+      - name: configure
+        working-directory: 04-as-fp
+        run: make configure
+      - name: build
+        working-directory: 04-as-fp
+        run: make build
+      - name: built
+        if: matrix.shared == 'OFF'
+        working-directory: 04-as-fp
+        run: make built
+      - name: test
+        if: matrix.shared == 'OFF'
+        working-directory: 04-as-fp
+        run: make test
+      - name: install
+        working-directory: 04-as-fp
+        run: |
+          make install
+          make clean
+      - name: installed
+        working-directory: 04-as-fp
+        run: make installed
+      - name: path
+        run: $env:PATH = "C:\\bin;$env:PATH"; $env:executable

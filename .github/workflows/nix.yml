@@ -236,3 +236,63 @@ jobs:
         run: make installed
       - name: path
         run: ${executable}
+
+  four:
+    needs: two
+    strategy:
+      matrix:
+        platform:
+          - ubuntu-latest
+          - macos-latest
+        generator:
+          - { name: Ninja, multi: false }
+          - { name: Unix Makefiles, multi: false }
+        shared:
+          - ON
+          - OFF
+        flavor:
+          - Debug
+          - Release
+    runs-on: ${{ matrix.platform }}
+    env:
+      generator: ${{ matrix.generator.name }}
+      multi: ${{ matrix.generator.multi && 'true' || '' }}
+      shared: ${{ matrix.shared }}
+      flavor: ${{ matrix.flavor }}
+      install_dir: /usr/local
+      executable: four
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install environment
+        uses: ./.github/actions/install-nix
+        with:
+          cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install two
+        working-directory: 02-add-subdirectory
+        run: |
+          make build
+          sudo install_dir="${install_dir}" make install
+          make clean
+      - name: configure
+        working-directory: 04-as-fp
+        run: make configure
+      - name: build
+        working-directory: 04-as-fp
+        run: make build
+      - name: built
+        working-directory: 04-as-fp
+        run: make built
+      - name: test
+        working-directory: 04-as-fp
+        run: make test
+      - name: install
+        working-directory: 04-as-fp
+        run: |
+          sudo install_dir="${install_dir}" make install
+          make clean
+      - name: installed
+        working-directory: 04-as-fp
+        run: make installed
+      - name: path
+        run: ${executable}
