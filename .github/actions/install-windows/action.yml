@@ -27,7 +27,9 @@ runs:
       if: steps.cache-scoop.outputs.cache-hit != 'true'
       shell: pwsh
       run: |
-        iwr -useb get.scoop.sh | iex
+        iwr -useb get.scoop.sh -outfile install.ps1
+        .\install.ps1 -RunAsAdmin
+        rm install.ps1
         scoop install make
     - name: install Python packages
       uses: ./.github/actions/install-python
