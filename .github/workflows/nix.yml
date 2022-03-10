@@ -286,3 +286,42 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 06-fp-fc
+
+  seven:
+    needs: two
+    strategy:
+      matrix:
+        platform:
+          - ubuntu-latest
+          - macos-latest
+        generator:
+          - { name: Ninja, multi: false }
+          - { name: Unix Makefiles, multi: false }
+        shared:
+          - ON
+          - OFF
+        flavor:
+          - Debug
+          - Release
+    runs-on: ${{ matrix.platform }}
+    env:
+      generator: ${{ matrix.generator.name }}
+      multi: ${{ matrix.generator.multi && 'true' || '' }}
+      shared: ${{ matrix.shared }}
+      flavor: ${{ matrix.flavor }}
+      install_dir: /usr/local
+      executable: seven
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install environment
+        uses: ./.github/actions/install-nix
+        with:
+          cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: copy zero
+        run: |
+          cp -r 00-upstream 02-add-subdirectory\external
+      - name: test project
+        uses: ./.github/actions/test-project
+        with:
+          working-directory: 07-as-fc

@@ -268,3 +268,40 @@ jobs:
         with:
           working-directory: 06-fp-fc
           with-tests: ${{ matrix.shared == 'OFF' }}
+
+  seven:
+    needs: two
+    strategy:
+      matrix:
+        generator:
+          - { name: Visual Studio 16 2019, multi: true }
+        shared:
+          - OFF
+          - ON
+        flavor:
+          - Debug
+          - Release
+    runs-on: windows-2019
+    env:
+      generator: ${{ matrix.generator.name }}
+      multi: ${{ matrix.generator.multi && 'true' || '' }}
+      shared: ${{ matrix.shared }}
+      flavor: ${{ matrix.flavor }}
+      install_dir: C:\\
+      executable: seven
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install environment
+        uses: ./.github/actions/install-windows
+        with:
+          cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
+          cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: copy zero
+        run: |
+          cp -r 00-upstream 02-add-subdirectory\external
+      - name: test project
+        uses: ./.github/actions/test-project
+        with:
+          working-directory: 07-as-fc
+          with-tests: ${{ matrix.shared == 'OFF' }}
