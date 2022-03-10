@@ -258,6 +258,9 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: copy zero
+        run: |
+          cp -r 00-upstream 02-add-subdirectory\external
       - name: install two
         working-directory: 02-add-subdirectory
         run: |
