@@ -71,6 +71,7 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 01-find-package
+          with-tests: ${{ matrix.shared == 'OFF' }}
 
   two:
     needs: zero
@@ -107,6 +108,7 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 02-add-subdirectory
+          with-tests: ${{ matrix.shared == 'OFF' }}
 
   three:
     needs: one
@@ -150,6 +152,7 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 03-fp-fp
+          with-tests: ${{ matrix.shared == 'OFF' }}
 
   four:
     needs: two
@@ -191,3 +194,4 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 04-as-fp
+          with-tests: ${{ matrix.shared == 'OFF' }}

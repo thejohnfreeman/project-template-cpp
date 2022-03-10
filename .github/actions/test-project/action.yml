@@ -3,6 +3,8 @@ description: Test a project by trying all the common developer workflows.
 inputs:
   working-directory:
     required: true
+  with-tests:
+    default: true
   shell:
     default: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
 runs:
@@ -17,10 +19,12 @@ runs:
       run: make build
       shell: bash
     - name: built
+      if: inputs.with-tests
       working-directory: ${{ inputs.working-directory }}
       run: make built
       shell: bash
     - name: test
+      if: inputs.with-tests
       working-directory: ${{ inputs.working-directory }}
       run: make test
       shell: bash
