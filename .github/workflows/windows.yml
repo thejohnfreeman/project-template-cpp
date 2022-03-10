@@ -67,32 +67,10 @@ jobs:
         run: |
           make install
           make clean
-      - name: configure
-        working-directory: 01-find-package
-        run: make configure
-      - name: build
-        working-directory: 01-find-package
-        run: make build
-      # We cannot test the executable in the build directory until it is
-      # installed next to the shared libraries that it requires.
-      - name: built
-        if: matrix.shared == 'OFF'
-        working-directory: 01-find-package
-        run: make built
-      - name: test
-        if: matrix.shared == 'OFF'
-        working-directory: 01-find-package
-        run: make test
-      - name: install
-        working-directory: 01-find-package
-        run: |
-          make install
-          make clean
-      - name: installed
-        working-directory: 01-find-package
-        run: make installed
-      - name: path
-        run: $env:PATH = "C:\\bin;$env:PATH"; $env:executable
+      - name: test project
+        uses: ./.github/actions/test-project
+        with:
+          working-directory: 01-find-package
 
   two:
     needs: zero
@@ -125,29 +103,10 @@ jobs:
       - name: copy zero
         run: |
           cp -r 00-upstream 02-add-subdirectory\external
-      - name: configure
-        working-directory: 02-add-subdirectory
-        run: make configure
-      - name: build
-        working-directory: 02-add-subdirectory
-        run: make build
-      - name: built
-        working-directory: 02-add-subdirectory
-        run: make built
-      - name: test
-        if: matrix.shared == 'OFF'
-        working-directory: 02-add-subdirectory
-        run: make test
-      - name: install
-        working-directory: 02-add-subdirectory
-        run: |
-          make install
-          make clean
-      - name: installed
-        working-directory: 02-add-subdirectory
-        run: make installed
-      - name: path
-        run: $env:PATH = "C:\\bin;$env:PATH"; $env:executable
+      - name: test project
+        uses: ./.github/actions/test-project
+        with:
+          working-directory: 02-add-subdirectory
 
   three:
     needs: one
@@ -187,30 +146,10 @@ jobs:
         run: |
           make install
           make clean
-      - name: configure
-        working-directory: 03-fp-fp
-        run: make configure
-      - name: build
-        working-directory: 03-fp-fp
-        run: make build
-      - name: built
-        if: matrix.shared == 'OFF'
-        working-directory: 03-fp-fp
-        run: make built
-      - name: test
-        if: matrix.shared == 'OFF'
-        working-directory: 03-fp-fp
-        run: make test
-      - name: install
-        working-directory: 03-fp-fp
-        run: |
-          make install
-          make clean
-      - name: installed
-        working-directory: 03-fp-fp
-        run: make installed
-      - name: path
-        run: $env:PATH = "C:\\bin;$env:PATH"; $env:executable
+      - name: test project
+        uses: ./.github/actions/test-project
+        with:
+          working-directory: 03-fp-fp
 
   four:
     needs: two
@@ -248,27 +187,7 @@ jobs:
         run: |
           make install
           make clean
-      - name: configure
-        working-directory: 04-as-fp
-        run: make configure
-      - name: build
-        working-directory: 04-as-fp
-        run: make build
-      - name: built
-        if: matrix.shared == 'OFF'
-        working-directory: 04-as-fp
-        run: make built
-      - name: test
-        if: matrix.shared == 'OFF'
-        working-directory: 04-as-fp
-        run: make test
-      - name: install
-        working-directory: 04-as-fp
-        run: |
-          make install
-          make clean
-      - name: installed
-        working-directory: 04-as-fp
-        run: make installed
-      - name: path
-        run: $env:PATH = "C:\\bin;$env:PATH"; $env:executable
+      - name: test project
+        uses: ./.github/actions/test-project
+        with:
+          working-directory: 04-as-fp

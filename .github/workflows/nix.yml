@@ -73,28 +73,10 @@ jobs:
         run: |
           make build
           sudo install_dir="${install_dir}" make install
-      - name: configure
-        working-directory: 01-find-package
-        run: make configure
-      - name: build
-        working-directory: 01-find-package
-        run: make build
-      - name: built
-        working-directory: 01-find-package
-        run: make built
-      - name: test
-        working-directory: 01-find-package
-        run: make test
-      - name: install
-        working-directory: 01-find-package
-        run: |
-          sudo install_dir="${install_dir}" make install
-          make clean
-      - name: installed
-        working-directory: 01-find-package
-        run: make installed
-      - name: path
-        run: ${executable}
+      - name: test project
+        uses: ./.github/actions/test-project
+        with:
+          working-directory: 01-find-package
 
   two:
     needs: zero
@@ -130,28 +112,10 @@ jobs:
       - name: copy zero
         run: |
           cp -r 00-upstream 02-add-subdirectory/external
-      - name: configure
-        working-directory: 02-add-subdirectory
-        run: make configure
-      - name: build
-        working-directory: 02-add-subdirectory
-        run: make build
-      - name: built
-        working-directory: 02-add-subdirectory
-        run: make built
-      - name: test
-        working-directory: 02-add-subdirectory
-        run: make test
-      - name: install
-        working-directory: 02-add-subdirectory
-        run: |
-          sudo install_dir="${install_dir}" make install
-          make clean
-      - name: installed
-        working-directory: 02-add-subdirectory
-        run: make installed
-      - name: path
-        run: ${executable}
+      - name: test project
+        uses: ./.github/actions/test-project
+        with:
+          working-directory: 02-add-subdirectory
 
   three:
     needs: one
@@ -196,28 +160,10 @@ jobs:
           make build
           sudo install_dir="${install_dir}" make install
           make clean
-      - name: configure
-        working-directory: 03-fp-fp
-        run: make configure
-      - name: build
-        working-directory: 03-fp-fp
-        run: make build
-      - name: built
-        working-directory: 03-fp-fp
-        run: make built
-      - name: test
-        working-directory: 03-fp-fp
-        run: make test
-      - name: install
-        working-directory: 03-fp-fp
-        run: |
-          sudo install_dir="${install_dir}" make install
-          make clean
-      - name: installed
-        working-directory: 03-fp-fp
-        run: make installed
-      - name: path
-        run: ${executable}
+      - name: test project
+        uses: ./.github/actions/test-project
+        with:
+          working-directory: 03-fp-fp
 
   four:
     needs: two
@@ -259,25 +205,7 @@ jobs:
           make build
           sudo install_dir="${install_dir}" make install
           make clean
-      - name: configure
-        working-directory: 04-as-fp
-        run: make configure
-      - name: build
-        working-directory: 04-as-fp
-        run: make build
-      - name: built
-        working-directory: 04-as-fp
-        run: make built
-      - name: test
-        working-directory: 04-as-fp
-        run: make test
-      - name: install
-        working-directory: 04-as-fp
-        run: |
-          sudo install_dir="${install_dir}" make install
-          make clean
-      - name: installed
-        working-directory: 04-as-fp
-        run: make installed
-      - name: path
-        run: ${executable}
+      - name: test project
+        uses: ./.github/actions/test-project
+        with:
+          working-directory: 04-as-fp
