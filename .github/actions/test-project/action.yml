@@ -52,5 +52,5 @@ runs:
       shell: bash
     - name: path on Windows
       if: runner.os == 'Windows'
-      run: $env:PATH = "C:\\bin;$env:PATH"; $env:executable
+      run: $env:PATH = "$env:install_dir\\bin;$env:PATH"; $env:executable
       shell: pwsh

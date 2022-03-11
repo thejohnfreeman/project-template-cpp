@@ -305,3 +305,50 @@ jobs:
         with:
           working-directory: 07-as-fc
           with-tests: ${{ matrix.shared == 'OFF' }}
+
+  eight:
+    needs: zero
+    strategy:
+      matrix:
+        generator:
+          - { name: Visual Studio 16 2019, multi: true }
+        shared:
+          - OFF
+          - ON
+        flavor:
+          - Debug
+          - Release
+        zero:
+          - missing
+          - half
+          - full
+    runs-on: windows-2019
+    env:
+      generator: ${{ matrix.generator.name }}
+      multi: ${{ matrix.generator.multi && 'true' || '' }}
+      shared: ${{ matrix.shared }}
+      flavor: ${{ matrix.flavor }}
+      install_dir: C:\\
+      executable: eight
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install environment
+        uses: ./.github/actions/install-windows
+        with:
+          cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
+          cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install zero
+        if: matrix.zero != 'missing'
+        working-directory: 00-upstream
+        run: |
+          make install
+          make clean
+      - name: remove zero configuration
+        if: matrix.zero == 'half'
+        run: rm -r $env:install_dir\lib\cmake\zero
+      - name: test project
+        uses: ./.github/actions/test-project
+        with:
+          working-directory: 08-find-module
+          with-tests: ${{ matrix.shared == 'OFF' }}
