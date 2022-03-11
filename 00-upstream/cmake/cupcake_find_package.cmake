@@ -17,4 +17,7 @@ function(cupcake_find_package name version)
   endif()
 
   find_package(${name} ${version} REQUIRED ${ARG_UNPARSED_ARGUMENTS})
+  if(NOT ${name}_FOUND)
+    message(FATAL_ERROR "Package '${name}' was not found.")
+  endif()
 endfunction()

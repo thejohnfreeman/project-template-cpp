@@ -6,5 +6,6 @@ FetchContent_Declare(
 FetchContent_GetProperties(one)
 if(NOT one_POPULATED)
   FetchContent_Populate(one)
-  cupcake_add_subproject(one "${one_SOURCE_DIR}" "${one_BINARY_DIR}")
 endif()
+cupcake_add_subproject(one "${one_SOURCE_DIR}" "${one_BINARY_DIR}")
+set(one_FOUND TRUE)

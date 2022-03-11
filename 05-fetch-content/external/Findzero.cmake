@@ -9,5 +9,6 @@ FetchContent_Declare(
 FetchContent_GetProperties(zero)
 if(NOT zero_POPULATED)
   FetchContent_Populate(zero)
-  cupcake_add_subproject(zero "${zero_SOURCE_DIR}" "${zero_BINARY_DIR}")
 endif()
+cupcake_add_subproject(zero "${zero_SOURCE_DIR}" "${zero_BINARY_DIR}")
+set(zero_FOUND TRUE)
