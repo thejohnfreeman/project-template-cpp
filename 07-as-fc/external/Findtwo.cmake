@@ -1,11 +1,19 @@
+if(${CMAKE_FIND_PACKAGE_NAME}_FOUND)
+  message(STATUS "Package '${CMAKE_FIND_PACKAGE_NAME}' found previously.")
+  return()
+endif()
+
 include(FetchContent)
 FetchContent_Declare(
-  two
+  ${CMAKE_FIND_PACKAGE_NAME}
   URL "${CMAKE_CURRENT_LIST_DIR}/../../02-add-subdirectory"
 )
-FetchContent_GetProperties(two)
-if(NOT two_POPULATED)
-  FetchContent_Populate(two)
+FetchContent_GetProperties(${CMAKE_FIND_PACKAGE_NAME})
+if(NOT ${CMAKE_FIND_PACKAGE_NAME}_POPULATED)
+  FetchContent_Populate(${CMAKE_FIND_PACKAGE_NAME})
+  cupcake_add_subproject(${CMAKE_FIND_PACKAGE_NAME}
+    "${${CMAKE_FIND_PACKAGE_NAME}_SOURCE_DIR}"
+    "${${CMAKE_FIND_PACKAGE_NAME}_BINARY_DIR}"
+  )
+  set(${CMAKE_FIND_PACKAGE_NAME}_FOUND TRUE)
 endif()
-cupcake_add_subproject(two "${two_SOURCE_DIR}" "${two_BINARY_DIR}")
-set(two_FOUND TRUE)

@@ -1,5 +1,5 @@
 if(${CMAKE_FIND_PACKAGE_NAME}_FOUND)
-  message(STATUS "Package zero found previously.")
+  message(STATUS "Package '${CMAKE_FIND_PACKAGE_NAME}' found previously.")
   return()
 endif()
 
@@ -24,7 +24,7 @@ find_package(${CMAKE_FIND_PACKAGE_NAME}
 )
 
 if(${CMAKE_FIND_PACKAGE_NAME}_FOUND)
-  message(STATUS "Package zero found by configuration file.")
+  message(STATUS "Package '${CMAKE_FIND_PACKAGE_NAME}' found by configuration file.")
   return()
 endif()
 
@@ -74,7 +74,7 @@ if(
   endif()
 
   set(${CMAKE_FIND_PACKAGE_NAME}_FOUND TRUE)
-  message(STATUS "Package zero found installed.")
+  message(STATUS "Package '${CMAKE_FIND_PACKAGE_NAME}' found installed.")
   return()
 endif()
 
@@ -89,10 +89,10 @@ FetchContent_Declare(
 FetchContent_GetProperties(${CMAKE_FIND_PACKAGE_NAME})
 if(NOT ${CMAKE_FIND_PACKAGE_NAME}_POPULATED)
   FetchContent_Populate(${CMAKE_FIND_PACKAGE_NAME})
+  cupcake_add_subproject(${CMAKE_FIND_PACKAGE_NAME}
+    "${${CMAKE_FIND_PACKAGE_NAME}_SOURCE_DIR}"
+    "${${CMAKE_FIND_PACKAGE_NAME}_BINARY_DIR}"
+  )
+  set(${CMAKE_FIND_PACKAGE_NAME}_FOUND TRUE)
 endif()
-cupcake_add_subproject(${CMAKE_FIND_PACKAGE_NAME}
-  "${${CMAKE_FIND_PACKAGE_NAME}_SOURCE_DIR}"
-  "${${CMAKE_FIND_PACKAGE_NAME}_BINARY_DIR}"
-)
-set(${CMAKE_FIND_PACKAGE_NAME}_FOUND TRUE)
-message(STATUS "Package zero downloaded.")
+message(STATUS "Package '${CMAKE_FIND_PACKAGE_NAME}' downloaded.")
