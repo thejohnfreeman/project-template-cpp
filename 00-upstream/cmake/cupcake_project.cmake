@@ -20,14 +20,17 @@ macro(cupcake_project)
   # executables that require them.
   # Without setting these variables, multi-config generators generally place
   # targets in ${subdirectory}/${target}.dir/${config}.
+  if(NOT CMAKE_OUTPUT_PREFIX)
+    set(CMAKE_OUTPUT_PREFIX "${CMAKE_BINARY_DIR}/output/$<CONFIG>")
+  endif()
   if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/output/$<CONFIG>/bin")
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_OUTPUT_PREFIX}/bin")
   endif()
   if(NOT CMAKE_LIBRARY_OUTPUT_DIRECTORY)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/output/$<CONFIG>/lib")
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_OUTPUT_PREFIX}/lib")
   endif()
   if(NOT CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/output/$<CONFIG>/lib")
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_OUTPUT_PREFIX}/lib")
   endif()
 
   set(CMAKE_CXX_VISIBILITY_PRESET hidden)
