@@ -1,4 +1,4 @@
-cupcake_add_library(libseven library.cpp)
+cupcake_add_library(seven library.cpp)
 target_link_libraries(${this} PRIVATE two::library)
 
 cupcake_add_executable(seven main.cpp)

@@ -11,16 +11,16 @@ add_custom_target(libraries)
 
 # add_library(<name> [<source>...])
 function(cupcake_add_library name)
-  set(target ${PROJECT_NAME}_${name})
+  set(target ${PROJECT_NAME}_lib${name})
   set(this ${target} PARENT_SCOPE)
   add_library(${target} ${ARGN})
   set_target_properties(${target} PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION ${PROJECT_VERSION_MAJOR}
     OUTPUT_NAME ${name}
-    EXPORT_NAME ${name}
+    EXPORT_NAME lib${name}
   )
-  add_library(${PROJECT_NAME}::${name} ALIAS ${target})
+  add_library(${PROJECT_NAME}::lib${name} ALIAS ${target})
   # Let the library include "private" headers if it wants.
   target_include_directories(${target}
     PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}"
