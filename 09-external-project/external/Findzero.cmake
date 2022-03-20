@@ -49,13 +49,15 @@ endfunction()
 
 cupcake_add_external_library(zero)
 
+file(TO_CMAKE_PATH "${CMAKE_CURRENT_LIST_DIR}/../../00-upstream" url)
+
 ExternalProject_Add(${cfpn}
   PREFIX "${CMAKE_SOURCE_DIR}/.cache"
   # The install directory is created immediately, before generator expressions
   # are evaluated. If the path has a generator expression, then on Unix it
   # just creates a directory that won't be used, but on Windows the path
   # contains illegal characters.
-  URL /home/jfreeman/code/cmake-way/00-upstream
+  URL "${url}"
   CMAKE_ARGS
     -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
     -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
