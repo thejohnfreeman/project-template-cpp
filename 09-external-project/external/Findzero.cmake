@@ -51,17 +51,20 @@ cupcake_add_external_library(zero)
 
 ExternalProject_Add(${cfpn}
   PREFIX "${CMAKE_SOURCE_DIR}/.cache"
-  INSTALL_DIR "${CMAKE_OUTPUT_PREFIX}"
+  # The install directory is created immediately, before generator expressions
+  # are evaluated. If the path has a generator expression, then on Unix it
+  # just creates a directory that won't be used, but on Windows the path
+  # contains illegal characters.
   URL /home/jfreeman/code/cmake-way/00-upstream
   CMAKE_ARGS
     -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
     -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
     "-DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}"
-    "-DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>"
+    "-DCMAKE_INSTALL_PREFIX=${CMAKE_OUTPUT_PREFIX}"
     "-DCMAKE_MODULE_PATH=${CMAKE_BINARY_DIR}"
   BUILD_BYPRODUCTS
   # Generator expressions are not supported in BYPRODUCTS until CMake 3.20.
-  # <INSTALL_DIR>/${CMAKE_INSTALL_LIBDIR}/libzero.a
+  # ${CMAKE_OUTPUT_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libzero.a
   "${byproducts}"
 )
 
