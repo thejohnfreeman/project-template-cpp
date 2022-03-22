@@ -10,8 +10,8 @@ jobs:
     strategy:
       matrix:
         platform:
-          - ubuntu-latest
-          - macos-latest
+          - ubuntu
+          - macos
         generator:
           - { name: Ninja, multi: false }
           - { name: Unix Makefiles, multi: false }
@@ -21,7 +21,7 @@ jobs:
         flavor:
           - Debug
           - Release
-    runs-on: ${{ matrix.platform }}
+    runs-on: ${{ matrix.platform }}-latest
     env:
       generator: ${{ matrix.generator.name }}
       multi: ${{ matrix.generator.multi && 'true' || '' }}
@@ -46,8 +46,8 @@ jobs:
     strategy:
       matrix:
         platform:
-          - ubuntu-latest
-          - macos-latest
+          - ubuntu
+          - macos
         generator:
           - { name: Ninja, multi: false }
           - { name: Unix Makefiles, multi: false }
@@ -61,7 +61,7 @@ jobs:
           - missing
           - half
           - full
-    runs-on: ${{ matrix.platform }}
+    runs-on: ${{ matrix.platform }}-latest
     env:
       generator: ${{ matrix.generator.name }}
       multi: ${{ matrix.generator.multi && 'true' || '' }}
@@ -96,8 +96,8 @@ jobs:
     strategy:
       matrix:
         platform:
-          - ubuntu-latest
-          - macos-latest
+          - ubuntu
+          - macos
         generator:
           - { name: Ninja, multi: false }
           - { name: Unix Makefiles, multi: false }
@@ -107,7 +107,7 @@ jobs:
         flavor:
           - Debug
           - Release
-    runs-on: ${{ matrix.platform }}
+    runs-on: ${{ matrix.platform }}-latest
     env:
       generator: ${{ matrix.generator.name }}
       multi: ${{ matrix.generator.multi && 'true' || '' }}
