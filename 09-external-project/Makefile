@@ -28,7 +28,6 @@ source_dir := ${CURDIR}
 build_dir := ${source_dir}/.build
 install_dir ?= ${source_dir}/../.install
 
-# CMAKE := ~/software/cmake-3.22.3-linux-x86_64/bin/cmake
 CMAKE := cmake
 CTEST := ctest
 CONAN := conan
