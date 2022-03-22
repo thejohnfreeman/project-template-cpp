@@ -58,7 +58,7 @@ function(cupcake_add_external_library name version linkage)
     string(TOUPPER ${build_type} BUILD_TYPE)
 
     set(binary_path "${binary_prefix}${CMAKE_${linkage}_LIBRARY_SUFFIX}")
-    if(NOT WIN32)
+    if(NOT WIN32 AND linkage STREQUAL "SHARED")
       set(binary_path "${binary_path}.${version}")
     endif()
     set_target_properties(${target} PROPERTIES
