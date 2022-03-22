@@ -2,7 +2,7 @@ name: Test upstream on Linux and MacOS
 on: [push, pull_request]
 
 jobs:
-  00-upstream:
+  _00-upstream:
     strategy:
       matrix:
         platform:

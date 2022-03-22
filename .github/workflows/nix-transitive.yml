@@ -5,7 +5,7 @@ on:
     types: [completed]
 
 jobs:
-  01-find-package:
+  _01-find-package:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     strategy:
       matrix:
@@ -47,7 +47,7 @@ jobs:
         with:
           working-directory: 01-find-package
 
-  02-add-subdirectory:
+  _02-add-subdirectory:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     strategy:
       matrix:
@@ -86,7 +86,7 @@ jobs:
         with:
           working-directory: 02-add-subdirectory
 
-  03-fp-fp:
+  _03-fp-fp:
     needs: 01-find-package
     strategy:
       matrix:
@@ -134,7 +134,7 @@ jobs:
         with:
           working-directory: 03-fp-fp
 
-  04-as-fp:
+  _04-as-fp:
     needs: 02-add-subdirectory
     strategy:
       matrix:
@@ -179,7 +179,7 @@ jobs:
         with:
           working-directory: 04-as-fp
 
-  06-fp-fc:
+  _06-fp-fc:
     needs: 01-find-package
     strategy:
       matrix:
@@ -221,7 +221,7 @@ jobs:
         with:
           working-directory: 06-fp-fc
 
-  07-as-fc:
+  _07-as-fc:
     needs: 02-add-subdirectory
     strategy:
       matrix:
@@ -259,4 +259,3 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 07-as-fc
-

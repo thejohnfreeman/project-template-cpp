@@ -6,7 +6,7 @@ on:
     types: [completed]
 
 jobs:
-  05-fetch-content:
+  _05-fetch-content:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     strategy:
       matrix:
@@ -42,7 +42,7 @@ jobs:
         with:
           working-directory: 05-fetch-content
 
-  08-find-module:
+  _08-find-module:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     strategy:
       matrix:
@@ -92,7 +92,7 @@ jobs:
         with:
           working-directory: 08-find-module
 
-  09-external-project:
+  _09-external-project:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     strategy:
       matrix:
