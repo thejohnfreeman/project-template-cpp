@@ -1,0 +1,38 @@
+name: Test upstream on Linux and MacOS
+on: [push, pull_request]
+
+jobs:
+  00-upstream:
+    strategy:
+      matrix:
+        platform:
+          - ubuntu-latest
+          - macos-latest
+        generator:
+          - { name: Ninja, multi: false }
+          - { name: Unix Makefiles, multi: false }
+        shared:
+          - ON
+          - OFF
+        flavor:
+          - Debug
+          - Release
+    runs-on: ${{ matrix.platform }}
+    env:
+      generator: ${{ matrix.generator.name }}
+      multi: ${{ matrix.generator.multi && 'true' || '' }}
+      shared: ${{ matrix.shared }}
+      flavor: ${{ matrix.flavor }}
+      install_dir: /usr/local
+      executable: 'true'
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install environment
+        uses: ./.github/actions/install-nix
+        with:
+          cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: test project
+        uses: ./.github/actions/test-project
+        with:
+          working-directory: 00-upstream

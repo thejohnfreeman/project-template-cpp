@@ -1,44 +1,12 @@
-name: Build, run, test, and install on Linux and MacOS
-on: [push, pull_request]
+name: Test transitive dependencies on Linux and MacOS
+on:
+  workflow_run:
+    workflows: [nix-upstream]
+    types: [completed]
 
 jobs:
-  zero:
-    strategy:
-      matrix:
-        platform:
-          - ubuntu-latest
-          - macos-latest
-        generator:
-          - { name: Ninja, multi: false }
-          - { name: Unix Makefiles, multi: false }
-        shared:
-          - ON
-          - OFF
-        flavor:
-          - Debug
-          - Release
-    runs-on: ${{ matrix.platform }}
-    env:
-      generator: ${{ matrix.generator.name }}
-      multi: ${{ matrix.generator.multi && 'true' || '' }}
-      shared: ${{ matrix.shared }}
-      flavor: ${{ matrix.flavor }}
-      install_dir: /usr/local
-      executable: 'true'
-    steps:
-      - name: checkout
-        uses: actions/checkout@v3
-      - name: install environment
-        uses: ./.github/actions/install-nix
-        with:
-          cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: test project
-        uses: ./.github/actions/test-project
-        with:
-          working-directory: 00-upstream
-
-  one:
-    needs: zero
+  01-find-package:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     strategy:
       matrix:
         platform:
@@ -68,7 +36,7 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: install zero
+      - name: install 00-upstream
         working-directory: 00-upstream
         run: |
           make build
@@ -79,8 +47,8 @@ jobs:
         with:
           working-directory: 01-find-package
 
-  two:
-    needs: zero
+  02-add-subdirectory:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     strategy:
       matrix:
         platform:
@@ -110,7 +78,7 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: copy zero
+      - name: copy 00-upstream
         run: |
           cp -r 00-upstream 02-add-subdirectory/external
       - name: test project
@@ -118,8 +86,8 @@ jobs:
         with:
           working-directory: 02-add-subdirectory
 
-  three:
-    needs: one
+  03-fp-fp:
+    needs: 01-find-package
     strategy:
       matrix:
         platform:
@@ -149,13 +117,13 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: install zero
+      - name: install 00-upstream
         working-directory: 00-upstream
         run: |
           make build
           sudo install_dir="${install_dir}" make install
           make clean
-      - name: install one
+      - name: install 01-find-package
         working-directory: 01-find-package
         run: |
           make build
@@ -166,8 +134,8 @@ jobs:
         with:
           working-directory: 03-fp-fp
 
-  four:
-    needs: two
+  04-as-fp:
+    needs: 02-add-subdirectory
     strategy:
       matrix:
         platform:
@@ -197,10 +165,10 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: copy zero
+      - name: copy 00-upstream
         run: |
           cp -r 00-upstream 02-add-subdirectory/external
-      - name: install two
+      - name: install 02-add-subdirectory
         working-directory: 02-add-subdirectory
         run: |
           make build
@@ -211,44 +179,8 @@ jobs:
         with:
           working-directory: 04-as-fp
 
-  five:
-    needs: zero
-    strategy:
-      matrix:
-        platform:
-          - ubuntu-latest
-          - macos-latest
-        generator:
-          - { name: Ninja, multi: false }
-          - { name: Unix Makefiles, multi: false }
-        shared:
-          - ON
-          - OFF
-        flavor:
-          - Debug
-          - Release
-    runs-on: ${{ matrix.platform }}
-    env:
-      generator: ${{ matrix.generator.name }}
-      multi: ${{ matrix.generator.multi && 'true' || '' }}
-      shared: ${{ matrix.shared }}
-      flavor: ${{ matrix.flavor }}
-      install_dir: /usr/local
-      executable: five
-    steps:
-      - name: checkout
-        uses: actions/checkout@v3
-      - name: install environment
-        uses: ./.github/actions/install-nix
-        with:
-          cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: test project
-        uses: ./.github/actions/test-project
-        with:
-          working-directory: 05-fetch-content
-
-  six:
-    needs: one
+  06-fp-fc:
+    needs: 01-find-package
     strategy:
       matrix:
         platform:
@@ -278,7 +210,7 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: install zero
+      - name: install 00-upstream
         working-directory: 00-upstream
         run: |
           make build
@@ -289,8 +221,8 @@ jobs:
         with:
           working-directory: 06-fp-fc
 
-  seven:
-    needs: two
+  07-as-fc:
+    needs: 02-add-subdirectory
     strategy:
       matrix:
         platform:
@@ -320,7 +252,7 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: copy zero
+      - name: copy 00-upstream
         run: |
           cp -r 00-upstream 02-add-subdirectory/external
       - name: test project
@@ -328,88 +260,3 @@ jobs:
         with:
           working-directory: 07-as-fc
 
-  eight:
-    needs: zero
-    strategy:
-      matrix:
-        platform:
-          - ubuntu-latest
-          - macos-latest
-        generator:
-          - { name: Ninja, multi: false }
-          - { name: Unix Makefiles, multi: false }
-        shared:
-          - ON
-          - OFF
-        flavor:
-          - Debug
-          - Release
-        zero:
-          - missing
-          - half
-          - full
-    runs-on: ${{ matrix.platform }}
-    env:
-      generator: ${{ matrix.generator.name }}
-      multi: ${{ matrix.generator.multi && 'true' || '' }}
-      shared: ${{ matrix.shared }}
-      flavor: ${{ matrix.flavor }}
-      install_dir: /usr/local
-      executable: eight
-    steps:
-      - name: checkout
-        uses: actions/checkout@v3
-      - name: install environment
-        uses: ./.github/actions/install-nix
-        with:
-          cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: install zero
-        if: matrix.zero != 'missing'
-        working-directory: 00-upstream
-        run: |
-          make build
-          sudo install_dir="${install_dir}" make install
-          make clean
-      - name: remove zero configuration
-        if: matrix.zero == 'half'
-        run: sudo rm -rf ${install_dir}/lib/cmake/zero
-      - name: test project
-        uses: ./.github/actions/test-project
-        with:
-          working-directory: 08-find-module
-
-  nine:
-    needs: zero
-    strategy:
-      matrix:
-        platform:
-          - ubuntu-latest
-          - macos-latest
-        generator:
-          - { name: Ninja, multi: false }
-          - { name: Unix Makefiles, multi: false }
-        shared:
-          - ON
-          - OFF
-        flavor:
-          - Debug
-          - Release
-    runs-on: ${{ matrix.platform }}
-    env:
-      generator: ${{ matrix.generator.name }}
-      multi: ${{ matrix.generator.multi && 'true' || '' }}
-      shared: ${{ matrix.shared }}
-      flavor: ${{ matrix.flavor }}
-      install_dir: /usr/local
-      executable: nine
-    steps:
-      - name: checkout
-        uses: actions/checkout@v3
-      - name: install environment
-        uses: ./.github/actions/install-nix
-        with:
-          cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: test project
-        uses: ./.github/actions/test-project
-        with:
-          working-directory: 09-external-project
