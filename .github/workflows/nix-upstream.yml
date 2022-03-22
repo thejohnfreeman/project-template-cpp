@@ -1,4 +1,4 @@
-name: Test upstream on Linux and MacOS
+name: nix-upstream
 on: [push, pull_request]
 
 jobs:

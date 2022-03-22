@@ -1,4 +1,4 @@
-name: Build, run, test, and install on Windows
+name: windows
 on: [push, pull_request]
 
 jobs:

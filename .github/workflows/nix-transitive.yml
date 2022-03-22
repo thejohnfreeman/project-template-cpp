@@ -1,4 +1,4 @@
-name: Test transitive dependencies on Linux and MacOS
+name: nix-transitive
 on:
   workflow_run:
     workflows: [nix-upstream]

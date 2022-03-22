@@ -1,4 +1,4 @@
-name: Test direct dependencies on Linux and MacOS
+name: nix-direct
 on:
   workflow_run:
     workflows: [nix-upstream]
