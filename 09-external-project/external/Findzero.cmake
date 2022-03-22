@@ -40,7 +40,7 @@ function(cupcake_add_external_library name version linkage)
     add_library(${package}::library ALIAS ${target})
   endif()
   add_dependencies(${target} ${package})
-  if(NOT WIN32 AND linkage STREQUAL "SHARED")
+  if(NOT WINDOWS AND linkage STREQUAL "SHARED")
     set_target_properties(${target} PROPERTIES
       IMPORTED_SONAME ${binary_stem}${CMAKE_SHARED_LIBRARY_SUFFIX}.${version_major}
     )
@@ -54,20 +54,33 @@ function(cupcake_add_external_library name version linkage)
     file(MAKE_DIRECTORY "${include_dir}")
     target_include_directories(${target} INTERFACE "${include_dir}")
 
-    set(binary_prefix "${prefix}/${CMAKE_INSTALL_LIBDIR}/${binary_stem}")
     string(TOUPPER ${build_type} BUILD_TYPE)
 
-    set(binary_path "${binary_prefix}${CMAKE_${linkage}_LIBRARY_SUFFIX}")
-    if(NOT WIN32 AND linkage STREQUAL "SHARED")
-      set(binary_path "${binary_path}.${version}")
+    # - Linux: libname.so.0.1.0
+    # - Windows: name.dll
+    # - OSX: libname.0.1.0.dylib
+    set(location "${prefix}/")
+    if(WINDOWS AND linkage STREQUAL "SHARED")
+      string(APPEND location "${CMAKE_INSTALL_BINDIR}")
+    else()
+      string(APPEND location "${CMAKE_INSTALL_LIBDIR}")
     endif()
-    set_target_properties(${target} PROPERTIES
-      IMPORTED_LOCATION_${BUILD_TYPE} "${binary_path}"
-    )
-    list(APPEND byproducts "${binary_path}")
+    string(APPEND location "/${binary_stem}")
+    if(OSX AND linkage STREQUAL "SHARED")
+      string(APPEND location ".${version}")
+    endif()
+    string(APPEND location "${CMAKE_${linkage}_LIBRARY_SUFFIX}")
+    if(LINUX AND linkage STREQUAL "SHARED")
+      string(APPEND location ".${version}")
+    endif()
 
-    if(WIN32 AND linkage STREQUAL "SHARED")
-      set(implib_path "${binary_prefix}${CMAKE_IMPORT_LIBRARY_SUFFIX}")
+    set_target_properties(${target} PROPERTIES
+      IMPORTED_LOCATION_${BUILD_TYPE} "${location}"
+    )
+    list(APPEND byproducts "${location}")
+
+    if(WINDOWS AND linkage STREQUAL "SHARED")
+      set(implib_path "${prefix}/${CMAKE_INSTALL_LIBDIR}/${binary_stem}${CMAKE_IMPORT_LIBRARY_SUFFIX}")
       set_target_properties(${target} PROPERTIES
         IMPORTED_IMPLIB_${BUILD_TYPE} "${implib_path}"
       )
@@ -83,8 +96,8 @@ function(cupcake_add_external_library name version linkage)
   # who just want to build our project instead of installing it.
   if(linkage STREQUAL SHARED)
     install(
-      FILES $<TARGET_FILE:${target}> $<$<NOT:$<BOOL:${WIN32}>>:$<TARGET_SONAME_FILE:${target}>>
-      DESTINATION $<IF:$<BOOL:${WIN32}>,${CMAKE_INSTALL_BINDIR},${CMAKE_INSTALL_LIBDIR}>
+      FILES $<TARGET_FILE:${target}> $<$<NOT:$<BOOL:${WINDOWS}>>:$<TARGET_SONAME_FILE:${target}>>
+      DESTINATION $<IF:$<BOOL:${WINDOWS}>,${CMAKE_INSTALL_BINDIR},${CMAKE_INSTALL_LIBDIR}>
     )
   endif()
   # install(IMPORTED_RUNTIME_ARTIFACTS) is not available until CMake 3.21,
