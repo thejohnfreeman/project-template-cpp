@@ -87,7 +87,7 @@ jobs:
           working-directory: 02-add-subdirectory
 
   _03-fp-fp:
-    needs: 01-find-package
+    needs: _01-find-package
     strategy:
       matrix:
         platform:
@@ -135,7 +135,7 @@ jobs:
           working-directory: 03-fp-fp
 
   _04-as-fp:
-    needs: 02-add-subdirectory
+    needs: _02-add-subdirectory
     strategy:
       matrix:
         platform:
@@ -180,7 +180,7 @@ jobs:
           working-directory: 04-as-fp
 
   _06-fp-fc:
-    needs: 01-find-package
+    needs: _01-find-package
     strategy:
       matrix:
         platform:
@@ -222,7 +222,7 @@ jobs:
           working-directory: 06-fp-fc
 
   _07-as-fc:
-    needs: 02-add-subdirectory
+    needs: _02-add-subdirectory
     strategy:
       matrix:
         platform:
