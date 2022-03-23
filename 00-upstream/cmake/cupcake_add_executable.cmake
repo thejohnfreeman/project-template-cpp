@@ -38,6 +38,8 @@ function(cupcake_add_executable name)
   install(
     TARGETS ${target}
     EXPORT ${PROJECT_EXPORT_SET}
-    RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+    RUNTIME
+      DESTINATION "${CMAKE_INSTALL_BINDIR}"
+      COMPONENT ${PROJECT_NAME}_runtime
   )
 endfunction()

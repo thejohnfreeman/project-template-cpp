@@ -53,6 +53,7 @@ macro(cupcake_install_project)
   install(
     DIRECTORY "${CMAKE_CURRENT_EXPORT_DIR}"
     DESTINATION "${CMAKE_INSTALL_EXPORTDIR}"
+    COMPONENT ${PROJECT_NAME}_development
     PATTERN ${PROJECT_NAME}-targets.cmake EXCLUDE
   )
 endmacro()

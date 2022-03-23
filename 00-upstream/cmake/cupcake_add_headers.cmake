@@ -41,5 +41,6 @@ function(cupcake_add_headers)
   install(
     DIRECTORY "${PROJECT_BINARY_DIR}/include/generated/"
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+    COMPONENT ${PROJECT_NAME}_development
   )
 endfunction()
