@@ -37,7 +37,7 @@ macro(cupcake_project)
   set(CMAKE_VISIBILITY_INLINES_HIDDEN YES)
   set(CMAKE_EXPORT_COMPILE_COMMANDS YES)
 
-  if(CMAKE_SYSTEM_NAME STREQUAL "Darwn")
+  if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     set(OSX TRUE)
   endif()
   if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
@@ -50,9 +50,14 @@ macro(cupcake_project)
   # Enable deterministic relocatable builds.
   set(CMAKE_BUILD_RPATH_USE_ORIGIN TRUE)
   # Use relative rpath for installation.
+  if(OSX)
+    set(origin @loader_path)
+  else()
+    set(origin $ORIGIN)
+  endif()
   file(RELATIVE_PATH relDir
     ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}
     ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}
   )
-  set(CMAKE_INSTALL_RPATH $ORIGIN $ORIGIN/${relDir})
+  set(CMAKE_INSTALL_RPATH ${origin} ${origin}/${relDir})
 endmacro()

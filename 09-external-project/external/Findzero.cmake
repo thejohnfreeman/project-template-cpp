@@ -41,9 +41,17 @@ function(cupcake_add_external_library name version linkage)
   endif()
   add_dependencies(${target} ${package})
   if(NOT WINDOWS AND linkage STREQUAL "SHARED")
-    set_target_properties(${target} PROPERTIES
-      IMPORTED_SONAME ${binary_stem}${CMAKE_SHARED_LIBRARY_SUFFIX}.${version_major}
-    )
+    # - Linux: libname.so.0
+    # - OSX: libname.0.dylib
+    set(soname "${binary_stem}")
+    if(OSX)
+      string(APPEND soname ".${version_major}")
+    endif()
+    string(APPEND soname "${CMAKE_SHARED_LIBRARY_SUFFIX}")
+    if(LINUX)
+      string(APPEND soname ".${version_major}")
+    endif()
+    set_target_properties(${target} PROPERTIES IMPORTED_SONAME "${soname}")
   endif()
 
   set(build_types "${CMAKE_BUILD_TYPE};${CMAKE_CONFIGURATION_TYPES}")
