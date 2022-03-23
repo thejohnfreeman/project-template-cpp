@@ -100,8 +100,7 @@ function(cupcake_add_external_library name version linkage)
       DESTINATION $<IF:$<BOOL:${WINDOWS}>,${CMAKE_INSTALL_BINDIR},${CMAKE_INSTALL_LIBDIR}>
     )
   endif()
-  # install(IMPORTED_RUNTIME_ARTIFACTS) is not available until CMake 3.21,
-  # and does not handle symbolic links.
+  # added in CMake 3.21: install(IMPORTED_RUNTIME_ARTIFACTS)
   # install(
   #   IMPORTED_RUNTIME_ARTIFACTS ${target}
   #   LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
@@ -131,10 +130,8 @@ ExternalProject_Add(${package}
     "-DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}"
     "-DCMAKE_INSTALL_PREFIX=${CMAKE_OUTPUT_PREFIX}"
     "-DCMAKE_MODULE_PATH=${CMAKE_BINARY_DIR}"
-  BUILD_BYPRODUCTS
-  # Generator expressions are not supported in BYPRODUCTS until CMake 3.20.
-  # ${CMAKE_OUTPUT_PREFIX}/${CMAKE_INSTALL_LIBDIR}/libzero.a
-  "${byproducts}"
+  # added in CMake 3.20: generator expressions in BYPRODUCTS
+  BUILD_BYPRODUCTS "${byproducts}"
 )
 
 set(${package}_FOUND TRUE)
