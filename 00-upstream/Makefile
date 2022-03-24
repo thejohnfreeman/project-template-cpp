@@ -57,7 +57,7 @@ configure : ${cache}
 built_executable := ${build_dir}/output/${flavor}/bin/${executable}${EXE}
 
 ${built_executable} : ${cache} $(wildcard ${source_dir}/src/*.cpp)
-	${CMAKE} -E time ${CMAKE} --build ${build_dir} --verbose $(if ${multi},--config ${flavor}) --parallel ${NPROC} --target all 2>&1 | tee ${build_dir}/build.log
+	${CMAKE} -E time ${CMAKE} --build ${build_dir} --verbose $(if ${multi},--config ${flavor}) --parallel ${NPROC} --target $(if ${multi},ALL_BUILD,all) 2>&1 | tee ${build_dir}/build.log
 	${SHELL} ${.SHELLFLAGS} "ls -l '$@'"
 	${SHELL} ${.SHELLFLAGS} "ls -l '$<'"
 	${CMAKE} -E touch $@
