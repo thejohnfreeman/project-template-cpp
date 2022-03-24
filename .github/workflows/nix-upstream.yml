@@ -24,7 +24,6 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: /usr/local
-      executable: 'true'
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -36,3 +35,4 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 00-upstream
+          executable: 'true'

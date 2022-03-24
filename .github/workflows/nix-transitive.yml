@@ -28,7 +28,6 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: /usr/local
-      executable: hello
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -46,6 +45,7 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 01-find-package
+          executable: hello
 
   _02-add-subdirectory:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
@@ -70,7 +70,6 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: /usr/local
-      executable: goodbye
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -85,6 +84,7 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 02-add-subdirectory
+          executable: goodbye
 
   _03-fp-fp:
     needs: _01-find-package
@@ -109,7 +109,6 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: /usr/local
-      executable: aloha
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -133,6 +132,7 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 03-fp-fp
+          executable: aloha
 
   _04-as-fp:
     needs: _02-add-subdirectory
@@ -157,7 +157,6 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: /usr/local
-      executable: four
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -178,6 +177,7 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 04-as-fp
+          executable: four
 
   _06-fp-fc:
     needs: _01-find-package
@@ -202,7 +202,6 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: /usr/local
-      executable: six
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -220,6 +219,7 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 06-fp-fc
+          executable: six
 
   _07-as-fc:
     needs: _02-add-subdirectory
@@ -244,7 +244,6 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: /usr/local
-      executable: seven
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -259,3 +258,4 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 07-as-fc
+          executable: seven

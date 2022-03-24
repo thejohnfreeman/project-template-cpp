@@ -2,7 +2,7 @@ name: windows
 on: [push, pull_request]
 
 jobs:
-  zero:
+  _00-upstream:
     strategy:
       matrix:
         generator:
@@ -20,7 +20,6 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: C:\\
-      executable: 'true'
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -33,9 +32,10 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 00-upstream
+          executable: 'true'
 
-  one:
-    needs: zero
+  _01-find-package:
+    needs: _00-upstream
     strategy:
       matrix:
         generator:
@@ -53,7 +53,6 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: C:\\
-      executable: hello
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -62,7 +61,7 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: install zero
+      - name: install 00-upstream
         working-directory: 00-upstream
         run: |
           make install
@@ -71,10 +70,11 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 01-find-package
+          executable: hello
           with-tests: ${{ matrix.shared == 'OFF' }}
 
-  two:
-    needs: zero
+  _02-add-subdirectory:
+    needs: _00-upstream
     strategy:
       matrix:
         generator:
@@ -92,7 +92,6 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: C:\\
-      executable: goodbye
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -101,17 +100,18 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: copy zero
+      - name: copy 00-upstream
         run: |
           cp -r 00-upstream 02-add-subdirectory\external
       - name: test project
         uses: ./.github/actions/test-project
         with:
           working-directory: 02-add-subdirectory
+          executable: goodbye
           with-tests: ${{ matrix.shared == 'OFF' }}
 
-  three:
-    needs: one
+  _03-fp-fp:
+    needs: _01-find-package
     strategy:
       matrix:
         generator:
@@ -129,7 +129,6 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: C:\\
-      executable: aloha
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -138,12 +137,12 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: install zero
+      - name: install 00-upstream
         working-directory: 00-upstream
         run: |
           make install
           make clean
-      - name: install one
+      - name: install 01-find-package
         working-directory: 01-find-package
         run: |
           make install
@@ -152,10 +151,11 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 03-fp-fp
+          executable: aloha
           with-tests: ${{ matrix.shared == 'OFF' }}
 
-  four:
-    needs: two
+  _04-as-fp:
+    needs: _02-add-subdirectory
     strategy:
       matrix:
         generator:
@@ -173,7 +173,6 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: C:\\
-      executable: four
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -182,10 +181,10 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: copy zero
+      - name: copy 00-upstream
         run: |
           cp -r 00-upstream 02-add-subdirectory\external
-      - name: install two
+      - name: install 02-add-subdirectory
         working-directory: 02-add-subdirectory
         run: |
           make install
@@ -194,10 +193,11 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 04-as-fp
+          executable: four
           with-tests: ${{ matrix.shared == 'OFF' }}
 
-  five:
-    needs: zero
+  _05-fetch-content:
+    needs: _00-upstream
     strategy:
       matrix:
         generator:
@@ -215,7 +215,6 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: C:\\
-      executable: five
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -228,10 +227,11 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 05-fetch-content
+          executable: five
           with-tests: ${{ matrix.shared == 'OFF' }}
 
-  six:
-    needs: one
+  _06-fp-fc:
+    needs: _01-find-package
     strategy:
       matrix:
         generator:
@@ -249,7 +249,6 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: C:\\
-      executable: six
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -258,7 +257,7 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: install zero
+      - name: install 00-upstream
         working-directory: 00-upstream
         run: |
           make install
@@ -267,10 +266,11 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 06-fp-fc
+          executable: six
           with-tests: ${{ matrix.shared == 'OFF' }}
 
-  seven:
-    needs: two
+  _07-as-fc:
+    needs: _02-add-subdirectory
     strategy:
       matrix:
         generator:
@@ -288,7 +288,6 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: C:\\
-      executable: seven
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -297,17 +296,18 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: copy zero
+      - name: copy 00-upstream
         run: |
           cp -r 00-upstream 02-add-subdirectory\external
       - name: test project
         uses: ./.github/actions/test-project
         with:
           working-directory: 07-as-fc
+          executable: seven
           with-tests: ${{ matrix.shared == 'OFF' }}
 
-  eight:
-    needs: zero
+  _08-find-module:
+    needs: _00-upstream
     strategy:
       matrix:
         generator:
@@ -329,7 +329,6 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: C:\\
-      executable: eight
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -351,10 +350,11 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 08-find-module
+          executable: eight
           with-tests: ${{ matrix.shared == 'OFF' }}
 
-  nine:
-    needs: zero
+  _09-external-project:
+    needs: _00-upstream
     strategy:
       matrix:
         generator:
@@ -372,7 +372,6 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: C:\\
-      executable: nine
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -385,4 +384,5 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 09-external-project
+          executable: nine
           with-tests: ${{ matrix.shared == 'OFF' }}

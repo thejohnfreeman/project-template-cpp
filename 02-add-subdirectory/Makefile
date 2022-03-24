@@ -1,3 +1,3 @@
-executable := goodbye
+executable ?= goodbye
 
 include ../00-upstream/Makefile

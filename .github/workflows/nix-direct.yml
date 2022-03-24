@@ -28,7 +28,6 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: /usr/local
-      executable: five
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -40,6 +39,7 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 05-fetch-content
+          executable: five
 
   _08-find-module:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
@@ -68,7 +68,6 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: /usr/local
-      executable: eight
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -90,6 +89,7 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 08-find-module
+          executable: eight
 
   _09-external-project:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
@@ -114,7 +114,6 @@ jobs:
       shared: ${{ matrix.shared }}
       flavor: ${{ matrix.flavor }}
       install_dir: /usr/local
-      executable: nine
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -126,3 +125,4 @@ jobs:
         uses: ./.github/actions/test-project
         with:
           working-directory: 09-external-project
+          executable: nine

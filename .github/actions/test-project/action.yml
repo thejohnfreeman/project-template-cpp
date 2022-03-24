@@ -3,6 +3,8 @@ description: Test a project by trying all the common developer workflows.
 inputs:
   working-directory:
     required: true
+  executable:
+    required: true
   with-tests:
     default: 'true'
   shell:
@@ -48,9 +50,9 @@ runs:
       shell: bash
     - name: path on non-Windows
       if: runner.os != 'Windows'
-      run: ${executable}
+      run: ${{ inputs.executable }}
       shell: bash
     - name: path on Windows
       if: runner.os == 'Windows'
-      run: $env:PATH = "$env:install_dir\\bin;$env:PATH"; iex $env:executable
+      run: $env:PATH = "$env:install_dir\\bin;$env:PATH"; ${{ inputs.executable }}
       shell: pwsh
