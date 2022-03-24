@@ -25,7 +25,14 @@ cupcake_find_package(doctest 2.4 PRIVATE)
 
 add_subdirectory(include)
 add_subdirectory(src)
-enable_testing()
-add_subdirectory(tests)
+
+# Do not add unexported targets when added as a subproject.
+if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
+  include(CTest)
+  # Give package builders a means to skip unexported targets.
+  if(BUILD_TESTING)
+    add_subdirectory(tests)
+  endif()
+endif()
 
 cupcake_install_project()

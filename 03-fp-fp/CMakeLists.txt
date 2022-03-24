@@ -34,7 +34,12 @@ cupcake_find_package(one 0.1)
 
 add_subdirectory(include)
 add_subdirectory(src)
-enable_testing()
-add_subdirectory(tests)
+
+if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
+  include(CTest)
+  if(BUILD_TESTING)
+    add_subdirectory(tests)
+  endif()
+endif()
 
 cupcake_install_project()
