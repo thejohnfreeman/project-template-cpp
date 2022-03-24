@@ -8,13 +8,17 @@ ifeq ($(OS),Windows_NT)
 	SHELL := powershell.exe
 	.SHELLFLAGS :=
 	EXE := .exe
-	NPROC := $(shell (Get-WmiObject -class Win32_processor).NumberOfLogicalProcessors)
+	NPROC := $(shell $$env:NUMBER_OF_PROCESSORS)
 	generator ?= Visual Studio 16 2019
 	multi ?= true
 else
 	SHELL := /bin/bash
 	.SHELLFLAGS := -o pipefail -c
-	NPROC := $(shell nproc)
+	ifeq ($(shell uname -s),Darwin)
+		NPROC := $(shell sysctl -n hw.logicalcpu)
+	else
+		NPROC := $(shell nproc)
+	endif
 	generator ?= Ninja
 	multi ?=
 endif
@@ -71,7 +75,7 @@ test : ${cache}
 	${CMAKE} -E time ${CMAKE} --build ${build_dir} --target $(if ${multi},RUN_TESTS,test) 2>&1 | tee ${build_dir}/test.log
 
 ctest : ${cache}
-	${CMAKE} -E chdir ${build_dir} ${CTEST}
+	${CMAKE} -E chdir ${build_dir} ${CTEST} --parallel ${NPROC}
 
 installed_executable := ${install_dir}/bin/${executable}${EXE}
 
