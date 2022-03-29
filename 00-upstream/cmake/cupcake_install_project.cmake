@@ -11,7 +11,7 @@ set(package_config_input "${CMAKE_CURRENT_LIST_DIR}/package-config.cmake.in")
 # This macro must be called last in the project's root CMakeLists.txt,
 # after the PROJECT_DEPENDENCIES variable has been populated.
 macro(cupcake_install_project)
-  set(CMAKE_INSTALL_EXPORTDIR "${CMAKE_INSTALL_LIBDIR}/cmake")
+  set(CMAKE_INSTALL_EXPORTDIR "share")
 
   set(CMAKE_CURRENT_EXPORT_DIR "${CMAKE_CURRENT_BINARY_DIR}/export/${PROJECT_NAME}")
 
