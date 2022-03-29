@@ -13,27 +13,28 @@ function(cupcake_add_executable name)
   set(target ${PROJECT_NAME}_${name})
   set(this ${target} PARENT_SCOPE)
   add_executable(${target} ${ARGN})
-  set_target_properties(${target} PROPERTIES
-    OUTPUT_NAME ${name}
-    EXPORT_NAME ${name}
-  )
   add_executable(${PROJECT_NAME}::${name} ALIAS ${target})
-
-  # Add a convenient target for the first executable in this project.
-  if(NOT TARGET ${PROJECT_NAME}::executable)
-    add_executable(${PROJECT_NAME}::executable ALIAS ${target})
-    # TODO: How to export this alias? We do not have INTERFACE for executable
-    # like we do for library.
-  endif()
 
   # if(PROJECT_IS_TOP_LEVEL)
   if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
     add_dependencies(executables ${target})
-    # Add a convenient target for the first executable in the main project.
-    if(NOT TARGET executable)
-      add_custom_target(executable DEPENDS ${target})
-    endif()
   endif()
+
+  # Let the executable include "private" headers if it wants.
+  target_include_directories(${target}
+    PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/${name}"
+  )
+
+  file(GLOB_RECURSE sources CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/${name}/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/${name}.cpp"
+  )
+  target_sources(${target} PRIVATE ${sources})
+
+  set_target_properties(${target} PROPERTIES
+    OUTPUT_NAME ${name}
+    EXPORT_NAME ${name}
+  )
 
   install(
     TARGETS ${target}

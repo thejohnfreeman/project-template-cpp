@@ -31,14 +31,12 @@ cupcake_find_package(doctest 2.4 PRIVATE)
 cupcake_find_package(one 0.1)
 # }
 
-add_subdirectory(include)
-add_subdirectory(src)
+cupcake_add_library(six)
+target_link_libraries(${this} PRIVATE one::libone)
 
-if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
-  include(CTest)
-  if(BUILD_TESTING)
-    add_subdirectory(tests)
-  endif()
-endif()
+cupcake_add_executable(six)
+target_link_libraries(${this} PRIVATE six::libsix)
+
+cupcake_add_tests()
 
 cupcake_install_project()

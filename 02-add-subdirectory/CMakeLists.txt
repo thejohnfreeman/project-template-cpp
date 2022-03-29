@@ -25,14 +25,12 @@ cupcake_find_package(doctest 2.4 PRIVATE)
 # }
 
 add_subdirectory(external)
-add_subdirectory(include)
-add_subdirectory(src)
 
-if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
-  include(CTest)
-  if(BUILD_TESTING)
-    add_subdirectory(tests)
-  endif()
-endif()
+cupcake_add_library(two)
+
+cupcake_add_executable(goodbye)
+target_link_libraries(${this} PUBLIC zero::libzero)
+
+cupcake_add_tests()
 
 cupcake_install_project()

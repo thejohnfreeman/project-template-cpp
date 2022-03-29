@@ -23,16 +23,11 @@ set(CMAKE_FIND_PACKAGE_SORT_DIRECTION DEC)
 cupcake_find_package(doctest 2.4 PRIVATE)
 # }
 
-add_subdirectory(include)
-add_subdirectory(src)
+cupcake_add_library(zero)
 
-# Do not add unexported targets when added as a subproject.
-if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
-  include(CTest)
-  # Give package builders a means to skip unexported targets.
-  if(BUILD_TESTING)
-    add_subdirectory(tests)
-  endif()
-endif()
+cupcake_add_executable(true)
+target_link_libraries(${this} PRIVATE zero::libzero)
+
+cupcake_add_tests()
 
 cupcake_install_project()

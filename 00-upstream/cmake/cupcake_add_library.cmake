@@ -3,6 +3,7 @@ if(DEFINED_CUPCAKE_ADD_LIBRARY)
 endif()
 set(DEFINED_CUPCAKE_ADD_LIBRARY TRUE)
 
+include(cupcake_generate_version_header)
 include(GenerateExportHeader)
 include(GNUInstallDirs)
 
@@ -17,67 +18,71 @@ function(cupcake_add_library name)
   # and suffix, and within CMake by this prefix.
   set(target ${PROJECT_NAME}_lib${name})
   set(this ${target} PARENT_SCOPE)
-  add_library(${target} ${ARGN})
+
+  # If this is a header-only library, then it must have type INTERFACE.
+  # Otherwise, let the builder choose its linkage with BUILD_SHARED_LIBS.
+  if(
+      EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/lib${name}" OR
+      EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/lib${name}.cpp"
+  )
+    unset(type)
+    set(public PUBLIC)
+  else()
+    set(type INTERFACE)
+    set(public INTERFACE)
+  endif()
+
+  add_library(${target} ${type} ${ARGN})
+  add_library(${PROJECT_NAME}::lib${name} ALIAS ${target})
   set_target_properties(${target} PROPERTIES
-    VERSION ${PROJECT_VERSION}
-    SOVERSION ${PROJECT_VERSION_MAJOR}
-    OUTPUT_NAME ${name}
     EXPORT_NAME lib${name}
   )
-  add_library(${PROJECT_NAME}::lib${name} ALIAS ${target})
-  # Let the library include "private" headers if it wants.
-  target_include_directories(${target}
-    PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}"
-  )
-  # Each project has only one header library,
-  # and every binary library depends on it.
-  target_link_libraries(${target} PUBLIC ${PROJECT_NAME}::headers)
-
-  # Add a convenient target for the first library in this project.
-  if(NOT TARGET ${PROJECT_NAME}::library)
-    add_library(${PROJECT_NAME}::library ALIAS ${target})
-    # We can use an INTERFACE library to effectively export an ALIAS library.
-    set(alias ${PROJECT_NAME}_library)
-    add_library(${alias} INTERFACE)
-    target_link_libraries(${alias} INTERFACE ${target})
-    set_target_properties(${alias} PROPERTIES
-      EXPORT_NAME library
-    )
-    install(
-      TARGETS ${alias}
-      EXPORT ${PROJECT_EXPORT_SET}
-    )
-  endif()
 
   # if(PROJECT_IS_TOP_LEVEL)
   if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
     add_dependencies(libraries ${target})
-    # Add a convenient target for the first library in the main project.
-    if(NOT TARGET library)
-      add_custom_target(library DEPENDS ${target})
+  endif()
+
+  cupcake_generate_version_header(${name})
+  # Each library has one public header directory under include/.
+  target_include_directories(${target} ${public}
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+    "$<BUILD_INTERFACE:${CMAKE_INCLUDE_OUTPUT_DIRECTORY}>"
+  )
+
+  get_target_property(type ${target} TYPE)
+  if(NOT type STREQUAL INTERFACE_LIBRARY)
+    # Let the library include "private" headers if it wants.
+    target_include_directories(${target}
+      PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/lib${name}"
+    )
+
+    file(GLOB_RECURSE sources CONFIGURE_DEPENDS
+      "${CMAKE_CURRENT_SOURCE_DIR}/src/lib${name}/*.cpp"
+      "${CMAKE_CURRENT_SOURCE_DIR}/src/lib${name}.cpp"
+    )
+    target_sources(${target} PRIVATE ${sources})
+    set_target_properties(${target} PROPERTIES
+      OUTPUT_NAME ${name}
+    )
+
+    # In order to include the generated header by a path starting with
+    # a directory matching the library name like all other library headers, we
+    # must pass the `EXPORT_FILE_NAME` option.
+    generate_export_header(${target}
+      BASE_NAME ${name}
+      EXPORT_FILE_NAME "${CMAKE_INCLUDE_OUTPUT_DIRECTORY}/${name}/export.hpp"
+    )
+    if(NOT type STREQUAL SHARED_LIBRARY)
+      # Disable the export definitions.
+      string(TOUPPER ${name} UPPER_NAME)
+      target_compile_definitions(${target} PUBLIC ${UPPER_NAME}_STATIC_DEFINE)
     endif()
   endif()
-
-  # We cannot call this function for the headers library because it is
-  # INTERFACE, but we only want to call it once and share the header among all
-  # libraries in the project.
-  # In order to include the generated header by a path starting with a directory
-  # matching the package name like all other package headers, we must pass the
-  # `EXPORT_FILE_NAME` option.
-  if(NOT ${PROJECT_NAME}_GENERATED_EXPORT_HEADER)
-    generate_export_header(${target}
-      BASE_NAME ${PROJECT_NAME}
-      EXPORT_FILE_NAME "${PROJECT_BINARY_DIR}/include/generated/${PROJECT_NAME}/export.hpp"
-    )
-    set(${PROJECT_NAME}_GENERATED_EXPORT_HEADER TRUE)
-  endif()
-
-  get_target_property(library_type ${target} TYPE)
-  if(NOT library_type STREQUAL SHARED_LIBRARY)
-    # Disable the export definitions for non-shared libraries.
-    string(TOUPPER ${PROJECT_NAME} UPPER_PROJECT_NAME)
-    target_compile_definitions(${target}
-      PUBLIC ${UPPER_PROJECT_NAME}_STATIC_DEFINE
+  if(type STREQUAL SHARED_LIBRARY)
+    set_target_properties(${target} PROPERTIES
+      VERSION ${PROJECT_VERSION}
+      SOVERSION ${PROJECT_VERSION_MAJOR}
     )
   endif()
 
@@ -94,6 +99,8 @@ function(cupcake_add_library name)
     RUNTIME
       DESTINATION "${CMAKE_INSTALL_BINDIR}"
       COMPONENT ${PROJECT_NAME}_runtime
+    INCLUDES
+      DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
   )
   # added in CMake 3.12: NAMELINK_COMPONENT
   install(
@@ -102,5 +109,14 @@ function(cupcake_add_library name)
       DESTINATION "${CMAKE_INSTALL_LIBDIR}"
       COMPONENT ${PROJECT_NAME}_development
       NAMELINK_ONLY
+  )
+  # We must install the headers with install(DIRECTORY) because
+  # installing a target does not install its include directories.
+  install(
+    DIRECTORY
+      "${CMAKE_INCLUDE_OUTPUT_DIRECTORY}/${name}"
+      "${CMAKE_CURRENT_SOURCE_DIR}/include/${name}"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+    COMPONENT ${PROJECT_NAME}_development
   )
 endfunction()

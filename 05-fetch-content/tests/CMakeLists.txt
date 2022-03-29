@@ -1,6 +1,6 @@
 cupcake_add_test_executable(five five.cpp)
 target_link_libraries(
   ${this}
-  ${PROJECT_NAME}::library
+  five::libfive
   doctest::doctest
 )

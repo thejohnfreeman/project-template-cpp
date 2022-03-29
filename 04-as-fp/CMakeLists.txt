@@ -32,14 +32,12 @@ cupcake_find_package(doctest 2.4 PRIVATE)
 cupcake_find_package(two 0.1)
 # }
 
-add_subdirectory(include)
-add_subdirectory(src)
+cupcake_add_library(four)
+target_link_libraries(${this} PUBLIC two::libtwo)
 
-if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
-  include(CTest)
-  if(BUILD_TESTING)
-    add_subdirectory(tests)
-  endif()
-endif()
+cupcake_add_executable(four)
+target_link_libraries(${this} PUBLIC four::libfour)
+
+cupcake_add_tests()
 
 cupcake_install_project()

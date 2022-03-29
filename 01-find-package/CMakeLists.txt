@@ -25,9 +25,12 @@ cupcake_find_package(doctest 2.4 PRIVATE)
 cupcake_find_package(zero 0.1)
 # }
 
-add_subdirectory(include)
-add_subdirectory(src)
-enable_testing()
-add_subdirectory(tests)
+cupcake_add_library(one)
+target_link_libraries(${this} PUBLIC zero::libzero)
+
+cupcake_add_executable(hello)
+target_link_libraries(${this} PUBLIC one::libone)
+
+cupcake_add_tests()
 
 cupcake_install_project()
