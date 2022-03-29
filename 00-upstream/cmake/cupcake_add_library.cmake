@@ -11,6 +11,10 @@ add_custom_target(libraries)
 
 # add_library(<name> [<source>...])
 function(cupcake_add_library name)
+  # We add a "lib" prefix to library targets
+  # so that libraries and executables can share the same name.
+  # They will be distinguished in the filesystem by their filename prefix
+  # and suffix, and within CMake by this prefix.
   set(target ${PROJECT_NAME}_lib${name})
   set(this ${target} PARENT_SCOPE)
   add_library(${target} ${ARGN})
