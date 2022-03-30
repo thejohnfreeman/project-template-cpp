@@ -42,6 +42,11 @@ macro(cupcake_project)
   set(CMAKE_VISIBILITY_INLINES_HIDDEN YES)
   set(CMAKE_EXPORT_COMPILE_COMMANDS YES)
 
+  # Prefer the latest version of a package.
+  set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
+  # Prefer Config Modules over Find Modules.
+  set(CMAKE_FIND_PACKAGE_SORT_DIRECTION DEC)
+
   if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     set(OSX TRUE)
   endif()
