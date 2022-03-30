@@ -49,20 +49,14 @@ if(
   ${CMAKE_FIND_PACKAGE_NAME}_LIBRARY AND
   ${CMAKE_FIND_PACKAGE_NAME}_EXECUTABLE
 )
-  if(NOT TARGET zero::zero)
-    add_library(zero::headers INTERFACE IMPORTED)
-    set_target_properties(zero::headers PROPERTIES
+  if(NOT TARGET zero::libzero)
+    add_library(zero::libzero UNKNOWN IMPORTED)
+    set_target_properties(zero::libzero PROPERTIES
       INTERFACE_INCLUDE_DIRECTORIES "${${CMAKE_FIND_PACKAGE_NAME}_INCLUDE_DIR}"
-    )
-
-    add_library(zero::zero UNKNOWN IMPORTED)
-    set_target_properties(zero::zero PROPERTIES
       IMPORTED_LOCATION "${${CMAKE_FIND_PACKAGE_NAME}_LIBRARY}"
       IMPORTED_LOCATION_DEBUG "${${CMAKE_FIND_PACKAGE_NAME}_LIBRARY}"
       IMPORTED_LOCATION_RELEASE "${${CMAKE_FIND_PACKAGE_NAME}_LIBRARY}"
     )
-    target_link_libraries(zero::zero INTERFACE zero::headers)
-    add_library(zero::library ALIAS zero::zero)
 
     add_executable(zero::true IMPORTED)
     set_target_properties(zero::true PROPERTIES
@@ -70,7 +64,6 @@ if(
       IMPORTED_LOCATION_DEBUG "${${CMAKE_FIND_PACKAGE_NAME}_EXECUTABLE}"
       IMPORTED_LOCATION_RELEASE "${${CMAKE_FIND_PACKAGE_NAME}_EXECUTABLE}"
     )
-    add_executable(zero::executable ALIAS zero::true)
   endif()
 
   set(${CMAKE_FIND_PACKAGE_NAME}_FOUND TRUE)
