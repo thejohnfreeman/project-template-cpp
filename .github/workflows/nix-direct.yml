@@ -84,7 +84,7 @@ jobs:
           make clean
       - name: remove zero configuration
         if: matrix.zero == 'half'
-        run: sudo rm -rf ${install_dir}/lib/cmake/zero
+        run: sudo rm -rf ${install_dir}/share/zero
       - name: test project
         uses: ./.github/actions/test-project
         with:
