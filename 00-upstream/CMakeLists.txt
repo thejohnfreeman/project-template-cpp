@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.14)
 
 project(zero
   VERSION 0.1.0
@@ -29,3 +29,5 @@ target_link_libraries(${this} PRIVATE zero::libzero)
 cupcake_add_tests()
 
 cupcake_install_project()
+
+cupcake_enable_conan()

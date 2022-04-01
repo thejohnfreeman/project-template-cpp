@@ -3,7 +3,7 @@ if(DEFINED_CUPCAKE_FIND_PACKAGE)
 endif()
 set(DEFINED_CUPCAKE_FIND_PACKAGE TRUE)
 
-include(cupcake_add_dependency)
+include(cupcake_project_properties)
 
 # cupcake_find_package(<package-name> <version> [PRIVATE])
 # We cannot scope the call to find_package because we cannot predict which
@@ -19,7 +19,9 @@ macro(cupcake_find_package name version)
 
   # if(PROJECT_IS_TOP_LEVEL AND ...)
   if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME AND NOT ${cupcake_scope}_PRIVATE)
-    cupcake_add_dependency(${name} ${version})
+    cupcake_set_project_property(
+      APPEND PROPERTY PROJECT_DEPENDENCIES "${name}\\\\;${version}"
+    )
   endif()
 
   find_package(${name} ${version} REQUIRED ${${cupcake_scope}_UNPARSED_ARGUMENTS})

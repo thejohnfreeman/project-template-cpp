@@ -3,10 +3,13 @@ if(DEFINED_CUPCAKE_INSTALL_PROJECT)
 endif()
 set(DEFINED_CUPCAKE_INSTALL_PROJECT TRUE)
 
+include(cupcake_project_properties)
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 
-set(package_config_input "${CMAKE_CURRENT_LIST_DIR}/package-config.cmake.in")
+set(CUPCAKE_PACKAGE_CONFIG_INPUT
+  "${CMAKE_CURRENT_LIST_DIR}/package-config.cmake.in"
+)
 
 # This macro must be called last in the project's root CMakeLists.txt,
 # after the PROJECT_DEPENDENCIES variable has been populated.
@@ -30,10 +33,9 @@ macro(cupcake_install_project)
     NAMESPACE ${PROJECT_NAME}::
   )
 
-  get_property(PROJECT_DEPENDENCIES
-    DIRECTORY "${PROJECT_SOURCE_DIR}"
-    PROPERTY PROJECT_DEPENDENCIES)
-  configure_package_config_file("${package_config_input}"
+  cupcake_get_project_property(PROJECT_DEPENDENCIES)
+  cupcake_get_project_property(PROJECT_LIBRARIES)
+  configure_package_config_file("${CUPCAKE_PACKAGE_CONFIG_INPUT}"
     "${CMAKE_CURRENT_EXPORT_DIR}/${PROJECT_NAME}-config.cmake"
     INSTALL_DESTINATION "${CMAKE_INSTALL_EXPORTDIR}/${PROJECT_NAME}"
     NO_SET_AND_CHECK_MACRO

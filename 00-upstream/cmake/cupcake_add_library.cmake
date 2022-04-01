@@ -4,11 +4,9 @@ endif()
 set(DEFINED_CUPCAKE_ADD_LIBRARY TRUE)
 
 include(cupcake_generate_version_header)
+include(cupcake_project_properties)
 include(GenerateExportHeader)
 include(GNUInstallDirs)
-
-# A target representing all libraries declared with the function below.
-add_custom_target(libraries)
 
 # add_library(<name> [<source>...])
 function(cupcake_add_library name)
@@ -33,15 +31,15 @@ function(cupcake_add_library name)
   endif()
 
   add_library(${target} ${type} ${ARGN})
-  add_library(${PROJECT_NAME}::lib${name} ALIAS ${target})
+  set(alias ${PROJECT_NAME}::lib${name})
+  add_library(${alias} ALIAS ${target})
   set_target_properties(${target} PROPERTIES
     EXPORT_NAME lib${name}
   )
 
-  # if(PROJECT_IS_TOP_LEVEL)
-  if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
-    add_dependencies(libraries ${target})
-  endif()
+  cupcake_set_project_property(
+    APPEND PROPERTY PROJECT_LIBRARIES "${alias}"
+  )
 
   cupcake_generate_version_header(${name})
   # Each library has one public header directory under include/.

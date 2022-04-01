@@ -2,6 +2,8 @@
 
 include(CMakeFindDependencyMacro)
 
+set(@PROJECT_NAME@_LIBRARIES "@PROJECT_LIBRARIES@")
+
 set(dependencies "@PROJECT_DEPENDENCIES@")
 foreach(args ${dependencies})
   find_dependency(${args})
