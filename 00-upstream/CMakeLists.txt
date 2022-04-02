@@ -30,4 +30,4 @@ cupcake_add_tests()
 
 cupcake_install_project()
 
-cupcake_enable_conan()
+cupcake_install_cpp_info()
