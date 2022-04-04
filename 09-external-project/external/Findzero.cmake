@@ -69,9 +69,9 @@ function(cupcake_add_external_library name version linkage)
     # - OSX: libname.0.1.0.dylib
     set(location "${prefix}/")
     if(WINDOWS AND linkage STREQUAL "SHARED")
-      string(APPEND location "${CMAKE_INSTALL_BINDIR}")
+      string(APPEND location "bin")
     else()
-      string(APPEND location "${CMAKE_INSTALL_LIBDIR}")
+      string(APPEND location "lib")
     endif()
     string(APPEND location "/${binary_stem}")
     if(OSX AND linkage STREQUAL "SHARED")
@@ -88,7 +88,7 @@ function(cupcake_add_external_library name version linkage)
     list(APPEND byproducts "${location}")
 
     if(WINDOWS AND linkage STREQUAL "SHARED")
-      set(implib_path "${prefix}/${CMAKE_INSTALL_LIBDIR}/${binary_stem}${CMAKE_IMPORT_LIBRARY_SUFFIX}")
+      set(implib_path "${prefix}/lib/${binary_stem}${CMAKE_IMPORT_LIBRARY_SUFFIX}")
       set_target_properties(${target} PROPERTIES
         IMPORTED_IMPLIB_${BUILD_TYPE} "${implib_path}"
       )

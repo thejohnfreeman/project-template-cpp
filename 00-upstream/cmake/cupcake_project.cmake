@@ -20,20 +20,24 @@ macro(cupcake_project)
   # executables that require them.
   # Without setting these variables, multi-config generators generally place
   # targets in ${subdirectory}/${target}.dir/${config}.
+  # We cannot use CMAKE_INSTALL_LIBDIR because the value of that variable may
+  # differ between the top-level project linking against subproject
+  # artifacts installed under the output prefix, and subprojects installing
+  # themselves under the top-level project's output prefix.
+  # In other words, if a subproject installs a library to
+  # CMAKE_INSTALL_LIBDIR, then it may end up somewhere other than the
+  # CMAKE_INSTALL_LIBDIR that the top-level project looks in.
   if(NOT CMAKE_OUTPUT_PREFIX)
     set(CMAKE_OUTPUT_PREFIX "${CMAKE_BINARY_DIR}/output/$<CONFIG>")
   endif()
   if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
-      "${CMAKE_OUTPUT_PREFIX}/${CMAKE_INSTALL_BINDIR}")
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_OUTPUT_PREFIX}/bin")
   endif()
   if(NOT CMAKE_LIBRARY_OUTPUT_DIRECTORY)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY
-      "${CMAKE_OUTPUT_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_OUTPUT_PREFIX}/lib")
   endif()
   if(NOT CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY
-      "${CMAKE_OUTPUT_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_OUTPUT_PREFIX}/lib")
   endif()
   if(NOT CMAKE_INCLUDE_OUTPUT_DIRECTORY)
     set(CMAKE_INCLUDE_OUTPUT_DIRECTORY
