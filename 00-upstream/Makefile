@@ -44,7 +44,7 @@ ${build_dir} :
 toolchain := ${build_dir}/conan_toolchain.cmake
 
 ${toolchain} : conanfile.txt | ${build_dir}
-	${CMAKE} -E chdir ${build_dir} ${CONAN} install ${source_dir} --build missing
+	${CMAKE} -E chdir ${build_dir} ${CONAN} install ${source_dir} --build missing -s build_type=${flavor}
 
 conan : ${toolchain}
 
