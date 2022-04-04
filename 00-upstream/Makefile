@@ -74,10 +74,10 @@ force :
 	${MAKE} build
 
 test : ${cache}
-	${CMAKE} -E time ${CMAKE} --build ${build_dir} --target $(if ${multi},RUN_TESTS,test) 2>&1 | tee ${build_dir}/test.log
+	${CMAKE} -E time ${CMAKE} --build ${build_dir} --verbose $(if ${multi},--config ${flavor}) --parallel ${NPROC}  --target $(if ${multi},RUN_TESTS,test) 2>&1 | tee ${build_dir}/test.log
 
 ctest : ${cache}
-	${CMAKE} -E chdir ${build_dir} ${CTEST} --parallel ${NPROC}
+	${CMAKE} -E chdir ${build_dir} ${CTEST} --verbose $(if ${multi},--build-config ${flavor}) --parallel ${NPROC}
 
 installed_executable := ${install_dir}/bin/${executable}${EXE}
 
