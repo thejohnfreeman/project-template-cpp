@@ -12,9 +12,9 @@ class Zero(ConanFile):
     options = {'shared': [True, False], 'fPIC': [True, False]}
     default_options = {'shared': False, 'fPIC': True}
 
-    build_requires = ['doctest/2.4.6']
+    tool_requires = ['doctest/2.4.6']
     requires = []
-    generators = 'cmake_find_package'
+    generators = 'CMakeToolchain', 'cmake_find_package'
 
     exports_sources = 'CMakeLists.txt', 'cmake/*', 'include/*', 'src/*'
     # For out-of-source build.

@@ -41,15 +41,17 @@ CONAN ?= conan
 ${build_dir} :
 	${CMAKE} -E make_directory $@
 
-${build_dir}/conaninfo.txt : conanfile.txt | ${build_dir}
-	${CMAKE} -E chdir ${build_dir} ${CONAN} install ${source_dir}
+toolchain := ${build_dir}/conan_toolchain.cmake
 
-conan : ${build_dir}/conaninfo.txt
+${toolchain} : conanfile.txt | ${build_dir}
+	${CMAKE} -E chdir ${build_dir} ${CONAN} install ${source_dir} --build missing
+
+conan : ${toolchain}
 
 cache := ${build_dir}/CMakeCache.txt
 
-${cache} : ${build_dir}/conaninfo.txt Makefile | ${build_dir}
-	${CMAKE} -E chdir ${build_dir} ${CMAKE} -G "${generator}" -DCMAKE_MODULE_PATH="${build_dir}" -DCMAKE_INSTALL_PREFIX="${install_dir}" $(if ${multi},,-DCMAKE_BUILD_TYPE=${flavor}) -DBUILD_SHARED_LIBS=${shared} ${options} ${source_dir} 2>&1 | tee ${build_dir}/configure.log
+${cache} : ${toolchain} Makefile | ${build_dir}
+	${CMAKE} -E chdir ${build_dir} ${CMAKE} -G "${generator}" -DCMAKE_TOOLCHAIN_FILE="${toolchain}" -DCMAKE_INSTALL_PREFIX="${install_dir}" $(if ${multi},,-DCMAKE_BUILD_TYPE=${flavor}) -DBUILD_SHARED_LIBS=${shared} ${options} ${source_dir} 2>&1 | tee ${build_dir}/configure.log
 	${CMAKE} -E touch $@
 
 configure : ${cache}
