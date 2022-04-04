@@ -124,6 +124,21 @@ endif()
 
 cupcake_add_external_library(zero 0.1.0 ${linkage})
 
+# Compile a list of forwarded CMake arguments.
+set(sep "|")
+set(cmake_args
+  -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
+  -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+  "-DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}"
+  "-DCMAKE_INSTALL_PREFIX=${CMAKE_OUTPUT_PREFIX}"
+  "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}"
+)
+# Escape list separators in list variable values.
+foreach(variable CMAKE_MODULE_PATH CMAKE_PREFIX_PATH)
+  string(REPLACE ";" "${sep}" tmp "${${variable}}")
+  list(APPEND cmake_args "-D${variable}=${tmp}")
+endforeach()
+
 file(TO_CMAKE_PATH "${CMAKE_CURRENT_LIST_DIR}/../../00-upstream" url)
 ExternalProject_Add(${package}
   PREFIX "${CMAKE_SOURCE_DIR}/.cache"
@@ -132,12 +147,8 @@ ExternalProject_Add(${package}
   # just creates a directory that won't be used, but on Windows the path
   # contains illegal characters.
   URL "${url}"
-  CMAKE_ARGS
-    -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-    "-DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}"
-    "-DCMAKE_INSTALL_PREFIX=${CMAKE_OUTPUT_PREFIX}"
-    "-DCMAKE_MODULE_PATH=${CMAKE_BINARY_DIR}"
+  LIST_SEPARATOR "${sep}"
+  CMAKE_ARGS "${cmake_args}"
   # added in CMake 3.20: generator expressions in BYPRODUCTS
   BUILD_BYPRODUCTS "${byproducts}"
 )
