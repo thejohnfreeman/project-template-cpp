@@ -14,7 +14,7 @@ project(six
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/external")
 
-find_package(cupcake 0.1 REQUIRED)
+find_package(cupcake 0.0.0 EXACT REQUIRED)
 
 cupcake_project()
 

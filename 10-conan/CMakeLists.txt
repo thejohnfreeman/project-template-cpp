@@ -7,7 +7,7 @@ project(ten
   LANGUAGES CXX
 )
 
-find_package(cupcake 0.1 REQUIRED)
+find_package(cupcake 0.0.0 EXACT REQUIRED)
 
 cupcake_project()
 

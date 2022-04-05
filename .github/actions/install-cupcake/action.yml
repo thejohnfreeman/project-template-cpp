@@ -4,19 +4,6 @@ description: |
 runs:
   using: composite
   steps:
-    - name: install on non-Windows
-      if: runner.os != 'Windows'
-      working-directory: cupcake
+    - name: install cupcake
       shell: bash
-      run: |
-        make configure
-        sudo install_dir="${install_dir}" make install
-        make clean
-    - name: install on Windows
-      if: runner.os == 'Windows'
-      working-directory: cupcake
-      shell: pwsh
-      run: |
-        make configure
-        make install
-        make clean
+      run: conan create cupcake
