@@ -3,7 +3,7 @@ if(DEFINED_CUPCAKE_GENERATE_VERSION_HEADER)
 endif()
 set(DEFINED_CUPCAKE_GENERATE_VERSION_HEADER TRUE)
 
-set(version_header_input "${CMAKE_CURRENT_LIST_DIR}/version.hpp.in")
+set(version_header_input "${CMAKE_CURRENT_LIST_DIR}/data/version.hpp.in")
 
 function(cupcake_generate_version_header name)
   cmake_parse_arguments(ARG "" "EXPORT_FILE_NAME" "" ${ARGN})

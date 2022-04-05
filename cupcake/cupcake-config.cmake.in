@@ -1,5 +1,3 @@
-@PACKAGE_INIT@
-
 if(INCLUDED_CUPCAKE)
   return()
 endif()

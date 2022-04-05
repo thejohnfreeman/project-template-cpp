@@ -35,7 +35,7 @@ execute_process(
     "-DPACKAGE_NAME=${PACKAGE_NAME}"
     "-DCONFIG=${CONFIG}"
     "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}"
-    "${CUPCAKE_MODULE_DIR}/project_cpp_info"
+    "${CUPCAKE_MODULE_DIR}/data/project_cpp_info"
   WORKING_DIRECTORY "${tmp_dir}"
 )
 file(REMOVE_RECURSE "${tmp_dir}")

@@ -8,7 +8,7 @@ include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 
 set(CUPCAKE_PACKAGE_CONFIG_INPUT
-  "${CMAKE_CURRENT_LIST_DIR}/package-config.cmake.in"
+  "${CMAKE_CURRENT_LIST_DIR}/data/package-config.cmake.in"
 )
 
 # This macro must be called last in the project's root CMakeLists.txt,

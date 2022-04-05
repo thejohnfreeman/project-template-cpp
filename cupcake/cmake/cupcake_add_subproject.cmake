@@ -6,7 +6,7 @@ set(DEFINED_CUPCAKE_ADD_SUBPROJECT TRUE)
 include(cupcake_project_properties)
 
 set(set_subproject_variables
-  "${CMAKE_CURRENT_LIST_DIR}/set_subproject_variables.cmake"
+  "${CMAKE_CURRENT_LIST_DIR}/data/set_subproject_variables.cmake"
 )
 
 # cupcake_add_subproject(<name> [<path>] [PRIVATE] [...])

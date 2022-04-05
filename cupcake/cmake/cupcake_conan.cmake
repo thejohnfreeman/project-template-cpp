@@ -4,7 +4,7 @@ endif()
 set(DEFINED_CUPCAKE_CONAN TRUE)
 
 set(CUPCAKE_MODULE_DIR "${CMAKE_CURRENT_LIST_DIR}")
-file(READ "${CMAKE_CURRENT_LIST_DIR}/install_cpp_info.cmake"
+file(READ "${CMAKE_CURRENT_LIST_DIR}/data/install_cpp_info.cmake"
   CUPCAKE_INSTALL_CPP_INFO
 )
 
