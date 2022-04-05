@@ -8,10 +8,8 @@ project(five
 )
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/external")
-# TODO: Import Cupcake CMake modules from an installed package.
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/../00-upstream/cmake")
 
-include(cupcake)
+find_package(cupcake 0.1 REQUIRED)
 
 cupcake_project()
 
@@ -32,11 +30,6 @@ target_link_libraries(${this} PRIVATE
   five::libfive
 )
 
-if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
-  include(CTest)
-  if(BUILD_TESTING)
-    add_subdirectory(tests)
-  endif()
-endif()
+cupcake_add_tests()
 
 cupcake_install_project()

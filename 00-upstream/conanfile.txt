@@ -1,6 +1,0 @@
-[tool_requires]
-doctest/2.4.6
-
-[generators]
-CMakeToolchain
-cmake_find_package_multi

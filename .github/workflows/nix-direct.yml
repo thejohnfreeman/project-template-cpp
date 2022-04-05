@@ -35,6 +35,8 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: test project
         uses: ./.github/actions/test-project
         with:
@@ -75,6 +77,8 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: install zero
         if: matrix.zero != 'missing'
         working-directory: 00-upstream
@@ -121,6 +125,8 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: test project
         uses: ./.github/actions/test-project
         with:
@@ -157,6 +163,8 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: export zero
         working-directory: 00-upstream
         run: conan create .

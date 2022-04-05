@@ -3,11 +3,14 @@ if(DEFINED_CUPCAKE_PROJECT)
 endif()
 set(DEFINED_CUPCAKE_PROJECT TRUE)
 
-include(GNUInstallDirs)
-
 macro(cupcake_project)
   # Define more project variables.
   set(PROJECT_EXPORT_SET ${PROJECT_NAME}_targets)
+
+  set(PROJECT_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}")
+  set(PROJECT_EXPORT_DIR "${PROJECT_BINARY_DIR}/export/${PROJECT_NAME}")
+
+  set(CMAKE_INSTALL_EXPORTDIR share)
 
   #if(PROJECT_IS_TOP_LEVEL)
   if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
@@ -45,10 +48,6 @@ macro(cupcake_project)
     )
   endif()
 
-  set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-  set(CMAKE_VISIBILITY_INLINES_HIDDEN YES)
-  set(CMAKE_EXPORT_COMPILE_COMMANDS YES)
-
   # Prefer the latest version of a package.
   set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
   # Prefer Config Modules over Find Modules.
@@ -64,17 +63,26 @@ macro(cupcake_project)
     set(WINDOWS TRUE)
   endif()
 
+  set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+  set(CMAKE_VISIBILITY_INLINES_HIDDEN YES)
+  set(CMAKE_EXPORT_COMPILE_COMMANDS YES)
+
   # Enable deterministic relocatable builds.
   set(CMAKE_BUILD_RPATH_USE_ORIGIN TRUE)
-  # Use relative rpath for installation.
-  if(OSX)
-    set(origin @loader_path)
-  else()
-    set(origin $ORIGIN)
+
+  get_property(languages GLOBAL PROPERTY ENABLED_LANGUAGES)
+  if("CXX" IN_LIST languages OR "C" IN_LIST languages)
+    include(GNUInstallDirs)
+    # Use relative rpath for installation.
+    if(OSX)
+      set(origin @loader_path)
+    else()
+      set(origin $ORIGIN)
+    endif()
+    file(RELATIVE_PATH relDir
+      ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}
+      ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}
+    )
+    set(CMAKE_INSTALL_RPATH ${origin} ${origin}/${relDir})
   endif()
-  file(RELATIVE_PATH relDir
-    ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}
-    ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}
-  )
-  set(CMAKE_INSTALL_RPATH ${origin} ${origin}/${relDir})
 endmacro()

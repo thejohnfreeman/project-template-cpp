@@ -12,10 +12,7 @@ project(three
   LANGUAGES CXX
 )
 
-# TODO: Import Cupcake CMake modules from an installed package.
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/../00-upstream/cmake")
-
-include(cupcake)
+find_package(cupcake 0.1 REQUIRED)
 
 cupcake_project()
 

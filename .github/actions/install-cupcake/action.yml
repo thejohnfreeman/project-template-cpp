@@ -1,0 +1,16 @@
+name: install cupcake
+description: |
+  Install the cupcake CMake package.
+runs:
+  using: composite
+  steps:
+    - name: install on non-Windows
+      if: runner.os != 'Windows'
+      working-directory: cupcake
+      shell: bash
+      run: sudo make install
+    - name: install on Windows
+      if: runner.os == 'Windows'
+      working-directory: cupcake
+      shell: pwsh
+      run: make install

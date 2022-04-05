@@ -28,6 +28,8 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: test project
         uses: ./.github/actions/test-project
         with:
@@ -61,6 +63,8 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: install 00-upstream
         working-directory: 00-upstream
         run: |
@@ -100,6 +104,8 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: copy 00-upstream
         run: |
           cp -r 00-upstream 02-add-subdirectory\external
@@ -137,6 +143,8 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: install 00-upstream
         working-directory: 00-upstream
         run: |
@@ -181,6 +189,8 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: copy 00-upstream
         run: |
           cp -r 00-upstream 02-add-subdirectory\external
@@ -223,6 +233,8 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: test project
         uses: ./.github/actions/test-project
         with:
@@ -257,6 +269,8 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: install 00-upstream
         working-directory: 00-upstream
         run: |
@@ -296,6 +310,8 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: copy 00-upstream
         run: |
           cp -r 00-upstream 02-add-subdirectory\external
@@ -337,6 +353,8 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: install zero
         if: matrix.zero != 'missing'
         working-directory: 00-upstream
@@ -380,6 +398,8 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: test project
         uses: ./.github/actions/test-project
         with:
@@ -414,6 +434,8 @@ jobs:
         with:
           cache-key-scoop: ${{ secrets.CACHE_SCOOP }}
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: export zero
         working-directory: 00-upstream
         run: conan create .

@@ -35,6 +35,8 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: install 00-upstream
         working-directory: 00-upstream
         run: |
@@ -77,6 +79,8 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: copy 00-upstream
         run: |
           cp -r 00-upstream 02-add-subdirectory/external
@@ -116,6 +120,8 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: install 00-upstream
         working-directory: 00-upstream
         run: |
@@ -164,6 +170,8 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: copy 00-upstream
         run: |
           cp -r 00-upstream 02-add-subdirectory/external
@@ -209,6 +217,8 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: install 00-upstream
         working-directory: 00-upstream
         run: |
@@ -251,6 +261,8 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install cupcake
+        uses: ./.github/actions/install-cupcake
       - name: copy 00-upstream
         run: |
           cp -r 00-upstream 02-add-subdirectory/external

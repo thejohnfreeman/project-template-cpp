@@ -41,9 +41,11 @@ CONAN ?= conan
 ${build_dir} :
 	${CMAKE} -E make_directory $@
 
+conanfile := $(wildcard conanfile.*)
+
 toolchain := ${build_dir}/conan_toolchain.cmake
 
-${toolchain} : conanfile.txt | ${build_dir}
+${toolchain} : ${conanfile} | ${build_dir}
 	${CMAKE} -E chdir ${build_dir} ${CONAN} install ${source_dir} --build missing -s build_type=${flavor}
 
 conan : ${toolchain}
@@ -51,7 +53,7 @@ conan : ${toolchain}
 cache := ${build_dir}/CMakeCache.txt
 
 ${cache} : ${toolchain} Makefile | ${build_dir}
-	${CMAKE} -E chdir ${build_dir} ${CMAKE} -G "${generator}" -DCMAKE_TOOLCHAIN_FILE="${toolchain}" -DCMAKE_INSTALL_PREFIX="${install_dir}" $(if ${multi},,-DCMAKE_BUILD_TYPE=${flavor}) -DBUILD_SHARED_LIBS=${shared} ${options} ${source_dir} 2>&1 | tee ${build_dir}/configure.log
+	${CMAKE} -E chdir ${build_dir} ${CMAKE} -G "${generator}" -DCMAKE_TOOLCHAIN_FILE="${toolchain}" -DCMAKE_INSTALL_PREFIX="${install_dir}" -DCMAKE_PREFIX_PATH="${install_dir}" $(if ${multi},,-DCMAKE_BUILD_TYPE=${flavor}) -DBUILD_SHARED_LIBS=${shared} ${options} ${source_dir} 2>&1 | tee ${build_dir}/configure.log
 	${CMAKE} -E touch $@
 
 configure : ${cache}
