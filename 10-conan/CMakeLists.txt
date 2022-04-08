@@ -15,10 +15,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# dependencies {
-cupcake_find_package(doctest 2.4 PRIVATE)
-cupcake_find_package(zero 0.1)
-# }
+cupcake_find_conan_packages()
 
 cupcake_add_library(ten)
 target_link_libraries(${this} PUBLIC zero::libzero)
