@@ -1,8 +1,10 @@
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include <doctest/doctest.h>
+#undef NDEBUG
 
 #include <zero/zero.hpp>
 
-TEST_CASE("zero() returns 0") {
-    CHECK(zero::zero() == 0);
+#include <cassert>
+
+int main() {
+    assert(zero::zero() == 0);
+    return 0;
 }

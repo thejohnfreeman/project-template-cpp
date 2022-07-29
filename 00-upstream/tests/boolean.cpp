@@ -1,12 +1,11 @@
-#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include <doctest/doctest.h>
+#undef NDEBUG
 
 #include <zero/zero.hpp>
 
-TEST_CASE("true_() is truthy") {
-    CHECK(*zero::true_());
-}
+#include <cassert>
 
-TEST_CASE("false_() is falsy") {
-    CHECK(!*zero::false_());
+int main() {
+    assert(*zero::true_());
+    assert(!*zero::false_());
+    return 0;
 }
