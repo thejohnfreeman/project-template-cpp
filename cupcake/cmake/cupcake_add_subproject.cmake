@@ -9,7 +9,8 @@ set(set_subproject_variables
   "${CMAKE_CURRENT_LIST_DIR}/data/set_subproject_variables.cmake"
 )
 
-# cupcake_add_subproject(<name> [<path>] [PRIVATE] [...])
+# cupcake_add_subproject(<name> [PRIVATE] [<path> ...])
+# TODO: I don't think surplus arguments are handled correctly.
 function(cupcake_add_subproject name)
   cmake_parse_arguments(ARG "PRIVATE" "" "" ${ARGN})
   if(NOT ARG_UNPARSED_ARGUMENTS)

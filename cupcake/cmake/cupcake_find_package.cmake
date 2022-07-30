@@ -5,7 +5,7 @@ set(DEFINED_CUPCAKE_FIND_PACKAGE TRUE)
 
 include(cupcake_project_properties)
 
-# cupcake_find_package(<package-name> <version> [PRIVATE])
+# cupcake_find_package(<package-name> <version> [PRIVATE] ...)
 # We cannot scope the call to find_package because we cannot predict which
 # variables that it sets need to percolate. Therefore, this must be a macro.
 macro(cupcake_find_package name version)
