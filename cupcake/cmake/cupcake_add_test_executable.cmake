@@ -10,6 +10,12 @@ function(cupcake_add_test_executable name)
   set(this ${target} PARENT_SCOPE)
   add_executable(${target} EXCLUDE_FROM_ALL ${ARGN})
 
+  file(GLOB_RECURSE sources CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/${name}/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/${name}.cpp"
+  )
+  target_sources(${target} PRIVATE ${sources})
+
   # if(PROJECT_IS_TOP_LEVEL)
   if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
     add_dependencies(tests ${target})

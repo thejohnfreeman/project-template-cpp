@@ -2,7 +2,7 @@ from conans import ConanFile, CMake
 
 class Cupcake(ConanFile):
     name = 'cupcake'
-    version = '0.0.0'
+    version = '0.1.0'
 
     license = 'ISC'
     author = 'John Freeman <jfreeman08@gmail.com>'
