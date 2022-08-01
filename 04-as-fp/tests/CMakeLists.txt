@@ -1,4 +1,4 @@
-cupcake_add_test_executable(four four.cpp)
+cupcake_add_test_executable(four)
 target_link_libraries(
   ${this}
   four::libfour

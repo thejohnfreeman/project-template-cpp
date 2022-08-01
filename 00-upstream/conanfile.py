@@ -1,4 +1,5 @@
-from conans import ConanFile, CMake
+from conan import ConanFile
+from conan.tools.cmake import CMake, CMakeToolchain
 
 class Zero(ConanFile):
     name = 'zero'
@@ -12,9 +13,9 @@ class Zero(ConanFile):
     options = {'shared': [True, False], 'fPIC': [True, False]}
     default_options = {'shared': False, 'fPIC': True}
 
-    tool_requires = ['cupcake/0.0.0']
+    tool_requires = ['cupcake/0.1.0']
     requires = []
-    generators = 'CMakeToolchain', 'cmake_find_package_multi'
+    generators = 'CMakeDeps', 'CMakeToolchain'
 
     exports_sources = 'CMakeLists.txt', 'cmake/*', 'include/*', 'src/*'
     # For out-of-source build.
@@ -27,8 +28,9 @@ class Zero(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.definitions['BUILD_TESTING'] = 'NO'
-        cmake.configure()
+        cmake.configure({
+            'BUILD_TESTING': False
+        })
         cmake.build()
 
     def package(self):

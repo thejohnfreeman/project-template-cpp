@@ -1,7 +1,7 @@
 [tool_requires]
-cupcake/0.0.0
+cupcake/0.1.0
 doctest/2.4.6
 
 [generators]
 CMakeToolchain
-cmake_find_package_multi
+CMakeDeps

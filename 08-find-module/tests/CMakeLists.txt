@@ -1,4 +1,4 @@
-cupcake_add_test_executable(eight eight.cpp)
+cupcake_add_test_executable(eight)
 target_link_libraries(
   ${this}
   eight::libeight

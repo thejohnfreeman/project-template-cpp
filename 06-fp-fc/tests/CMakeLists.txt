@@ -1,4 +1,4 @@
-cupcake_add_test_executable(six six.cpp)
+cupcake_add_test_executable(six)
 target_link_libraries(
   ${this}
   six::libsix

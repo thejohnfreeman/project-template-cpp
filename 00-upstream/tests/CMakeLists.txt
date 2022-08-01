@@ -1,16 +1,16 @@
-cupcake_add_test_executable(zero zero.cpp)
+cupcake_add_test_executable(zero)
 target_link_libraries(
   ${this}
   zero::libzero
 )
 
-cupcake_add_test_executable(boolean boolean.cpp)
+cupcake_add_test_executable(boolean)
 target_link_libraries(
   ${this}
   zero::libzero
 )
 
-cupcake_add_test_executable(version version.cpp)
+cupcake_add_test_executable(version)
 target_link_libraries(
   ${this}
   zero::libzero

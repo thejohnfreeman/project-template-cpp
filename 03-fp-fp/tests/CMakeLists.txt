@@ -1,4 +1,4 @@
-cupcake_add_test_executable(three three.cpp)
+cupcake_add_test_executable(three)
 target_link_libraries(
   ${this}
   three::libthree

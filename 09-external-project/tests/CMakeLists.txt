@@ -1,4 +1,4 @@
-cupcake_add_test_executable(nine nine.cpp)
+cupcake_add_test_executable(nine)
 target_link_libraries(
   ${this}
   nine::libnine
