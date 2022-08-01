@@ -297,7 +297,10 @@ cupcake_install_project()
 # tests/CMakeLists.txt
 cupcake_find_package(test_dependency_name 1.0)
 cupcake_add_test_executable(test_name)
-target_link_libraries(${this} test_dependency_name::target_name)
+target_link_libraries(${this}
+    test_dependency_name::target_name
+    package_name::library_name
+)
 ```
 
 [BUILD_SHARED_LIBS]: https://cmake.org/cmake/help/latest/variable/BUILD_SHARED_LIBS.html
