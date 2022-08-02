@@ -6,6 +6,11 @@ include(CMakePackageConfigHelpers)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 include(cupcake)
 
+# if(NOT PROJECT_IS_TOP_LEVEL)
+if(NOT PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
+  return()
+endif()
+
 cupcake_project()
 
 install(
