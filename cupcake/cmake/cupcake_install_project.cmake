@@ -1,14 +1,16 @@
-if(DEFINED_CUPCAKE_INSTALL_PROJECT)
+if(INCLUDED_CUPCAKE_INSTALL_PROJECT)
   return()
 endif()
-set(DEFINED_CUPCAKE_INSTALL_PROJECT TRUE)
+set(INCLUDED_CUPCAKE_INSTALL_PROJECT TRUE CACHE INTERNAL "")
 
 include(cupcake_project_properties)
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 
-set(CUPCAKE_PACKAGE_CONFIG_INPUT
+set(
+  CUPCAKE_PACKAGE_CONFIG_INPUT
   "${CMAKE_CURRENT_LIST_DIR}/data/package-config.cmake.in"
+  CACHE INTERNAL ""
 )
 
 # This macro must be called last in the project's root CMakeLists.txt,

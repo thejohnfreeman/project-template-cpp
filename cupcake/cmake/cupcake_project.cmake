@@ -1,7 +1,7 @@
-if(DEFINED_CUPCAKE_PROJECT)
+if(INCLUDED_CUPCAKE_PROJECT)
   return()
 endif()
-set(DEFINED_CUPCAKE_PROJECT TRUE)
+set(INCLUDED_CUPCAKE_PROJECT TRUE CACHE INTERNAL "")
 
 macro(cupcake_project)
   # Define more project variables.

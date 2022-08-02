@@ -1,11 +1,10 @@
-if(DEFINED_CUPCAKE_ADD_LIBRARY)
+if(INCLUDED_CUPCAKE_ADD_LIBRARY)
   return()
 endif()
-set(DEFINED_CUPCAKE_ADD_LIBRARY TRUE)
+set(INCLUDED_CUPCAKE_ADD_LIBRARY TRUE CACHE INTERNAL "")
 
 include(cupcake_generate_version_header)
 include(cupcake_project_properties)
-include(GenerateExportHeader)
 include(GNUInstallDirs)
 
 # add_library(<name> [<source>...])
@@ -64,6 +63,7 @@ function(cupcake_add_library name)
       OUTPUT_NAME ${name}
     )
 
+    include(GenerateExportHeader)
     # In order to include the generated header by a path starting with
     # a directory matching the library name like all other library headers, we
     # must pass the `EXPORT_FILE_NAME` option.

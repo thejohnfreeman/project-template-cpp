@@ -1,7 +1,7 @@
 if(INCLUDED_CUPCAKE)
   return()
 endif()
-set(INCLUDED_CUPCAKE TRUE)
+set(INCLUDED_CUPCAKE TRUE CACHE INTERNAL "")
 
 include(cupcake_project)
 include(cupcake_find_package)
