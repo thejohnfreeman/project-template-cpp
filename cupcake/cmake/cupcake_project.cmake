@@ -1,7 +1,4 @@
-if(INCLUDED_CUPCAKE_PROJECT)
-  return()
-endif()
-set(INCLUDED_CUPCAKE_PROJECT TRUE CACHE INTERNAL "")
+include_guard(GLOBAL)
 
 macro(cupcake_project)
   # Define more project variables.

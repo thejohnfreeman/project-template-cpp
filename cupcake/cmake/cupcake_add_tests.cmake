@@ -1,7 +1,4 @@
-if(INCLUDED_CUPCAKE_ADD_TESTS)
-  return()
-endif()
-set(INCLUDED_CUPCAKE_ADD_TESTS TRUE CACHE INTERNAL "")
+include_guard(GLOBAL)
 
 macro(cupcake_add_tests)
   # Do not add unexported targets when added as a subproject.

@@ -53,11 +53,10 @@ cmake -B .build -DCMAKE_PREFIX_PATH=<path> .
 ### Install as submodule
 
 Alternatively, you can embed this project in yours as a submodule and import
-it with [`include()`][include]:
+it with [`add_subdirectory()`][add_subdirectory]:
 
 ```cmake
-list(APPEND CMAKE_MODULE_PATH "path/to/submodule/cupcake/cmake")
-include(cupcake)
+add_subdirectory(path/to/cupcake)
 ```
 
 

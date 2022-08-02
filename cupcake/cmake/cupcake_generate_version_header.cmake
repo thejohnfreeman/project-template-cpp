@@ -1,13 +1,6 @@
-if(INCLUDED_CUPCAKE_GENERATE_VERSION_HEADER)
-  return()
-endif()
-set(INCLUDED_CUPCAKE_GENERATE_VERSION_HEADER TRUE CACHE INTERNAL "")
+include_guard(GLOBAL)
 
-set(
-  CUPCAKE_VERSION_HEADER_INPUT
-  "${CMAKE_CURRENT_LIST_DIR}/data/version.hpp.in"
-  CACHE INTERNAL ""
-)
+include(cupcake_module_dir)
 
 function(cupcake_generate_version_header name)
   cmake_parse_arguments(ARG "" "EXPORT_FILE_NAME" "" ${ARGN})
@@ -16,5 +9,8 @@ function(cupcake_generate_version_header name)
       "${CMAKE_INCLUDE_OUTPUT_DIRECTORY}/${name}/version.hpp")
   endif()
   string(TOUPPER ${name} UPPER_NAME)
-  configure_file("${CUPCAKE_VERSION_HEADER_INPUT}" "${ARG_EXPORT_FILE_NAME}")
+  configure_file(
+    "${CUPCAKE_MODULE_DIR}/data/version.hpp.in"
+    "${ARG_EXPORT_FILE_NAME}"
+  )
 endfunction()

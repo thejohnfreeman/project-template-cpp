@@ -1,10 +1,8 @@
-if(INCLUDED_CUPCAKE_INSTALL_CPP_INFO)
-  return()
-endif()
-set(INCLUDED_CUPCAKE_INSTALL_CPP_INFO TRUE CACHE INTERNAL "")
+include_guard(GLOBAL)
 
-set(CUPCAKE_MODULE_DIR "${CMAKE_CURRENT_LIST_DIR}" CACHE INTERNAL "")
-file(READ "${CMAKE_CURRENT_LIST_DIR}/data/install_cpp_info.cmake"
+include(cupcake_module_dir)
+
+file(READ "${CUPCAKE_MODULE_DIR}/data/install_cpp_info.cmake"
   CUPCAKE_INSTALL_CPP_INFO
 )
 

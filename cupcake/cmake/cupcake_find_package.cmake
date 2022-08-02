@@ -1,7 +1,4 @@
-if(INCLUDED_CUPCAKE_FIND_PACKAGE)
-  return()
-endif()
-set(INCLUDED_CUPCAKE_FIND_PACKAGE TRUE CACHE INTERNAL "")
+include_guard(GLOBAL)
 
 include(cupcake_project_properties)
 

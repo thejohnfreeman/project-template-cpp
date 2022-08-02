@@ -1,7 +1,4 @@
-if(INCLUDED_CUPCAKE_FIND_CONAN_PACKAGES)
-  return()
-endif()
-set(INCLUDED_CUPCAKE_FIND_CONAN_PACKAGES TRUE CACHE INTERNAL "")
+include_guard(GLOBAL)
 
 include(cupcake_find_package)
 

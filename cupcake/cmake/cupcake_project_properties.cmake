@@ -1,7 +1,4 @@
-if(INCLUDED_CUPCAKE_PROJECT_PROPERTIES)
-  return()
-endif()
-set(INCLUDED_CUPCAKE_PROJECT_PROPERTIES TRUE CACHE INTERNAL "")
+include_guard(GLOBAL)
 
 function(cupcake_set_project_property)
   set_property(DIRECTORY "${PROJECT_SOURCE_DIR}" ${ARGN})

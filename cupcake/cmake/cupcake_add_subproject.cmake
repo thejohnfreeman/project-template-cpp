@@ -1,15 +1,7 @@
-if(INCLUDED_CUPCAKE_ADD_SUBPROJECT)
-  return()
-endif()
-set(INCLUDED_CUPCAKE_ADD_SUBPROJECT TRUE CACHE INTERNAL "")
+include_guard(GLOBAL)
 
+include(cupcake_module_dir)
 include(cupcake_project_properties)
-
-set(
-  CUPCAKE_SET_SUBPROJECT_VARIABLES
-  "${CMAKE_CURRENT_LIST_DIR}/data/set_subproject_variables.cmake"
-  CACHE INTERNAL ""
-)
 
 # cupcake_add_subproject(<name> [PRIVATE] [<path> ...])
 # TODO: I don't think surplus arguments are handled correctly.
@@ -20,7 +12,10 @@ function(cupcake_add_subproject name)
   endif()
 
   # added in CMake 3.19: cmake_language(DEFER)
-  set(CMAKE_PROJECT_${name}_INCLUDE "${CUPCAKE_SET_SUBPROJECT_VARIABLES}")
+  set(
+    CMAKE_PROJECT_${name}_INCLUDE
+    "${CUPCAKE_MODULE_DIR}/data/set_subproject_variables.cmake"
+  )
   message(STATUS "Entering subproject '${name}' depended by '${PROJECT_NAME}'...")
   add_subdirectory(${ARG_UNPARSED_ARGUMENTS})
 

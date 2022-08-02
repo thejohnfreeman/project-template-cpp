@@ -1,7 +1,4 @@
-if(INCLUDED_CUPCAKE_ADD_EXECUTABLE)
-  return()
-endif()
-set(INCLUDED_CUPCAKE_ADD_EXECUTABLE TRUE CACHE INTERNAL "")
+include_guard(GLOBAL)
 
 include(GNUInstallDirs)
 

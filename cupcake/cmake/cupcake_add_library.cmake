@@ -1,7 +1,4 @@
-if(INCLUDED_CUPCAKE_ADD_LIBRARY)
-  return()
-endif()
-set(INCLUDED_CUPCAKE_ADD_LIBRARY TRUE CACHE INTERNAL "")
+include_guard(GLOBAL)
 
 include(cupcake_generate_version_header)
 include(cupcake_project_properties)
