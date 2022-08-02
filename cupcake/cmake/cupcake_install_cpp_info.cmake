@@ -11,14 +11,9 @@ file(READ "${CMAKE_CURRENT_LIST_DIR}/data/install_cpp_info.cmake"
 function(cupcake_install_cpp_info)
   install(
     CODE "
-if(GENERATOR_IS_MULTI_CONFIG)
-  set(config $<CONFIG>)
-else()
-  set(config ${CMAKE_BUILD_TYPE})
-endif()
-string(TOUPPER \${config} CONFIG)
 set(CUPCAKE_MODULE_DIR \"${CUPCAKE_MODULE_DIR}\")
 set(PACKAGE_NAME ${PROJECT_NAME})
+string(TOUPPER $<CONFIG> CONFIG)
 ${CUPCAKE_INSTALL_CPP_INFO}
 "
     COMPONENT ${PROJECT_NAME}_development

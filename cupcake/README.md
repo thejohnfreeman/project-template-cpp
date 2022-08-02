@@ -247,6 +247,9 @@ cupcake_install_project()
 
 Install all exported targets.
 
+This command should be called only once,
+after all exported targets have been added.
+
 After installation, dependents can import all exported targets,
 under the same scoped names,
 with [`cupcake_find_package()`](#cupcake_find_package)
