@@ -1,9 +1,7 @@
 [requires]
-zero/0.1.0
-
-[tool_requires]
 cupcake/0.1.0
 doctest/2.4.6
+zero/0.1.0
 
 [generators]
 CMakeToolchain

@@ -1,5 +1,5 @@
 from conan import ConanFile
-from conan.tools.cmake import CMake, CMakeToolchain
+from conan.tools.cmake import CMake
 
 class Zero(ConanFile):
     name = 'zero'
@@ -13,8 +13,7 @@ class Zero(ConanFile):
     options = {'shared': [True, False], 'fPIC': [True, False]}
     default_options = {'shared': False, 'fPIC': True}
 
-    tool_requires = ['cupcake/0.1.0']
-    requires = []
+    requires = ['cupcake/0.1.0']
     generators = 'CMakeDeps', 'CMakeToolchain'
 
     exports_sources = 'CMakeLists.txt', 'cmake/*', 'include/*', 'src/*'
