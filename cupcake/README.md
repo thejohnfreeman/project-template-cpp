@@ -7,7 +7,7 @@ cupcake is a CMake module.
 The recommended method to import cupcake is `find_package()`:
 
 ```cmake
-find_package(cupcake 0.0.0 REQUIRED)
+find_package(cupcake 0.1.0 REQUIRED)
 ```
 
 Unlike [`include()`][include], [`find_package()`][find_package] lets us easily
@@ -33,12 +33,14 @@ You can either:
     conan export .
     ```
 
-Then add `cupcake/0.0.0` as a 
-[tool requirement][tool_requires] to your conanfile:
+Then add `cupcake/0.1.0` as a non-tool requirement to your conanfile:
 
 ```
-tool_requires = ['cupcake/0.0.0']
+requires = ['cupcake/0.1.0']
 ```
+
+[Tool requirements][tool_requires] cannot [modify][6] the `CMAKE_PREFIX_PATH`
+as of 2023-02-02.
 
 ### Install manually
 
@@ -284,7 +286,7 @@ def package_info(self):
 # CMakeLists.txt
 cmake_minimum_required(VERSION 3.7)
 project(package_name LANGUAGES CXX)
-find_package(cupcake 0.0.0 REQUIRED)
+find_package(cupcake 0.1.0 REQUIRED)
 cupcake_project()
 cupcake_find_package(dependency_name 1.0)
 cupcake_add_library(library_name)
@@ -319,13 +321,15 @@ target_link_libraries(${this}
 [target_link_libraries]: https://cmake.org/cmake/help/latest/command/target_link_libraries.html
 [CTest module]: https://cmake.org/cmake/help/latest/module/CTest.html
 
-[Artifactory]: https://docs.conan.io/en/latest/uploading_packages/using_artifactory.html
-[cpp_info]: https://docs.conan.io/en/latest/reference/conanfile/attributes.html#cpp-info
-[package_info]: https://docs.conan.io/en/latest/reference/conanfile/methods.html#package-info
-[tool_requires]: https://docs.conan.io/en/latest/devtools/build_requires.html
+[Artifactory]: https://docs.conan.io/1/uploading_packages/using_artifactory.html
+[cpp_info]: https://docs.conan.io/1/reference/conanfile/attributes.html#cpp-info
+[package_info]: https://docs.conan.io/1/reference/conanfile/methods.html#package-info
+[tool_requires]: https://docs.conan.io/1/devtools/build_requires.html
+[requires]: https://docs.conan.io/1/reference/conanfile/attributes.html#requires
 
 [1]: https://cmake.org/cmake/help/latest/command/project.html#usage
-[2]: https://docs.conan.io/en/latest/creating_packages/package_information.html
+[2]: https://docs.conan.io/1/creating_packages/package_information.html
 [3]: https://cmake.org/cmake/help/latest/command/add_library.html#alias-libraries
 [4]: https://cmake.org/cmake/help/latest/command/add_library.html#interface-libraries
 [5]: https://cmake.org/cmake/help/latest/command/add_library.html#normal-libraries
+[6]: https://github.com/conan-io/conan/issues/13036
