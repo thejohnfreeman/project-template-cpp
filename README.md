@@ -1,140 +1,118 @@
 # project-template-cpp
 
-This is a sample C++ project demonstrating a canonical, minimum-boilerplate
-configuration for [CMake][] and [Conan][].
+This is a collection of example C++ projects demonstrating:
+
+- A standard directory structure.
+- Concise configurations for [CMake] and [Conan].
+- A variety of popular methods for importing dependencies.
 
 [CMake]: https://cmake.org/cmake/help/latest/manual/cmake.1.html
 [Conan]: https://docs.conan.io/
 
-[![build status on Linux and OSX with Travis](https://travis-ci.org/thejohnfreeman/project-template-cpp.svg?branch=master)](https://travis-ci.org/thejohnfreeman/project-template-cpp)
+Every project defines a package named after the number in its directory name,
+e.g. `zero`, `one`, `two`, etc.
 
+## Imports
 
-## Quick start
+Every project has direct dependencies,
+and some have indirect dependencies.
+Every project finds its direct dependencies via calls to [`find_package`].
+`find_package` lets builders hook into the import
+by supplying their own [Find Module (FM)][FM] at build time, if desired.
+By default, a call to `find_package` looks for
+a [Package Configuration File (PCF)][PCF] first
+(on the [`CMAKE_PREFIX_PATH`] and friends)
+and an FM second (on the [`CMAKE_MODULE_PATH`]).[^1]
+When a PCF exists for a package, we say that package is **installed**.
 
-You will need CMake and Conan. CMake is generally installed with your
-platform's package manager, or by downloading from its [website][2].
-If you do not have Conan, it can be installed easily as a Python package:
+[^1]: This is not the CMake default, which looks for FMs first.
+Instead, it is the default behavior chosen by `cupcake`.
 
-```sh
-$ pip install conan
-```
+Every project that does not expect to find a PCF for a dependency 
+defines its own FM for that dependency.
+These FMs are effectively fallbacks or defaults,
+used when the builder does not supply their own FMs.
+They demonstrate a variety of different methods for importing,
+including [`add_subdirectory`], [`FetchContent`], and [`ExternalProject`].
 
-This project depends on a package of CMake modules, [cmake-future][], that
-I publish to my [BinTray repository][1].
-Conan will install it for you if you add my repository as a remote:
+Once a package is installed,
+its PCF is responsible for importing its direct dependencies.
+These PCFs all use `find_package` too.[^2]
+A package's PCF cannot build its direct dependencies,
+and thus it cannot use the same import methods
+that it might have used in its FMs,
+e.g. `add_subdirectory` or `FetchContent`.
+A project that needed to build a dependency
+because it could not find it installed
+should install that dependency when it installs itself,
+so that its PCF can find the dependency installed.
 
-[cmake-future]: https://github.com/thejohnfreeman/cmake-future
+Every project,
+with one exception explained below,
+imports [`doctest`] and [`cupcake`](./cupcake) via PCF.
+All but `zero` directly import one of the other projects, too,
+using one of the known import methods.
+The package relationships are contrived to test a number of combinations of
+import methods for direct and indirect dependencies.
+The dependency relationships and import methods are captured in the table
+below.
+Special notes on select projects follow.
 
-```sh
-conan remote add jfreeman https://api.bintray.com/conan/jfreeman/jfreeman
-```
+Package | Direct Dependencies | Indirect Dependencies | Required Installation
+---|---|---|---
+[`zero`](./00-upstream) |
+[`one`](./01-find-package) | `zero` via [PCF] | | `zero` |
+[`two`](./02-add-subdirectory) | `zero` via [`add_subdirectory`] |
+[`three`](./03-fp-fp) | `one` via PCF | `zero` | `one`, `zero` |
+[`four`](./04-as-fp) | `two` via PCF | `zero` | `two` |
+[`five`](./05-fetch-content) | `zero` via [`FetchContent`] |
+[`six`](./06-fp-fc) | `one` via `FetchContent` | `zero` | `zero` |
+[`seven`](./07-as-fc) | `two` via `FetchContent` | `zero` |
+[`eight`](./08-find-module) | `zero` via [`find_library`] |
+[`nine`](./09-external-project) | `zero` via [`ExternalProject`] |
+[`ten`](./10-conan) | `zero` via [`find_conan_packages`] |
+[`eleven`](./11-no-cupcake) | `zero` via PCF
 
-Once you have these dependencies, the workflow is easy:
+- `zero`: Imports no other packages from this collection.
+- `two`:
+    Requires that `zero` be in the subdirectory `external/00-upstream`.
+    Installs `zero` when it is installed so that packages depending on `two`
+    do not have to know about indirect dependencies.
+- `eight`: Imports `zero` via `find_package`,
+    which finds an FM at `external/Findzero.cmake`,
+    which uses [`find_path`], [`find_library`], and [`find_program`]
+    to define [`IMPORTED`] targets.
+- `ten`: [`find_conan_packages`] is an undocumented, experimental function in
+    `cupcake`.
+    The idea is to import every requirement listed in the package's
+    `conanfile.txt`.
+    Although it is possible, I'm not convinced that it is wise.
+- `eleven`: Does not import `cupcake`, unlike all of the other projects.
+    This package tests that consumers do not need `cupcake` to import
+    a package that uses `cupcake`.
 
-```sh
-$ git clone https://github.com/thejohnfreeman/project-template-cpp
-$ cd project-template-cpp
-$ mkdir build
-$ cd build
-$ conan install .. --build missing
-$ cmake -DCMAKE_TOOLCHAIN_FILE=conan_paths.cmake ..
-$ cmake --build .
-$ ctest .
-```
+[^3]: The abbreviations in directory names indicate the import methods used,
+  and their order: `fp` = [`find_package`], `as` = [`add_subdirectory`],
+  `fc` = [`FetchContent`].
+[^2]: Technically, [`find_dependency`].
 
+[`doctest`]: https://github.com/doctest/doctest
+[`find_package`]: https://cmake.org/cmake/help/latest/command/find_package.html
+[`find_dependency`]: https://cmake.org/cmake/help/latest/module/CMakeFindDependencyMacro.html
+[`add_subdirectory`]: https://cmake.org/cmake/help/latest/command/add_subdirectory.html
+[`FetchContent`]: https://cmake.org/cmake/help/latest/module/FetchContent.html
+[`ExternalProject`]: https://cmake.org/cmake/help/latest/module/ExternalProject.html
+[`CMAKE_PREFIX_PATH`]: https://cmake.org/cmake/help/latest/variable/CMAKE_PREFIX_PATH.html
+[`CMAKE_MODULE_PATH`]: https://cmake.org/cmake/help/latest/variable/CMAKE_MODULE_PATH.html
+[`CMAKE_INSTALL_PREFIX`]: https://cmake.org/cmake/help/latest/variable/CMAKE_INSTALL_PREFIX.html
+[`CMAKE_SYSTEM_PREFIX_PATH`]: https://cmake.org/cmake/help/latest/variable/CMAKE_SYSTEM_PREFIX_PATH.html
+[`CMAKE_TOOLCHAIN_FILE`]: https://cmake.org/cmake/help/latest/variable/CMAKE_TOOLCHAIN_FILE.html
+[PCF]: https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html#config-file-packages
+[FM]: https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html#find-module-packages
+[`find_path`]: https://cmake.org/cmake/help/latest/command/find_path.html
+[`find_library`]: https://cmake.org/cmake/help/latest/command/find_library.html
+[`find_program`]: https://cmake.org/cmake/help/latest/command/find_program.html
+[`IMPORTED`]: https://cmake.org/cmake/help/latest/guide/importing-exporting/index.html#importing-targets
+[`find_conan_packages`]: ./cupcake/cmake/cupcake_find_conan_packages.cmake
 
-## Why?
-
-I want to make life easy for the developer of what I'm going to call the
-**"Basic C++ Project"**, or BCP. I know some C++ developers just threw up in
-their mouths a little reading that, but let me explain.
-The Basic C++ Project has these parts:
-
-- A **name** that is a valid C++ identifier.
-- Zero or more **public dependencies**. These may be runtime dependencies of
-  the library or executables, or they may be build time dependencies of the
-  headers. Users must install the public dependencies when they install the
-  project.
-- Some (public) **headers** nested under a directory named after the project.
-- One **library**, named after the project, that can be linked statically or
-  dynamically (with no other options). The library depends on the headers and
-  the public dependencies.
-- Zero or more **examples** that depend on the headers, the library,
-  and the public dependencies. These are written as subprojects that can be
-  compiled separately, to test the packaging and installation of the library.
-- Zero or more **private dependencies**. These are often test frameworks or
-  build tools. Developers working on the project expect them to be installed
-  for building and testing, but users of the project do not.
-- Zero or more **tests** that depend on the headers, the library, the
-  public dependencies, and the private dependencies.
-
-As a (returning) C++ developer, I just want to dive into a new project and
-start writing code.
-I don't want to spend much time setting up the build system.
-That said, I want to follow best practices. I want
-[conventions](https://en.wikipedia.org/wiki/Convention_over_configuration)
-that can fast-track the development of a Basic C++ Project.
-I want a project template, like this, that I can mimic<sup id="ref-generator"
-name="ref-generator">[1](#fn-generator)</sup>, and unlike so many others,
-I want it to be *accessible*:
-
-- It should have absolutely minimal boilerplate. Too much scaffolding feels
-  overwhelming and brittle. It becomes too much to understand all at once, and
-  makes me worry that any slight change will bring the whole thing down.
-  No `CMakeLists.txt` in this project exceeds 13 lines, thanks to the
-  abstractions in [cmake-future][]. Instead of repeating long patterns of
-  CMake code copied from Stack Overflow, they are encapsulated behind
-  well-documented functions with intuitive names.
-
-- It should be well-documented so that newcomers can learn from it.
-  If you are left with unanswered questions, please [open an
-  issue](https://github.com/thejohnfreeman/project-template-cpp/issues/new) to
-  let me know. It is likely someone else will have the same question, and it
-  gives me an opportunity to improve the documentation.
-
-
-<sup id="fn-generator" name="fn-generator">1</sup>
-Even better would be a tool that can generate the scaffolding for
-a Basic C++ Project. That is in the pipeline.
-[↩](#ref-generator)
-
-
-## Conventions
-
-CMake likes to remind everyone that it is a build system *generator*, not
-a *build system*, but it is reaching a level of abstraction that lets us
-think of it as a cross-platform build system. It lets us build, test, and
-install a project with the same commands on Linux, OSX, and Windows, without
-ever knowing what the underlying build system is:
-
-```sh
-$ cmake -DCMAKE_BUILD_TYPE=${build_type} "${source_dir}"
-$ ncpus=$(python -c 'import multiprocessing as mp; print(mp.cpu_count())')
-$ export CMAKE_BUILD_PARALLEL_LEVEL=${ncpus} CTEST_PARALLEL_LEVEL=${ncpus}
-$ cmake --build . --config ${build_type}
-$ ctest --build-config ${build_type}
-$ cmake --build . --config ${build_type} --target install
-```
-
-CMake has become the de facto standard in the C++ community. It has entered
-a new era of best practices, called **[Modern CMake][]**. At the same time,
-there has been an effort to develop a standard C++ project directory structure
-named **[Pitchfork][]**. This project tries to follow these popular
-conventions and more:
-
-[Modern CMake]: https://www.youtube.com/watch?v=bsXLMQ6WgIk
-[Pitchfork]: https://github.com/vector-of-bool/pitchfork
-
-- It uses **[semantic versioning](https://semver.org/)**.
-- It installs itself relative to a **prefix**. Headers are
-  installed in ``include/``; static and dynamic builds of the library are
-  installed in ``lib/``; executables are installed in ``bin/``.
-- It installs a **[CMake package configuration file][3]** that exports
-  a target for the library. The target is named after the project, and it is
-  scoped within a namespace named after the project.
-
-
-[1]: https://bintray.com/jfreeman/jfreeman
-[2]: https://cmake.org/install/
-[3]: https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html#package-configuration-file
-
+[1]: https://cmake.org/cmake/help/latest/manual/cmake-toolchains.7.html
