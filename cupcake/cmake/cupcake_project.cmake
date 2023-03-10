@@ -45,6 +45,9 @@ macro(cupcake_project)
     )
   endif()
 
+  # Search for Package Configuration Files first.
+  # Use Find Modules as backup only.
+  set(CMAKE_FIND_PACKAGE_PREFER_CONFIG TRUE)
   # Prefer the latest version of a package.
   set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
   # Prefer Config Modules over Find Modules.
