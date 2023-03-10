@@ -52,6 +52,8 @@ macro(cupcake_project)
   set(CMAKE_FIND_PACKAGE_SORT_ORDER NATURAL)
   # Prefer Config Modules over Find Modules.
   set(CMAKE_FIND_PACKAGE_SORT_DIRECTION DEC)
+  # Cupcake projects must put their Find Modules in `external/`.
+  list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/external")
 
   if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     set(OSX TRUE)
