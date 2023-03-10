@@ -7,6 +7,8 @@ project(two
   LANGUAGES CXX
 )
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/external")
+
 find_package(cupcake 0.1 REQUIRED)
 
 cupcake_project()
@@ -17,9 +19,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # dependencies {
 cupcake_find_package(doctest 2.4 PRIVATE)
+cupcake_find_package(zero 0.1)
 # }
-
-add_subdirectory(external)
 
 cupcake_add_library(two)
 

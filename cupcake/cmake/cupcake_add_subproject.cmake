@@ -3,13 +3,17 @@ include_guard(GLOBAL)
 include(cupcake_module_dir)
 include(cupcake_project_properties)
 
-# cupcake_add_subproject(<name> [PRIVATE] [<path> ...])
+# cupcake_add_subproject(<name> [PRIVATE] [<path>])
 # TODO: I don't think surplus arguments are handled correctly.
 function(cupcake_add_subproject name)
   cmake_parse_arguments(ARG "PRIVATE" "" "" ${ARGN})
-  if(NOT ARG_UNPARSED_ARGUMENTS)
-    set(ARG_UNPARSED_ARGUMENTS ${name})
+  list(POP_FRONT ARG_UNPARSED_ARGUMENTS path)
+  if(NOT DEFINED path)
+    set(path ${name})
   endif()
+  get_filename_component(
+    path "${path}" ABSOLUTE BASE_DIR "${CMAKE_CURRENT_LIST_DIR}"
+  )
 
   # added in CMake 3.19: cmake_language(DEFER)
   set(
@@ -17,14 +21,12 @@ function(cupcake_add_subproject name)
     "${CUPCAKE_MODULE_DIR}/data/set_subproject_variables.cmake"
   )
   message(STATUS "Entering subproject '${name}' depended by '${PROJECT_NAME}'...")
-  add_subdirectory(${ARG_UNPARSED_ARGUMENTS})
+  add_subdirectory("${path}")
 
   if(ARG_PRIVATE)
     return()
   endif()
 
-  list(GET ARG_UNPARSED_ARGUMENTS 0 path)
-  get_filename_component(path "${path}" ABSOLUTE)
   get_property(SUBPROJECT_NAME
     DIRECTORY "${path}"
     PROPERTY PROJECT_NAME

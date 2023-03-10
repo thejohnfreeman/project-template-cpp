@@ -1,2 +1,2 @@
 /external/*
-!/external/CMakeLists.txt
+!/external/Find*.cmake
