@@ -21,7 +21,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # dependencies {
-cupcake_find_package(doctest 2.4 PRIVATE)
 cupcake_find_package(two 0.1)
 # }
 

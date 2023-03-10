@@ -23,7 +23,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # To test transitive dependencies in package configuration files,
 # we must depend on package one without directly depending on package zero.
 # dependencies {
-cupcake_find_package(doctest 2.4 PRIVATE)
 cupcake_find_package(one 0.1)
 # }
 
