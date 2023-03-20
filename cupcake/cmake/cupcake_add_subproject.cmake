@@ -3,7 +3,7 @@ include_guard(GLOBAL)
 include(cupcake_module_dir)
 include(cupcake_project_properties)
 
-# cupcake_add_subproject(<name> [PRIVATE] [<path>])
+# cupcake_add_subproject(<name> [PRIVATE] [<source_dir> [<binary_dir]])
 # TODO: I don't think surplus arguments are handled correctly.
 function(cupcake_add_subproject name)
   cmake_parse_arguments(ARG "PRIVATE" "" "" ${ARGN})
@@ -21,7 +21,7 @@ function(cupcake_add_subproject name)
     "${CUPCAKE_MODULE_DIR}/data/set_subproject_variables.cmake"
   )
   message(STATUS "Entering subproject '${name}' depended by '${PROJECT_NAME}'...")
-  add_subdirectory("${path}")
+  add_subdirectory("${path}" ${ARG_UNPARSED_ARGUMENTS})
 
   if(ARG_PRIVATE)
     return()
@@ -43,7 +43,7 @@ function(cupcake_add_subproject name)
     DIRECTORY "${path}"
     PROPERTY PROJECT_VERSION_MINOR
   )
-  
+
   cupcake_set_project_property(
     APPEND PROPERTY PROJECT_DEPENDENCIES
     "${SUBPROJECT_NAME}\\\\;${SUBPROJECT_VERSION_MAJOR}.${SUBPROJECT_VERSION_MINOR}"
