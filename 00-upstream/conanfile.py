@@ -13,7 +13,7 @@ class Zero(ConanFile):
     options = {'shared': [True, False], 'fPIC': [True, False]}
     default_options = {'shared': False, 'fPIC': True}
 
-    requires = ['cupcake/0.1.0']
+    requires = ['cupcake/0.1.0', 'doctest/2.4.6']
     generators = 'CMakeDeps', 'CMakeToolchain'
 
     exports_sources = 'CMakeLists.txt', 'cmake/*', 'include/*', 'src/*'

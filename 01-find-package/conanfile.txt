@@ -1,5 +1,6 @@
 [requires]
 cupcake/0.1.0
+doctest/2.4.6
 
 [generators]
 CMakeToolchain
