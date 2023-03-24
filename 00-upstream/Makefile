@@ -50,7 +50,7 @@ ${conan_toolchain} : ${conanfile} | ${build_dir}
 
 conan : ${conan_toolchain}
 
-toolchain := $(if $(wildcard conanfile.py),${conan_toolchain},)
+toolchain := $(if ${conanfile},${conan_toolchain},)
 
 cache := ${build_dir}/CMakeCache.txt
 
