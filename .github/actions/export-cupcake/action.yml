@@ -1,9 +1,9 @@
-name: install cupcake
+name: export cupcake
 description: |
-  Install the cupcake CMake package.
+  Export the cupcake Conan package.
 runs:
   using: composite
   steps:
-    - name: install cupcake
+    - name: export cupcake
       shell: bash
       run: conan create cupcake

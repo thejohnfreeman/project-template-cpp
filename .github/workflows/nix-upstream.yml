@@ -31,8 +31,8 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: install cupcake
-        uses: ./.github/actions/install-cupcake
+      - name: export cupcake
+        uses: ./.github/actions/export-cupcake
       - name: test project
         uses: ./.github/actions/test-project
         with:

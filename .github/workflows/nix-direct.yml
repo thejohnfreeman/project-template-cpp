@@ -35,8 +35,8 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: install cupcake
-        uses: ./.github/actions/install-cupcake
+      - name: export cupcake
+        uses: ./.github/actions/export-cupcake
       - name: test project
         uses: ./.github/actions/test-project
         with:
@@ -77,8 +77,8 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: install cupcake
-        uses: ./.github/actions/install-cupcake
+      - name: export cupcake
+        uses: ./.github/actions/export-cupcake
       - name: install zero
         if: matrix.zero != 'missing'
         working-directory: 00-upstream
@@ -125,8 +125,8 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: install cupcake
-        uses: ./.github/actions/install-cupcake
+      - name: export cupcake
+        uses: ./.github/actions/export-cupcake
       - name: test project
         uses: ./.github/actions/test-project
         with:
@@ -163,8 +163,8 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
-      - name: install cupcake
-        uses: ./.github/actions/install-cupcake
+      - name: export cupcake
+        uses: ./.github/actions/export-cupcake
       - name: export zero
         working-directory: 00-upstream
         run: conan create .
@@ -205,11 +205,12 @@ jobs:
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
       - name: export cupcake
-        working-directory: cupcake
-        run: conan create .
-      - name: export zero
+        uses: ./.github/actions/export-cupcake
+      - name: install zero
         working-directory: 00-upstream
-        run: conan create .
+        run: |
+          make install
+          make clean
       - name: test project
         uses: ./.github/actions/test-project
         with:
