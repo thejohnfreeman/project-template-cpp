@@ -43,12 +43,14 @@ ${build_dir} :
 
 conanfile := $(wildcard conanfile.*)
 
-toolchain := ${build_dir}/conan_toolchain.cmake
+conan_toolchain := ${build_dir}/conan_toolchain.cmake
 
-${toolchain} : ${conanfile} | ${build_dir}
+${conan_toolchain} : ${conanfile} | ${build_dir}
 	${CMAKE} -E chdir ${build_dir} ${CONAN} install ${source_dir} --build missing -s build_type=${flavor}
 
-conan : ${toolchain}
+conan : ${conan_toolchain}
+
+toolchain := $(if $(wildcard conanfile.py),${conan_toolchain},)
 
 cache := ${build_dir}/CMakeCache.txt
 
