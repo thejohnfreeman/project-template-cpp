@@ -173,3 +173,45 @@ jobs:
         with:
           working-directory: 10-conan
           executable: ten
+
+  _11-no-cupcake:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    strategy:
+      matrix:
+        platform:
+          - ubuntu
+          - macos
+        generator:
+          - { name: Ninja, multi: false }
+          - { name: Unix Makefiles, multi: false }
+        shared:
+          - ON
+          - OFF
+        flavor:
+          - Debug
+          - Release
+    runs-on: ${{ matrix.platform }}-latest
+    env:
+      generator: ${{ matrix.generator.name }}
+      multi: ${{ matrix.generator.multi && 'true' || '' }}
+      shared: ${{ matrix.shared }}
+      flavor: ${{ matrix.flavor }}
+      install_dir: /usr/local
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install environment
+        uses: ./.github/actions/install-nix
+        with:
+          cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: export cupcake
+        working-directory: cupcake
+        run: conan create .
+      - name: export zero
+        working-directory: 00-upstream
+        run: conan create .
+      - name: test project
+        uses: ./.github/actions/test-project
+        with:
+          working-directory: 11-no-cupcake
+          executable: eleven
