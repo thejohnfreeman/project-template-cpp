@@ -9,8 +9,140 @@ This is a collection of example C++ projects demonstrating:
 [CMake]: https://cmake.org/cmake/help/latest/manual/cmake.1.html
 [Conan]: https://docs.conan.io/
 
-Every project defines a package named after the number in its directory name,
+Each project defines one package named after the number in its directory name,
 e.g. `zero`, `one`, `two`, etc.
+[`cupcake`](./cupcake) is a special package that only exports a CMake module.
+
+
+## Structure
+
+Each package follows a strict structure that brings a few benefits:
+
+- Newcomers can quickly orient themselves to a package.
+- Contributors don't have to spend any time thinking about where to place new
+    files.
+- Tools can make assumptions that let them handle as much heavy lifting and
+    boilerplate for users as possible.
+
+Each package is a collection of:
+
+- Zero or more **libraries**. Each library has **public headers**.
+- Zero or more **executables**.
+- At least one library or executable.
+- Zero or more **tests**.
+    Each test is an executable that returns 0 if and only if it passed.
+
+The package and each library, executable, and test must have a name.
+Every appearance of `{name}` in this document refers to that name, in context.
+These names must use only lowercase letters
+(to avoid any problems with case-insensitive filesystems),
+numbers, and separators,
+and must start with a letter
+(to avoid any problems with their use as an identifier).
+Separators are discouraged,
+but if they must be used, depend on the context:
+hyphens for file and directory names and underscores for identifiers.
+
+Conventionally, the name of the main library (if any) and main executable (if
+any) should match the name of the package.
+For example, a package named `curl` might have a library named `curl` and an
+executable named `curl`.
+
+Each package has a "physical" structure in the filesystem
+and a "logical" structure in its CMake configuration.
+
+
+### Physical
+
+```
+/
+|- conanfile.py
+|- CMakeLists.txt
+|- external/
+|  `- Finddoctest.cmake
+|- include/
+|  `- example/
+|     `- example.hpp
+|- src/
+|  |- libexample.cpp
+|  `- example.cpp
+`- tests/
+   |- CMakeLists.txt
+   `- main.cpp
+```
+
+Each library must have at least one public header.[^1]
+Public headers are located under the `include` directory.
+A library may have a single public header in that directory named `{name}.hpp`,
+or a directory named `{name}` with many public headers
+A library with many public headers must put them under a directory named
+`{name}`.
+A library with a header directory must not have headers in that directory
+named `version.hpp` or `export.hpp` because they will be generated.
+
+A library may have source files (i.e. implementation files ending with
+extension `.cpp`).
+A library without sources is called header-only.
+A library with sources must put them under the `src` directory.
+A library with a single source file must name it `lib{name}.cpp`.
+A library with many sources must put them under a directory named `lib{name}`.
+A library may have private headers.
+They should be placed under its source directory.
+
+An executable is much like a library except that
+(a) it must not have public headers,
+(b) it must have sources,
+and (c) it must drop the `lib` prefix for its source file or directory.
+
+Each test is much like an executable except that
+its sources must be placed under the `tests` directory.
+
+
+### Logical
+
+The root directory of a project must have a `CMakeLists.txt`.
+That listfile must define a CMake project with the package name.
+
+The root listfile must define a target for each library.
+A library's target must be named `lib{name}`.
+If the library is header-only, then the target must be an
+[`INTERFACE` library][2].
+Otherwise, its linkage must be determined by the value of
+[`BUILD_SHARED_LIBS`].
+
+The root listfile must define a target for each executable.
+An executable's target must be named `{name}`.
+
+The root listfile must define an `ALIAS` target
+nested under the package scope
+for each [library][3] and [executable][4].
+That is, it must be named `{package-name}::{target-name}`.
+All target references, e.g. in calls to `target_link_libraries`,
+must use these `ALIAS` targets.
+
+The root listfile must import the direct dependencies of all libraries and
+executables with [`find_package`].
+(See section [Imports](#imports) below.)
+It must not import any dependencies that are not directly used in the root
+listfile, e.g. dependencies that are only used by tests.
+
+The root listfile must install every library and executable,
+all public headers,
+and [Package Configuration Files][PCF] for all library and executable targets.
+The exported target names must match the `ALIAS` names.
+
+If the project has tests,
+then the root listfile must call `add_subdirectory(tests)` only when testing
+is enabled, i.e. when the [`BUILD_TESTING`] option is `ON` (the default).
+The `tests` directory must have a `CMakeLists.txt`.
+The tests listfile must define a [CMake test][5] for each test.
+It must import the direct dependencies of all tests with `find_package`.
+
+Any target defined in the tests listfile must be
+[excluded][`EXCLUDE_FROM_ALL`] from the `ALL` target.
+The tests listfile must not directly or indirectly
+[install][`install`] anything.
+
 
 ## Imports
 
@@ -22,11 +154,8 @@ by supplying their own [Find Module (FM)][FM] at build time, if desired.
 By default, a call to `find_package` looks for
 a [Package Configuration File (PCF)][PCF] first
 (on the [`CMAKE_PREFIX_PATH`] and friends)
-and an FM second (on the [`CMAKE_MODULE_PATH`]).[^1]
+and an FM second (on the [`CMAKE_MODULE_PATH`]).[^2]
 When a PCF exists for a package, we say that package is **installed**.
-
-[^1]: This is not the CMake default, which looks for FMs first.
-Instead, it is the default behavior chosen by `cupcake`.
 
 Every project that does not expect to find a PCF for a dependency 
 defines its own FM for that dependency.
@@ -37,7 +166,7 @@ including [`add_subdirectory`], [`FetchContent`], and [`ExternalProject`].
 
 Once a package is installed,
 its PCF is responsible for importing its direct dependencies.
-These PCFs all use `find_package` too.[^2]
+These PCFs all use `find_package` too.[^3]
 A package's PCF cannot build its direct dependencies,
 and thus it cannot use the same import methods
 that it might have used in its FMs,
@@ -91,10 +220,14 @@ Package | Direct Dependencies | Indirect Dependencies | Required Installation
     This package tests that consumers do not need `cupcake` to import
     a package that uses `cupcake`.
 
-[^3]: The abbreviations in directory names indicate the import methods used,
+[^1]: Correct me if I'm wrong, but a library without public headers would be
+  useless. No one would be able to import any of its exports.
+[^2]: This is not the CMake default, which looks for FMs first.
+Instead, it is the default behavior chosen by `cupcake`.
+[^3]: Technically, [`find_dependency`].
+[^4]: The abbreviations in directory names indicate the import methods used,
   and their order: `fp` = [`find_package`], `as` = [`add_subdirectory`],
   `fc` = [`FetchContent`].
-[^2]: Technically, [`find_dependency`].
 
 [`doctest`]: https://github.com/doctest/doctest
 [`find_package`]: https://cmake.org/cmake/help/latest/command/find_package.html
@@ -107,6 +240,9 @@ Package | Direct Dependencies | Indirect Dependencies | Required Installation
 [`CMAKE_INSTALL_PREFIX`]: https://cmake.org/cmake/help/latest/variable/CMAKE_INSTALL_PREFIX.html
 [`CMAKE_SYSTEM_PREFIX_PATH`]: https://cmake.org/cmake/help/latest/variable/CMAKE_SYSTEM_PREFIX_PATH.html
 [`CMAKE_TOOLCHAIN_FILE`]: https://cmake.org/cmake/help/latest/variable/CMAKE_TOOLCHAIN_FILE.html
+[`BUILD_SHARED_LIBS`]: https://cmake.org/cmake/help/latest/variable/BUILD_SHARED_LIBS.html
+[`BUILD_TESTING`]: https://cmake.org/cmake/help/latest/module/CTest.html
+[`EXCLUDE_FROM_ALL`]:https://cmake.org/cmake/help/latest/prop_tgt/EXCLUDE_FROM_ALL.html
 [PCF]: https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html#config-file-packages
 [FM]: https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html#find-module-packages
 [`find_path`]: https://cmake.org/cmake/help/latest/command/find_path.html
@@ -114,5 +250,10 @@ Package | Direct Dependencies | Indirect Dependencies | Required Installation
 [`find_program`]: https://cmake.org/cmake/help/latest/command/find_program.html
 [`IMPORTED`]: https://cmake.org/cmake/help/latest/guide/importing-exporting/index.html#importing-targets
 [`find_conan_packages`]: ./cupcake/cmake/cupcake_find_conan_packages.cmake
+[`install`]: https://cmake.org/cmake/help/latest/command/install.html
 
 [1]: https://cmake.org/cmake/help/latest/manual/cmake-toolchains.7.html
+[2]: https://cmake.org/cmake/help/latest/command/add_library.html#interface-libraries
+[3]: https://cmake.org/cmake/help/latest/command/add_library.html#alias-libraries
+[4]: https://cmake.org/cmake/help/latest/command/add_executable.html#alias-executables
+[5]: https://cmake.org/cmake/help/latest/command/add_test.html
