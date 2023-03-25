@@ -209,7 +209,7 @@ jobs:
       - name: install zero
         working-directory: 00-upstream
         run: |
-          make install
+          sudo install_dir="${install_dir}" make install
           make clean
       - name: test project
         uses: ./.github/actions/test-project

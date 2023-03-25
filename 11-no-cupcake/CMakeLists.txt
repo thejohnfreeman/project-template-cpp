@@ -29,6 +29,11 @@ target_link_libraries(libeleven PUBLIC zero::libzero)
 add_executable(eleven src/eleven.cpp)
 target_link_libraries(eleven PUBLIC libeleven)
 
+install(
+  TARGETS eleven
+  RUNTIME DESTINATION bin
+)
+
 include(CTest)
 if(BUILD_TESTING)
   add_subdirectory(tests)
