@@ -2,7 +2,9 @@
 #define ELEVEN_HPP
 
 #ifdef WIN32
-#  ifdef ELEVEN_EXPORTS
+#  ifdef ELEVEN_STATIC
+#    define ELEVEN_EXPORT
+#  elif ELEVEN_EXPORTS
      /* We are building this library. */
 #    define ELEVEN_EXPORT __declspec(dllexport)
 #  else

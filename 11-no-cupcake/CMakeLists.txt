@@ -24,7 +24,11 @@ find_package(zero 0.1)
 
 add_library(libeleven src/libeleven.cpp)
 target_include_directories(libeleven PUBLIC include)
-target_compile_definitions(libeleven PRIVATE ELEVEN_EXPORTS)
+if(BUILD_SHARED_LIBS)
+  target_compile_definitions(libeleven PRIVATE ELEVEN_EXPORTS)
+else()
+  target_compile_definitions(libeleven PUBLIC ELEVEN_STATIC)
+endif()
 target_link_libraries(libeleven PUBLIC zero::libzero)
 
 add_executable(eleven src/eleven.cpp)
