@@ -30,7 +30,7 @@ add_executable(eleven src/eleven.cpp)
 target_link_libraries(eleven PUBLIC libeleven)
 
 install(
-  TARGETS eleven
+  TARGETS eleven libeleven
   RUNTIME DESTINATION bin
 )
 
