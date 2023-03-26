@@ -11,6 +11,8 @@
      /* We are importing this library. */
 #    define ELEVEN_EXPORT __declspec(dllimport)
 #  endif
+#else
+#  define ELEVEN_EXPORT
 #endif
 
 namespace eleven {
