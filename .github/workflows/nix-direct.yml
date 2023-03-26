@@ -209,6 +209,7 @@ jobs:
       - name: install zero
         working-directory: 00-upstream
         run: |
+          make build
           sudo install_dir="${install_dir}" make install
           make clean
       - name: test project
