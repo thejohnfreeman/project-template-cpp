@@ -15,7 +15,7 @@ runs:
     - name: learn Python cache directory
       id: pip-cache
       shell: bash
-      run: echo "::set-output name=dir::$(pip cache dir)"
+      run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
     - name: restore Python cache directory
       id: cache
       uses: actions/cache@v2

@@ -13,8 +13,8 @@ runs:
       id: env
       shell: pwsh
       run: |
-        echo "::set-output name=PROGRAMDATA::%PROGRAMDATA%"
-        echo "::set-output name=USERPROFILE::%USERPROFILE%"
+        echo "PROGRAMDATA=%PROGRAMDATA%" >> $GITHUB_OUTPUT
+        echo "USERPROFILE=%USERPROFILE%" >> $GITHUB_OUTPUT
     - name: install Make from cache
       id: cache-scoop
       uses: actions/cache@v2
