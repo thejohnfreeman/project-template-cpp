@@ -17,6 +17,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/output/$<CONFIG>/bin")
+set(CMAKE_BUILD_RPATH_USE_ORIGIN TRUE)
+set(CMAKE_INSTALL_RPATH \$ORIGIN \$ORIGIN/../lib)
 
 # dependencies {
 find_package(zero 0.1)
@@ -37,6 +39,7 @@ target_link_libraries(eleven PUBLIC libeleven)
 install(
   TARGETS eleven libeleven
   RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
 )
 
 include(CTest)
