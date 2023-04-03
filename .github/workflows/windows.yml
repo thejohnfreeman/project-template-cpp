@@ -334,10 +334,6 @@ jobs:
         flavor:
           - Debug
           - Release
-        zero:
-          - missing
-          - half
-          - full
     runs-on: windows-2019
     env:
       generator: ${{ matrix.generator.name }}
@@ -356,13 +352,11 @@ jobs:
       - name: export cupcake
         uses: ./.github/actions/export-cupcake
       - name: install zero
-        if: matrix.zero != 'missing'
         working-directory: 00-upstream
         run: |
           make install
           make clean
-      - name: remove zero configuration
-        if: matrix.zero == 'half'
+      - name: remove zero package configuration file
         run: rm -r $env:install_dir\share\zero
       - name: test project
         uses: ./.github/actions/test-project
