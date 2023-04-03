@@ -197,10 +197,10 @@ Package | Direct Dependencies | Indirect Dependencies | Required Installation
 [`five`](./05-fetch-content) | `zero` via [`FetchContent`] |
 [`six`](./06-fp-fc) | `one` via `FetchContent` | `zero` | `zero` |
 [`seven`](./07-as-fc) | `two` via `FetchContent` | `zero` |
-[`eight`](./08-find-module) | `zero` via [`find_library`] |
+[`eight`](./08-find-module) | `zero` via [`find_library`] | | `zero` |
 [`nine`](./09-external-project) | `zero` via [`ExternalProject`] |
 [`ten`](./10-conan) | `zero` via [`find_conan_packages`] |
-[`eleven`](./11-no-cupcake) | `zero` via PCF
+[`eleven`](./11-no-cupcake) | `zero` via PCF |
 
 - `zero`: Imports no other packages from this collection.
 - `two`:

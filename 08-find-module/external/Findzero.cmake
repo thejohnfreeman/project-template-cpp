@@ -71,21 +71,4 @@ if(
   return()
 endif()
 
-include(FetchContent)
-FetchContent_Declare(
-  ${CMAKE_FIND_PACKAGE_NAME}
-  URL "${CMAKE_CURRENT_LIST_DIR}/../../00-upstream"
-)
-# We cannot use FetchContent_MakeAvailable because we need to modify the
-# add_subdirectory command.
-# TODO: Add a cupcake_FetchContent_MakeAvailable command?
-FetchContent_GetProperties(${CMAKE_FIND_PACKAGE_NAME})
-if(NOT ${CMAKE_FIND_PACKAGE_NAME}_POPULATED)
-  FetchContent_Populate(${CMAKE_FIND_PACKAGE_NAME})
-  cupcake_add_subproject(${CMAKE_FIND_PACKAGE_NAME}
-    "${${CMAKE_FIND_PACKAGE_NAME}_SOURCE_DIR}"
-    "${${CMAKE_FIND_PACKAGE_NAME}_BINARY_DIR}"
-  )
-  set(${CMAKE_FIND_PACKAGE_NAME}_FOUND TRUE)
-endif()
-message(STATUS "Package '${CMAKE_FIND_PACKAGE_NAME}' downloaded.")
+message(WARNING "Package '${CMAKE_FIND_PACKAGE_NAME}' not installed.")

@@ -142,7 +142,7 @@ endforeach()
 
 file(TO_CMAKE_PATH "${CMAKE_CURRENT_LIST_DIR}/../../00-upstream" url)
 ExternalProject_Add(${package}
-  PREFIX "${CMAKE_SOURCE_DIR}/.cache"
+  SOURCE_DIR "${CMAKE_SOURCE_DIR}/.cache/${package}"
   # The install directory is created immediately, before generator expressions
   # are evaluated. If the path has a generator expression, then on Unix it
   # just creates a directory that won't be used, but on Windows the path
