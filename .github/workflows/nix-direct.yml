@@ -59,10 +59,6 @@ jobs:
         flavor:
           - Debug
           - Release
-        zero:
-          - missing
-          - half
-          - full
     runs-on: ${{ matrix.platform }}-latest
     env:
       generator: ${{ matrix.generator.name }}
@@ -80,14 +76,12 @@ jobs:
       - name: export cupcake
         uses: ./.github/actions/export-cupcake
       - name: install zero
-        if: matrix.zero != 'missing'
         working-directory: 00-upstream
         run: |
           make build
           sudo install_dir="${install_dir}" make install
           make clean
-      - name: remove zero configuration
-        if: matrix.zero == 'half'
+      - name: remove zero package configuration file
         run: sudo rm -rf ${install_dir}/share/zero
       - name: test project
         uses: ./.github/actions/test-project
