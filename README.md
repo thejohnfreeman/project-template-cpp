@@ -36,12 +36,17 @@ The package and each library, executable, and test must have a name.
 Every appearance of `{name}` in this document refers to that name, in context.
 These names must use only lowercase letters
 (to avoid any problems with case-insensitive filesystems),
-numbers, and separators,
+and numbers,
 and must start with a letter
 (to avoid any problems with their use as an identifier).
-Separators are discouraged,
-but if they must be used, depend on the context:
-hyphens for file and directory names and underscores for identifiers.
+Separators are prohibited (for now).
+If you find yourself wanting a separator,
+consider using an initialism for the name instead,
+like `gmp` for the [**G**NU **M**ultiple **P**recision Arithmetic Library][gmp]
+or `mpfr` for the [**M**ultiple **P**recision **F**loating-Point **R**eliable Library][mpfr].
+
+[gmp]: https://en.wikipedia.org/wiki/GNU_Multiple_Precision_Arithmetic_Library
+[mpfr]: https://en.wikipedia.org/wiki/GNU_MPFR
 
 Conventionally, the name of the main library (if any) and main executable (if
 any) should match the name of the package.
