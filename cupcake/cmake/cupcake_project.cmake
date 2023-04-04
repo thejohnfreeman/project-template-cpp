@@ -1,6 +1,9 @@
 include_guard(GLOBAL)
 
 macro(cupcake_project)
+  # Allow `install(CODE)` to use generator expressions.
+  cmake_policy(SET CMP0087 NEW)
+
   # Define more project variables.
   set(PROJECT_EXPORT_SET ${PROJECT_NAME}_targets)
 

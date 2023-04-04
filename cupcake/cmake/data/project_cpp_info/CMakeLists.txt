@@ -48,8 +48,9 @@ function(declare_libraries output)
     if(links)
       unset(requires)
       foreach(link ${links})
-        if(NOT TARGET link)
-          message(FATAL_ERROR "unimplemented cpp_info: non-target link '${link}' of target '${target}'")
+        if(NOT TARGET ${link})
+          message(STATUS "ignoring non-target link '${link}' of target '${target}'")
+          continue()
         endif()
         # TODO: We could try to distinguish internal vs external libraries by
         # whether they are imported, but that would not work when taking

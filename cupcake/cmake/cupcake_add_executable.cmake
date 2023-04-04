@@ -1,5 +1,6 @@
 include_guard(GLOBAL)
 
+include(cupcake_project_properties)
 include(GNUInstallDirs)
 
 # A target representing all executables declared with the function below.
@@ -10,7 +11,12 @@ function(cupcake_add_executable name)
   set(target ${PROJECT_NAME}_${name})
   set(this ${target} PARENT_SCOPE)
   add_executable(${target} ${ARGN})
-  add_executable(${PROJECT_NAME}::${name} ALIAS ${target})
+  set(alias ${PROJECT_NAME}::${name})
+  add_executable(${alias} ALIAS ${target})
+
+  cupcake_set_project_property(
+    APPEND PROPERTY PROJECT_EXECUTABLES "${alias}"
+  )
 
   # if(PROJECT_IS_TOP_LEVEL)
   if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
