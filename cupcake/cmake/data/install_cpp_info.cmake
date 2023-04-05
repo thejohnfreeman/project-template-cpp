@@ -34,7 +34,6 @@ message(STATUS "CMAKE_INSTALL_PREFIX = '${CMAKE_INSTALL_PREFIX}'")
 message(STATUS "CUPCAKE_MODULE_DIR = '${CUPCAKE_MODULE_DIR}'")
 
 set(tmp_dir "${CMAKE_BINARY_DIR}/cpp_info")
-file(REMOVE_RECURSE "${tmp_dir}")
 file(MAKE_DIRECTORY "${tmp_dir}")
 execute_process(
   COMMAND "${CMAKE_COMMAND}"
@@ -49,3 +48,4 @@ execute_process(
     "${CUPCAKE_MODULE_DIR}/data/project_cpp_info"
   WORKING_DIRECTORY "${tmp_dir}"
 )
+file(REMOVE_RECURSE "${tmp_dir}")
