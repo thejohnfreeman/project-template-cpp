@@ -16,13 +16,16 @@ e.g. `zero`, `one`, `two`, etc.
 
 ## Structure
 
-Each package follows a strict structure that brings a few benefits:
+Each package follows a strict structure that is highly opinionated.
+The basic idea is to [minimize your options][6] and
+[make a decision][8] while [following conventions][7].
+This yields a few benefits:
 
 - Newcomers can quickly orient themselves to a package.
 - Contributors don't have to spend any time thinking about where to place new
     files.
 - Tools can make assumptions that let them handle as much heavy lifting and
-    boilerplate for users as possible.
+    boilerplate as possible.
 
 Each package is a collection of:
 
@@ -113,7 +116,7 @@ A library's target must be named `lib{name}`.
 If the library is header-only, then the target must be an
 [`INTERFACE` library][2].
 Otherwise, its linkage must be determined by the value of
-[`BUILD_SHARED_LIBS`].
+the conventional CMake option [`BUILD_SHARED_LIBS`].
 
 The root listfile must define a target for each executable.
 An executable's target must be named `{name}`.
@@ -138,7 +141,8 @@ The exported target names must match the `ALIAS` names.
 
 If the project has tests,
 then the root listfile must call `add_subdirectory(tests)` only when testing
-is enabled, i.e. when the [`BUILD_TESTING`] option is `ON` (the default).
+is enabled, i.e. when the conventional CMake option [`BUILD_TESTING`] is `ON`
+(the default).
 The `tests` directory must have a `CMakeLists.txt`.
 The tests listfile must define a [CMake test][5] for each test.
 It must import the direct dependencies of all tests with `find_package`.
@@ -262,3 +266,6 @@ Instead, it is the default behavior chosen by `cupcake`.
 [3]: https://cmake.org/cmake/help/latest/command/add_library.html#alias-libraries
 [4]: https://cmake.org/cmake/help/latest/command/add_executable.html#alias-executables
 [5]: https://cmake.org/cmake/help/latest/command/add_test.html
+[6]: https://en.wikipedia.org/wiki/The_Paradox_of_Choice
+[7]: https://en.wikipedia.org/wiki/Convention_over_configuration
+[8]: https://en.wikipedia.org/wiki/Analysis_paralysis
