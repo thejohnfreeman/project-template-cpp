@@ -21,6 +21,10 @@ function(cupcake_add_executable name)
   # if(PROJECT_IS_TOP_LEVEL)
   if(PROJECT_NAME STREQUAL CMAKE_PROJECT_NAME)
     add_dependencies(executables ${target})
+    add_custom_target(execute-${name} ${target} \${CUPCAKE_EXE_ARGUMENTS})
+    if(name STREQUAL CMAKE_PROJECT_NAME)
+      add_custom_target(execute ${target} \${CUPCAKE_EXE_ARGUMENTS})
+    endif()
   endif()
 
   # Let the executable include "private" headers if it wants.
