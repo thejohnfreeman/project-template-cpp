@@ -121,16 +121,19 @@ function(declare_libraries output)
     endif()
 
     get_target_property(location ${target} IMPORTED_LOCATION_${CONFIG})
-    get_filename_component(libs "${location}" NAME)
-    get_filename_component(libdirs "${location}" DIRECTORY)
-    file(RELATIVE_PATH libdirs "${CMAKE_INSTALL_PREFIX}" "${libdirs}")
-    string(APPEND tail
-      "self.components['${name}'].libs = ['${libs}']\n"
-    )
-    if(NOT libdirs STREQUAL "lib")
+    # Skip header-only libraries.
+    if(location)
+      get_filename_component(lib "${location}" NAME)
+      get_filename_component(libdir "${location}" DIRECTORY)
+      file(RELATIVE_PATH libdir "${CMAKE_INSTALL_PREFIX}" "${libdir}")
       string(APPEND tail
-        "self.components['${name}'].libdirs = ['${libdirs}']\n"
+        "self.components['${name}'].libs = ['${lib}']\n"
       )
+      if(NOT libdir STREQUAL "lib")
+        string(APPEND tail
+          "self.components['${name}'].libdirs = ['${libdir}']\n"
+        )
+      endif()
     endif()
   endforeach()
 
