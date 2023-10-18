@@ -12,7 +12,7 @@ project(seven
   LANGUAGES CXX
 )
 
-find_package(cupcake 0.1 REQUIRED)
+find_package(cupcake 0.3 REQUIRED)
 
 cupcake_project()
 
