@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.16)
 
 set(PROJECT_DESCRIPTION "\
 An example project that does not use cupcake \
