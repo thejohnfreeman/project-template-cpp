@@ -35,6 +35,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+        with:
+          submodules: true
       - name: install environment
         uses: ./.github/actions/install-nix
         with:
@@ -73,6 +75,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+        with:
+          submodules: true
       - name: install environment
         uses: ./.github/actions/install-nix
         with:
@@ -119,6 +123,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+        with:
+          submodules: true
       - name: install environment
         uses: ./.github/actions/install-nix
         with:
@@ -157,6 +163,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+        with:
+          submodules: true
       - name: install environment
         uses: ./.github/actions/install-nix
         with:
@@ -198,6 +206,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+        with:
+          submodules: true
       - name: install environment
         uses: ./.github/actions/install-nix
         with:
