@@ -55,7 +55,7 @@ toolchain := $(if ${conanfile},${conan_toolchain},)
 cache := ${build_dir}/CMakeCache.txt
 
 ${cache} : ${toolchain} Makefile | ${build_dir}
-	${CMAKE} -E chdir ${build_dir} ${CMAKE} -G "${generator}" -DCMAKE_TOOLCHAIN_FILE="${toolchain}" -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_INSTALL_PREFIX="${install_dir}" -DCMAKE_PREFIX_PATH="${install_dir}" $(if ${multi},,-DCMAKE_BUILD_TYPE=${flavor}) -DBUILD_SHARED_LIBS=${shared} ${options} ${source_dir} 2>&1 | tee ${build_dir}/configure.log
+	${CMAKE} -E chdir ${build_dir} ${CMAKE} -G "${generator}" -DCMAKE_TOOLCHAIN_FILE="${toolchain}" -DCMAKE_INSTALL_PREFIX="${install_dir}" -DCMAKE_PREFIX_PATH="${install_dir}" $(if ${multi},,-DCMAKE_BUILD_TYPE=${flavor}) -DBUILD_SHARED_LIBS=${shared} ${options} ${source_dir} 2>&1 | tee ${build_dir}/configure.log
 	${CMAKE} -E touch $@
 
 configure : ${cache}
