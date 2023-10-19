@@ -4,6 +4,10 @@ on:
     workflows: [nix-upstream]
     types: [completed]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   _05-fetch-content:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
