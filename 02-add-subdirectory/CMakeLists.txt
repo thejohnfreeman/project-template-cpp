@@ -22,7 +22,7 @@ cupcake_find_package(zero 0.1)
 cupcake_add_library(two)
 
 cupcake_add_executable(goodbye)
-target_link_libraries(${this} PUBLIC zero::libzero)
+target_link_libraries(${this} PRIVATE zero::libzero)
 
 cupcake_add_tests()
 

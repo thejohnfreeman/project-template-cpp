@@ -30,7 +30,7 @@ cupcake_add_library(four)
 target_link_libraries(${this} PUBLIC two::libtwo)
 
 cupcake_add_executable(four)
-target_link_libraries(${this} PUBLIC four::libfour)
+target_link_libraries(${this} PRIVATE four::libfour)
 
 cupcake_add_tests()
 

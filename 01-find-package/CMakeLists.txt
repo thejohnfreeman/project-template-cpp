@@ -23,7 +23,7 @@ cupcake_add_library(one)
 target_link_libraries(${this} PUBLIC zero::libzero)
 
 cupcake_add_executable(hello)
-target_link_libraries(${this} PUBLIC one::libone)
+target_link_libraries(${this} PRIVATE one::libone)
 
 cupcake_add_tests()
 

@@ -21,7 +21,7 @@ cupcake_add_library(ten)
 target_link_libraries(${this} PUBLIC zero::libzero)
 
 cupcake_add_executable(ten)
-target_link_libraries(${this} PUBLIC ten::libten)
+target_link_libraries(${this} PRIVATE ten::libten)
 
 cupcake_add_tests()
 

@@ -34,7 +34,7 @@ endif()
 target_link_libraries(libeleven PUBLIC zero::libzero)
 
 add_executable(eleven src/eleven.cpp)
-target_link_libraries(eleven PUBLIC libeleven)
+target_link_libraries(eleven PRIVATE libeleven)
 
 install(
   TARGETS eleven libeleven

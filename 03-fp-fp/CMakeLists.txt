@@ -30,7 +30,7 @@ cupcake_add_library(three)
 target_link_libraries(${this} PUBLIC one::libone)
 
 cupcake_add_executable(aloha)
-target_link_libraries(${this} PUBLIC one::libone)
+target_link_libraries(${this} PRIVATE one::libone)
 
 cupcake_add_tests()
 
