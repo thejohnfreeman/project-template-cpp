@@ -1,5 +1,5 @@
 [requires]
-cupcake/0.3.0@github/thejohnfreeman
+cupcake/0.4.0@github/thejohnfreeman
 doctest/2.4.6
 zero/0.1.0
 

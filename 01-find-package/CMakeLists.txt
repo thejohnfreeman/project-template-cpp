@@ -19,15 +19,15 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 cupcake_find_package(zero 0.1)
 # }
 
-target_link_libraries(${dependencies} INTERFACE
+target_link_libraries(one.dependencies INTERFACE
   zero::libzero
 )
 
 cupcake_add_library(one)
-target_link_libraries(${this} PUBLIC one::dependencies)
+target_link_libraries(${this} PUBLIC one.dependencies)
 
 cupcake_add_executable(hello)
-target_link_libraries(${this} PRIVATE one::libone)
+target_link_libraries(${this} PRIVATE one.libone)
 
 cupcake_add_tests()
 
