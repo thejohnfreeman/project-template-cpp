@@ -15,3 +15,10 @@ def one(install_dir, zero):
 
 def test_one(one):
     helpers.test(one, '01-find-package')
+
+@pytest.fixture(scope='module')
+def three(install_dir, zero, one):
+    yield from helpers.install(install_dir, '03-fp-fp')
+
+def test_three(three):
+    helpers.test(three, '03-fp-fp')

@@ -1,8 +1,17 @@
+import os
 import pathlib
 import subprocess
 import tempfile
 
 root = pathlib.Path(__file__).parents[1]
+
+try:
+    os.symlink(
+        root / '00-upstream',
+        root / '02-add-subdirectory/external/00-upstream',
+    )
+except FileExistsError:
+    pass
 
 def install(install_dir, source_dir):
     with tempfile.TemporaryDirectory() as build_dir:
