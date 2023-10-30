@@ -5,7 +5,6 @@ description = "Example C++ project structures using CMake and Conan."
 authors = ["John Freeman <jfreeman08@gmail.com>"]
 license = "ISC"
 readme = "README.md"
-packages = [{include = "project_template_cpp"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"

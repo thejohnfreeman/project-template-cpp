@@ -6,4 +6,4 @@ runs:
   steps:
     - name: export cupcake
       shell: bash
-      run: conan create cupcake
+      run: conan export cupcake

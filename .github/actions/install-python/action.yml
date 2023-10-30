@@ -24,4 +24,4 @@ runs:
           key: ${{ runner.os }}-${{ inputs.key }}
     - name: install Conan
       shell: bash
-      run: pip install wheel 'conan<2'
+      run: pip install wheel 'conan<2' poetry

@@ -1,8 +1,36 @@
+import os
 import pytest
 import subprocess
 import tempfile
 
 from tests import helpers
+
+GENERATOR = [
+    x.strip() for x in
+    os.getenv('GENERATOR', 'Unix Makefiles,Ninja').split(',')
+]
+
+SHARED = [
+    x.strip() == 'ON' for x in
+    os.getenv('SHARED', 'ON,OFF').split(',')
+]
+
+FLAVOR = [
+    x.strip() for x in
+    os.getenv('FLAVOR', 'release,debug').split(',')
+]
+
+@pytest.fixture(scope='session', params=GENERATOR)
+def generator(request):
+    return request.param
+
+@pytest.fixture(scope='session', params=SHARED)
+def shared(request):
+    return request.param
+
+@pytest.fixture(scope='session', params=FLAVOR)
+def flavor(request):
+    return request.param
 
 @pytest.fixture(scope='module')
 def install_dir():
@@ -11,54 +39,63 @@ def install_dir():
         yield install_dir
 
 @pytest.fixture(scope='module')
-def zero(install_dir):
-    yield from helpers.install(install_dir, '00-upstream')
+def params(generator, flavor, shared, install_dir):
+    return [
+        '--generator', generator,
+        '--flavor', flavor,
+        '--shared' if shared else '--static',
+        '--prefix', install_dir,
+    ]
 
 @pytest.fixture(scope='module')
-def one(install_dir, zero):
-    yield from helpers.install(install_dir, '01-find-package')
+def zero(params):
+    yield from helpers.install(params, '00-upstream')
 
 @pytest.fixture(scope='module')
-def two(install_dir):
-    yield from helpers.install(install_dir, '02-add-subdirectory')
+def one(params, zero):
+    yield from helpers.install(params, '01-find-package')
 
 @pytest.fixture(scope='module')
-def three(install_dir, one):
-    yield from helpers.install(install_dir, '03-fp-fp')
+def two(params):
+    yield from helpers.install(params, '02-add-subdirectory')
 
 @pytest.fixture(scope='module')
-def four(install_dir, two):
-    yield from helpers.install(install_dir, '04-as-fp')
+def three(params, one):
+    yield from helpers.install(params, '03-fp-fp')
 
 @pytest.fixture(scope='module')
-def five(install_dir):
-    yield from helpers.install(install_dir, '05-fetch-content')
+def four(params, two):
+    yield from helpers.install(params, '04-as-fp')
 
 @pytest.fixture(scope='module')
-def six(install_dir, zero):
-    yield from helpers.install(install_dir, '06-fp-fc')
+def five(params):
+    yield from helpers.install(params, '05-fetch-content')
 
 @pytest.fixture(scope='module')
-def seven(install_dir):
-    yield from helpers.install(install_dir, '07-as-fc')
+def six(params, zero):
+    yield from helpers.install(params, '06-fp-fc')
 
 @pytest.fixture(scope='module')
-def eight(install_dir, zero):
-    yield from helpers.install(install_dir, '08-find-module')
+def seven(params):
+    yield from helpers.install(params, '07-as-fc')
 
 @pytest.fixture(scope='module')
-def nine(install_dir):
-    yield from helpers.install(install_dir, '09-external-project')
+def eight(params, zero):
+    yield from helpers.install(params, '08-find-module')
 
 @pytest.fixture(scope='module')
-def ten(install_dir):
+def nine(params):
+    yield from helpers.install(params, '09-external-project')
+
+@pytest.fixture(scope='module')
+def ten(params):
     subprocess.run(
         ['conan', 'export', '.'],
         cwd=helpers.root / '00-upstream',
         check=True,
     )
-    yield from helpers.install(install_dir, '10-conan')
+    yield from helpers.install(params, '10-conan')
 
 @pytest.fixture(scope='module')
-def eleven(install_dir, zero):
-    yield from helpers.install(install_dir, '11-no-cupcake')
+def eleven(params, zero):
+    yield from helpers.install(params, '11-no-cupcake')

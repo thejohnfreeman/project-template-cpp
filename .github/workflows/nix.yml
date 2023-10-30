@@ -1,4 +1,4 @@
-name: nix-upstream
+name: nix
 on: [push, pull_request]
 
 concurrency:
@@ -6,27 +6,26 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  _00-upstream:
+  test:
     strategy:
       matrix:
         platform:
           - ubuntu
           - macos
         generator:
-          - { name: Ninja, multi: false }
-          - { name: Unix Makefiles, multi: false }
+          - Ninja
+          - Unix Makefiles
         shared:
           - ON
           - OFF
         flavor:
-          - Debug
-          - Release
+          - release
+          - debug
     runs-on: ${{ matrix.platform }}-latest
     env:
-      generator: ${{ matrix.generator.name }}
-      multi: ${{ matrix.generator.multi && 'true' || '' }}
-      shared: ${{ matrix.shared }}
-      flavor: ${{ matrix.flavor }}
+      GENERATOR: ${{ matrix.generator }}
+      SHARED: ${{ matrix.shared }}
+      FLAVOR: ${{ matrix.flavor }}
       install_dir: /usr/local
     steps:
       - name: checkout
@@ -37,10 +36,9 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+      - name: install pytest
+        run: poetry install
       - name: export cupcake
         uses: ./.github/actions/export-cupcake
-      - name: test project
-        uses: ./.github/actions/test-project
-        with:
-          working-directory: 00-upstream
-          executable: 'true'
+      - name: test
+        run: poetry run pytest
