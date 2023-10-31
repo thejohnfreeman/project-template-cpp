@@ -27,3 +27,7 @@ runs:
       run: |
         pip install --upgrade pip
         pip install wheel 'conan<2' poetry 'cupcake>=0.2'
+    - name: configure Conan
+      shell: bash
+      run: |
+        conan profile new default --detect

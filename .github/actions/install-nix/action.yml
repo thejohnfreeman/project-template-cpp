@@ -35,5 +35,5 @@ runs:
         conan --version
         cmake --version
         gcc --version
-        make --version
+        cupcake --version
         env

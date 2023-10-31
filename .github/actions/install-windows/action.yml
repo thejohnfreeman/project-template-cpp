@@ -42,5 +42,5 @@ runs:
         python --version
         conan --version
         cmake --version
-        make --version
+        cupcake --version
         dir env:
