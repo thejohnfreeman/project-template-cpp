@@ -7,24 +7,16 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: install Python
-      uses: actions/setup-python@v4
-      with:
-        # The `imp` module is removed in Python 3.12
-        # but required by Conan 1.x.
-        python-version: '3.11'
-        cache: pip
-        cache-dependency-path: .github/workflows/cache-python
     - name: install Python packages
       uses: ./.github/actions/install-python
       with:
         key: ${{ inputs.cache-key-python }}
     - name: install Ninja on Linux
-      if: matrix.generator.name == 'Ninja' && startsWith(matrix.platform, 'ubuntu')
+      if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'ubuntu')
       shell: bash
       run: sudo apt install ninja-build
     - name: install Ninja on OSX
-      if: matrix.generator.name == 'Ninja' && startsWith(matrix.platform, 'macos')
+      if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'macos')
       shell: bash
       run: brew install ninja
     - name: check environment

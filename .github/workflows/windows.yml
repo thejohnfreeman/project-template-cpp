@@ -13,10 +13,9 @@ jobs:
           - Visual Studio 16 2019
         shared:
           - OFF
-          - ON
         flavor:
-          - Debug
-          - Release
+          - release
+          - debug
     runs-on: windows-2019
     env:
       GENERATOR: ${{ matrix.generator }}
