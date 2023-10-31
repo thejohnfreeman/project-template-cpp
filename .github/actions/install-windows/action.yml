@@ -17,7 +17,7 @@ runs:
         echo "USERPROFILE=%USERPROFILE%" >> $GITHUB_OUTPUT
     - name: install Make from cache
       id: cache-scoop
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         path: |
           ${{ steps.env.outputs.PROGRAMDATA }}\scoop
