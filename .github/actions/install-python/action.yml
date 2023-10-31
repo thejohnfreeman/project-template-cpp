@@ -22,6 +22,8 @@ runs:
       with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-${{ inputs.key }}
-    - name: install Conan
+    - name: install packages
       shell: bash
-      run: pip install wheel 'conan<2' poetry cupcake
+      run: |
+        pip install --upgrade pip
+        pip install wheel 'conan<2' poetry 'cupcake>=0.2'
