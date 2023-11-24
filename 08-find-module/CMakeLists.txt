@@ -13,7 +13,7 @@ project(eight
   LANGUAGES CXX
 )
 
-find_package(cupcake 0.3 REQUIRED)
+find_package(cupcake REQUIRED)
 
 cupcake_project()
 
@@ -22,7 +22,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # dependencies {
-cupcake_find_package(zero 0.1)
+cupcake_find_package(zero)
 # }
 
 cupcake_add_library(eight)

@@ -12,7 +12,7 @@ project(three
   LANGUAGES CXX
 )
 
-find_package(cupcake 0.3 REQUIRED)
+find_package(cupcake REQUIRED)
 
 cupcake_project()
 
@@ -23,7 +23,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # To test transitive dependencies in package configuration files,
 # we must depend on package one without directly depending on package zero.
 # dependencies {
-cupcake_find_package(one 0.1)
+cupcake_find_package(one)
 # }
 
 cupcake_add_library(three)
