@@ -20,6 +20,12 @@ FLAVOR = [
     os.getenv('FLAVOR', 'release,debug').split(',')
 ]
 
+@pytest.fixture(scope='session', autouse=True)
+def before_all(request):
+    subprocess.run([
+        'conan', 'info', 'cupcake/alpha@github/thejohnfreeman'
+    ], check=True)
+
 @pytest.fixture(scope='session', params=GENERATOR)
 def generator(request):
     return request.param
