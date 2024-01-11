@@ -1,4 +1,4 @@
-cupcake_find_package(doctest 2.4 PRIVATE)
+cupcake_find_package(doctest PRIVATE)
 
 cupcake_add_test_executable(seven)
 target_link_libraries(
