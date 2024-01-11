@@ -21,7 +21,7 @@ set(CMAKE_BUILD_RPATH_USE_ORIGIN TRUE)
 set(CMAKE_INSTALL_RPATH \$ORIGIN \$ORIGIN/../lib)
 
 # dependencies {
-find_package(zero 0.1)
+find_package(zero REQUIRED)
 # }
 
 add_library(libeleven src/libeleven.cpp)
