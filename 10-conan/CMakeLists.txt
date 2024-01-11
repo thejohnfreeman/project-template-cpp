@@ -15,13 +15,14 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-cupcake_find_conan_packages()
+cupcake_find_packages(main)
+cupcake_link_libraries(ten.dependencies.main INTERFACE main)
 
 cupcake_add_library(ten)
-target_link_libraries(${this} PUBLIC zero::libzero)
+target_link_libraries(${this} PUBLIC ten.dependencies.main)
 
 cupcake_add_executable(ten)
-target_link_libraries(${this} PRIVATE ten::libten)
+target_link_libraries(${this} PRIVATE ten.libten)
 
 cupcake_add_tests()
 

@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "main": [
+      {
+        "name": "zero",
+        "targets": ["zero::libzero"]
+      }
+    ],
+    "test": [
+      {
+        "name": "doctest",
+        "targets": ["doctest::doctest"]
+      }
+    ]
+  }
+}
