@@ -3,12 +3,14 @@
     "main": [
       {
         "name": "zero",
+        "file": "zero",
         "targets": ["zero::libzero"]
       }
     ],
     "test": [
       {
         "name": "doctest",
+        "file": "doctest",
         "targets": ["doctest::doctest"]
       }
     ]
