@@ -15,8 +15,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# dependencies {
-# }
+cupcake_find_packages(main)
+cupcake_link_libraries(zero.dependencies.main INTERFACE main)
 
 cupcake_add_library(zero)
 
