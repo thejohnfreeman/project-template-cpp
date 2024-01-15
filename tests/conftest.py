@@ -46,12 +46,9 @@ def install_dir():
 
 @pytest.fixture(scope='module')
 def params(generator, flavor, shared, install_dir):
-    return [
-        '--generator', generator,
-        '--flavor', flavor,
-        '--shared' if shared else '--static',
-        '--prefix', install_dir,
-    ]
+    names = ('generator', 'flavor', 'shared', 'install_dir')
+    values = locals()
+    return { k: values[k] for k in names }
 
 @pytest.fixture(scope='module')
 def zero(params):

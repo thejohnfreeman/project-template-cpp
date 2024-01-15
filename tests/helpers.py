@@ -20,7 +20,10 @@ def install(params, source_dir):
             'cupcake', 'install',
             '--source-dir', root / source_dir,
             '--build-dir', build_dir,
-            *params,
+            '--generator', params['generator'],
+            '--flavor', params['flavor'],
+            '--shared' if params['shared'] else '--static',
+            '--prefix', params['install_dir'],
         ], check=True)
         yield build_dir
 
