@@ -1,3 +1,3 @@
 executable ?= four
 
-include ../00-upstream/Makefile
+include ../Makefile.common

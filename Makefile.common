@@ -1,0 +1,105 @@
+# This is a cross-platform Makefile.
+# It is written to work exactly the same on Linux, OSX, and Windows,
+# with CMake and Conan as its only requirements.
+# In addition to acting as a build system,
+# CMake is used as a cross-platform coreutils,
+# with subcommands for, e.g., mkdir, touch, and rm.
+
+ifeq ($(OS),Windows_NT)
+	SHELL := powershell.exe
+	.SHELLFLAGS :=
+	EXE := .exe
+	NPROC := $(shell $$env:NUMBER_OF_PROCESSORS)
+	generator ?= Visual Studio 16 2019
+	multi ?= true
+else
+	SHELL := /bin/bash
+	.SHELLFLAGS := -o pipefail -c
+	ifeq ($(shell uname -s),Darwin)
+		NPROC := $(shell sysctl -n hw.logicalcpu)
+	else
+		NPROC := $(shell nproc)
+	endif
+	generator ?= Ninja
+	multi ?=
+endif
+
+flavor ?= Release
+shared ?= OFF
+options ?=
+executable ?= true
+
+source_dir := ${CURDIR}
+build_dir ?= ${source_dir}/.build
+install_dir ?= ${source_dir}/../.install
+
+CMAKE ?= cmake
+CTEST ?= ctest
+CONAN ?= conan
+
+.DEFAULT_GOAL := test
+
+${build_dir} :
+	${CMAKE} -E make_directory $@
+
+conanfile := $(wildcard conanfile.*)
+
+conan_toolchain := ${build_dir}/conan_toolchain.cmake
+
+${conan_toolchain} : ${conanfile} | ${build_dir}
+	${CMAKE} -E chdir ${build_dir} ${CONAN} install ${source_dir} --build missing -s build_type=${flavor}
+
+conan : ${conan_toolchain}
+
+toolchain := $(if ${conanfile},${conan_toolchain},)
+
+cache := ${build_dir}/CMakeCache.txt
+
+${cache} : ${toolchain} Makefile | ${build_dir}
+	${CMAKE} -E chdir ${build_dir} ${CMAKE} -G "${generator}" -DCMAKE_TOOLCHAIN_FILE="${toolchain}" -DCMAKE_INSTALL_PREFIX="${install_dir}" -DCMAKE_PREFIX_PATH="${install_dir}" $(if ${multi},,-DCMAKE_BUILD_TYPE=${flavor}) -DBUILD_SHARED_LIBS=${shared} ${options} ${source_dir} 2>&1 | tee ${build_dir}/configure.log
+	${CMAKE} -E touch $@
+
+configure : ${cache}
+
+built_executable := ${build_dir}/output/${flavor}/bin/${executable}${EXE}
+
+${built_executable} : ${cache} $(wildcard ${source_dir}/src/*.cpp)
+	${CMAKE} -E time ${CMAKE} --build ${build_dir} --verbose $(if ${multi},--config ${flavor}) --parallel ${NPROC} --target $(if ${multi},ALL_BUILD,all) 2>&1 | tee ${build_dir}/build.log
+	${SHELL} ${.SHELLFLAGS} "ls -l '$@'"
+	${SHELL} ${.SHELLFLAGS} "ls -l '$<'"
+	${CMAKE} -E touch $@
+
+build : ${built_executable}
+
+built :
+	${built_executable}
+
+force :
+	${CMAKE} -E touch ${cache}
+	${MAKE} build
+
+test : ${cache}
+	${CMAKE} -E time ${CMAKE} --build ${build_dir} --verbose $(if ${multi},--config ${flavor}) --parallel ${NPROC}  --target $(if ${multi},RUN_TESTS,test) 2>&1 | tee ${build_dir}/test.log
+
+ctest : ${cache}
+	${CMAKE} -E chdir ${build_dir} ${CTEST} --verbose $(if ${multi},--build-config ${flavor}) --parallel ${NPROC}
+
+installed_executable := ${install_dir}/bin/${executable}${EXE}
+
+# The --install option was added in CMake 3.15.
+${installed_executable} : ${cache}
+	${CMAKE} -E time ${CMAKE} --build ${build_dir} --verbose --target install $(if ${multi},--config ${flavor})
+	${SHELL} ${.SHELLFLAGS} "ls -l '$@'"
+	${SHELL} ${.SHELLFLAGS} "ls -l '$<'"
+	${CMAKE} -E touch $@
+
+install : ${installed_executable}
+
+installed :
+	${installed_executable}
+
+clean :
+	${CMAKE} -E rm -rf ${build_dir}
+
+uninstall :
+	${CMAKE} -E rm -rf ${install_dir}
