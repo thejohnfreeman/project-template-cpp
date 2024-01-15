@@ -59,10 +59,34 @@ def params(generator, flavor, shared, install_dir):
     values = locals()
     return { k: values[k] for k in names }
 
+class Make:
+    def install(self, params, source_dir):
+        with tempfile.TemporaryDirectory() as build_dir:
+            subprocess.run(
+                ['make', 'install'],
+                cwd=root / source_dir,
+                env={
+                    'build_dir': build_dir,
+                    'generator': params['generator'],
+                    'flavor': params['flavor'],
+                    'shared': 'ON' if params['shared'] else 'OFF',
+                    'install_dir': params['install_dir'],
+                },
+                check=True
+            )
+            yield build_dir
+
+    def test(self, build_dir, source_dir):
+        subprocess.run(
+            ['make', 'test'],
+            cwd=root / source_dir,
+            env={ 'build_dir': build_dir },
+            check=True,
+        )
+
 class Cupcake:
     def install(self, params, source_dir):
         with tempfile.TemporaryDirectory() as build_dir:
-            print(f'building zero in {build_dir}')
             subprocess.run([
                 'cupcake', 'install',
                 '--source-dir', root / source_dir,
