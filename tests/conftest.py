@@ -1,9 +1,18 @@
 import os
+import pathlib
 import pytest
 import subprocess
 import tempfile
 
-from tests import helpers
+root = pathlib.Path(__file__).parents[1]
+
+try:
+    os.symlink(
+        root / '00-upstream',
+        root / '02-add-subdirectory/external/00-upstream',
+    )
+except FileExistsError:
+    pass
 
 GENERATOR = [
     x.strip() for x in
@@ -50,55 +59,81 @@ def params(generator, flavor, shared, install_dir):
     values = locals()
     return { k: values[k] for k in names }
 
-@pytest.fixture(scope='module')
-def zero(params):
-    yield from helpers.install(params, '00-upstream')
+class Cupcake:
+    def install(self, params, source_dir):
+        with tempfile.TemporaryDirectory() as build_dir:
+            print(f'building zero in {build_dir}')
+            subprocess.run([
+                'cupcake', 'install',
+                '--source-dir', root / source_dir,
+                '--build-dir', build_dir,
+                '--generator', params['generator'],
+                '--flavor', params['flavor'],
+                '--shared' if params['shared'] else '--static',
+                '--prefix', params['install_dir'],
+            ], check=True)
+            yield build_dir
+
+    def test(self, build_dir, source_dir):
+        subprocess.run([
+            'cupcake', 'test',
+            '--source-dir', root / source_dir,
+            '--build-dir', build_dir,
+        ], check=True)
 
 @pytest.fixture(scope='module')
-def one(params, zero):
-    yield from helpers.install(params, '01-find-package')
+def builder():
+    return Cupcake()
 
 @pytest.fixture(scope='module')
-def two(params):
-    yield from helpers.install(params, '02-add-subdirectory')
+def zero(builder, params):
+    yield from builder.install(params, '00-upstream')
 
 @pytest.fixture(scope='module')
-def three(params, one):
-    yield from helpers.install(params, '03-fp-fp')
+def one(builder, params, zero):
+    yield from builder.install(params, '01-find-package')
 
 @pytest.fixture(scope='module')
-def four(params, two):
-    yield from helpers.install(params, '04-as-fp')
+def two(builder, params):
+    yield from builder.install(params, '02-add-subdirectory')
 
 @pytest.fixture(scope='module')
-def five(params):
-    yield from helpers.install(params, '05-fetch-content')
+def three(builder, params, one):
+    yield from builder.install(params, '03-fp-fp')
 
 @pytest.fixture(scope='module')
-def six(params, zero):
-    yield from helpers.install(params, '06-fp-fc')
+def four(builder, params, two):
+    yield from builder.install(params, '04-as-fp')
 
 @pytest.fixture(scope='module')
-def seven(params):
-    yield from helpers.install(params, '07-as-fc')
+def five(builder, params):
+    yield from builder.install(params, '05-fetch-content')
 
 @pytest.fixture(scope='module')
-def eight(params, zero):
-    yield from helpers.install(params, '08-find-module')
+def six(builder, params, zero):
+    yield from builder.install(params, '06-fp-fc')
 
 @pytest.fixture(scope='module')
-def nine(params):
-    yield from helpers.install(params, '09-external-project')
+def seven(builder, params):
+    yield from builder.install(params, '07-as-fc')
 
 @pytest.fixture(scope='module')
-def ten(params):
+def eight(builder, params, zero):
+    yield from builder.install(params, '08-find-module')
+
+@pytest.fixture(scope='module')
+def nine(builder, params):
+    yield from builder.install(params, '09-external-project')
+
+@pytest.fixture(scope='module')
+def ten(builder, params):
     subprocess.run(
         ['conan', 'export', '.'],
-        cwd=helpers.root / '00-upstream',
+        cwd=root / '00-upstream',
         check=True,
     )
-    yield from helpers.install(params, '10-conan')
+    yield from builder.install(params, '10-conan')
 
 @pytest.fixture(scope='module')
-def eleven(params, zero):
-    yield from helpers.install(params, '11-no-cupcake')
+def eleven(builder, params, zero):
+    yield from builder.install(params, '11-no-cupcake')

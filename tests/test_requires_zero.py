@@ -1,10 +1,8 @@
-from tests import helpers
+def test_six(builder, six):
+    builder.test(six, '06-fp-fc')
 
-def test_six(six):
-    helpers.test(six, '06-fp-fc')
+def test_eight(builder, eight):
+    builder.test(eight, '08-find-module')
 
-def test_eight(eight):
-    helpers.test(eight, '08-find-module')
-
-def test_eleven(eleven):
-    helpers.test(eleven, '11-no-cupcake')
+def test_eleven(builder, eleven):
+    builder.test(eleven, '11-no-cupcake')
