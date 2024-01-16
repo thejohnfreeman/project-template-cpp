@@ -41,4 +41,4 @@ jobs:
       - name: export cupcake
         uses: ./.github/actions/export-cupcake
       - name: test
-        run: poetry run pytest
+        run: poetry run pytest tests/ --builder make

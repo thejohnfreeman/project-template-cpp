@@ -29,6 +29,11 @@ FLAVOR = [
     os.getenv('FLAVOR', 'release,debug').split(',')
 ]
 
+CMAKE_FLAVORS = {
+    'release': 'Release',
+    'debug': 'Debug',
+}
+
 @pytest.fixture(scope='session', autouse=True)
 def before_all(request):
     subprocess.run([
@@ -66,9 +71,10 @@ class Make:
                 ['make', 'install'],
                 cwd=root / source_dir,
                 env={
+                    **os.environ,
                     'build_dir': build_dir,
                     'generator': params['generator'],
-                    'flavor': params['flavor'],
+                    'flavor': CMAKE_FLAVORS[params['flavor']],
                     'shared': 'ON' if params['shared'] else 'OFF',
                     'install_dir': params['install_dir'],
                 },
@@ -80,7 +86,7 @@ class Make:
         subprocess.run(
             ['make', 'test'],
             cwd=root / source_dir,
-            env={ 'build_dir': build_dir },
+            env={ **os.environ, 'build_dir': build_dir },
             check=True,
         )
 
@@ -105,9 +111,14 @@ class Cupcake:
             '--build-dir', build_dir,
         ], check=True)
 
+def pytest_addoption(parser):
+    parser.addoption('--builder', action='store', default='make')
+
 @pytest.fixture(scope='module')
-def builder():
-    return Cupcake()
+def builder(request):
+    if request.config.option.builder == 'cupcake':
+        return Cupcake()
+    return Make()
 
 @pytest.fixture(scope='module')
 def zero(builder, params):
