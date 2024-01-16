@@ -6,20 +6,6 @@ import tempfile
 
 root = pathlib.Path(__file__).parents[1]
 
-try:
-    os.symlink(
-        root / '00-upstream',
-        root / '02-add-subdirectory/external/00-upstream',
-    )
-except FileExistsError:
-    pass
-except OSError:
-    import shutil
-    shutil.copytree(
-        root / '00-upstream',
-        root / '02-add-subdirectory/external/00-upstream',
-    )
-
 GENERATOR = [
     x.strip() for x in
     os.getenv('GENERATOR', 'Unix Makefiles,Ninja').split(',')
@@ -112,7 +98,7 @@ class Cupcake:
                 '--shared' if params['shared'] else '--static',
                 '--prefix', params['install_dir'],
             ], check=True)
-            yield build_dir
+            yield (source_dir, build_dir)
 
     def test(self, params, source_dir, build_dir):
         subprocess.run([
@@ -140,6 +126,19 @@ def one(builder, params, zero):
 
 @pytest.fixture(scope='module')
 def two(builder, params):
+    try:
+        os.symlink(
+            root / '00-upstream',
+            root / '02-add-subdirectory/external/00-upstream',
+        )
+    except FileExistsError:
+        pass
+    except OSError:
+        import shutil
+        shutil.copytree(
+            root / '00-upstream',
+            root / '02-add-subdirectory/external/00-upstream',
+        )
     yield from builder.install(params, '02-add-subdirectory')
 
 @pytest.fixture(scope='module')
