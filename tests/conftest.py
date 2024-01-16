@@ -13,6 +13,12 @@ try:
     )
 except FileExistsError:
     pass
+except OSError:
+    import shutil
+    shutil.copytree(
+        root / '00-upstream',
+        root / '02-add-subdirectory/external/00-upstream',
+    )
 
 GENERATOR = [
     x.strip() for x in
@@ -80,13 +86,17 @@ class Make:
                 },
                 check=True
             )
-            yield build_dir
+            yield (source_dir, build_dir)
 
-    def test(self, build_dir, source_dir):
+    def test(self, params, source_dir, build_dir):
         subprocess.run(
             ['make', 'test'],
             cwd=root / source_dir,
-            env={ **os.environ, 'build_dir': build_dir },
+            env={
+                **os.environ,
+                'build_dir': build_dir,
+                'flavor': CMAKE_FLAVORS[params['flavor']],
+            },
             check=True,
         )
 
@@ -104,7 +114,7 @@ class Cupcake:
             ], check=True)
             yield build_dir
 
-    def test(self, build_dir, source_dir):
+    def test(self, params, source_dir, build_dir):
         subprocess.run([
             'cupcake', 'test',
             '--source-dir', root / source_dir,

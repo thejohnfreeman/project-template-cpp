@@ -1,5 +1,5 @@
-def test_two(builder, two):
-    builder.test(two, '02-add-subdirectory')
+def test_two(params, builder, two):
+    builder.test(params, *two)
 
-def test_four(builder, four):
-    builder.test(four, '04-as-fp')
+def test_four(params, builder, four):
+    builder.test(params, *four)

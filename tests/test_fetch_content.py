@@ -1,2 +1,2 @@
-def test_five(builder, five):
-    builder.test(five, '05-fetch-content')
+def test_five(params, builder, five):
+    builder.test(params, *five)

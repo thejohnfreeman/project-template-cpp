@@ -1,8 +1,8 @@
-def test_zero(builder, zero):
-    builder.test(zero, '00-upstream')
+def test_zero(params, builder, zero):
+    builder.test(params, *zero)
 
-def test_one(builder, one):
-    builder.test(one, '01-find-package')
+def test_one(params, builder, one):
+    builder.test(params, *one)
 
-def test_three(builder, three):
-    builder.test(three, '03-fp-fp')
+def test_three(params, builder, three):
+    builder.test(params, *three)

@@ -1,8 +1,8 @@
-def test_six(builder, six):
-    builder.test(six, '06-fp-fc')
+def test_six(params, builder, six):
+    builder.test(params, *six)
 
-def test_eight(builder, eight):
-    builder.test(eight, '08-find-module')
+def test_eight(params, builder, eight):
+    builder.test(params, *eight)
 
-def test_eleven(builder, eleven):
-    builder.test(eleven, '11-no-cupcake')
+def test_eleven(params, builder, eleven):
+    builder.test(params, *eleven)
