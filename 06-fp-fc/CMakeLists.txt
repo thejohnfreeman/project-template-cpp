@@ -30,6 +30,6 @@ target_link_libraries(${this} PRIVATE one::libone)
 cupcake_add_executable(six)
 target_link_libraries(${this} PRIVATE six::libsix)
 
-cupcake_add_tests()
+cupcake_enable_testing()
 
 cupcake_install_project()

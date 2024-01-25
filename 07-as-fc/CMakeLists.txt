@@ -30,6 +30,6 @@ target_link_libraries(${this} PRIVATE two::libtwo)
 cupcake_add_executable(seven)
 target_link_libraries(${this} PRIVATE seven::libseven)
 
-cupcake_add_tests()
+cupcake_enable_testing()
 
 cupcake_install_project()

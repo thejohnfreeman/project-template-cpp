@@ -29,6 +29,6 @@ target_link_libraries(${this} PUBLIC one.dependencies.main)
 cupcake_add_executable(hello)
 target_link_libraries(${this} PRIVATE one.libone)
 
-cupcake_add_tests()
+cupcake_enable_testing()
 
 cupcake_install_project()

@@ -24,6 +24,6 @@ cupcake_add_library(two)
 cupcake_add_executable(goodbye)
 target_link_libraries(${this} PRIVATE zero::libzero)
 
-cupcake_add_tests()
+cupcake_enable_testing()
 
 cupcake_install_project()

@@ -32,6 +32,6 @@ target_link_libraries(${this} PUBLIC one::libone)
 cupcake_add_executable(aloha)
 target_link_libraries(${this} PRIVATE one::libone)
 
-cupcake_add_tests()
+cupcake_enable_testing()
 
 cupcake_install_project()

@@ -33,6 +33,6 @@ target_link_libraries(${this} PRIVATE
   eight::libeight
 )
 
-cupcake_add_tests()
+cupcake_enable_testing()
 
 cupcake_install_project()
