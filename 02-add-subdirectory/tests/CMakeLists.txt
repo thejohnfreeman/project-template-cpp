@@ -5,5 +5,5 @@ target_link_libraries(two.dependencies.test INTERFACE
   doctest::doctest
 )
 
-cupcake_add_test_executable(two)
+cupcake_add_test(two)
 target_link_libraries(${this} PUBLIC two.dependencies.test)
