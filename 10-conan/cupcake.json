@@ -1,18 +1,22 @@
 {
-  "dependencies": {
-    "main": [
-      {
-        "name": "zero",
-        "file": "zero",
-        "targets": ["zero::libzero"]
-      }
-    ],
-    "test": [
-      {
-        "name": "doctest",
-        "file": "doctest",
-        "targets": ["doctest::doctest"]
-      }
-    ]
+  "groups": {
+    "main": {
+      "dependencies": [
+        {
+          "name": "zero",
+          "file": "zero",
+          "targets": ["zero::libzero"]
+        }
+      ]
+    },
+    "test": {
+      "dependencies": [
+        {
+          "name": "doctest",
+          "file": "doctest",
+          "targets": ["doctest::doctest"]
+        }
+      ]
+    }
   }
 }
