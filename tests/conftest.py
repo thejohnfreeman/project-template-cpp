@@ -176,7 +176,7 @@ def ten(builder, params):
         cwd=root / '00-upstream',
         check=True,
     )
-    yield from builder.install(params, '10-conan')
+    yield from builder.install(params, '10-special')
 
 @pytest.fixture(scope='module')
 def eleven(builder, params, zero):

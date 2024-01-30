@@ -208,7 +208,7 @@ Package | Direct Dependencies | Indirect Dependencies | Required Installation
 [`seven`](./07-as-fc) | `two` via `FetchContent` | `zero` |
 [`eight`](./08-find-module) | `zero` via [`find_library`] | | `zero` |
 [`nine`](./09-external-project) | `zero` via [`ExternalProject`] |
-[`ten`](./10-conan) | `zero` via [`find_conan_packages`] |
+[`ten`](./10-special) | `zero` via [`cupcake_find_packages`] |
 [`eleven`](./11-no-cupcake) | `zero` via PCF | | `zero` |
 
 - `zero`: Imports no other packages from this collection.
@@ -220,11 +220,8 @@ Package | Direct Dependencies | Indirect Dependencies | Required Installation
     which finds an FM at `external/Findzero.cmake`,
     which uses [`find_path`], [`find_library`], and [`find_program`]
     to define [`IMPORTED`] targets.
-- `ten`: [`find_conan_packages`] is an undocumented, experimental function in
-    `cupcake`.
-    The idea is to import every requirement listed in the package's
-    `conanfile.txt`.
-    Although it is possible, I'm not convinced that it is wise.
+- `ten`: [`cupcake_find_packages`] is a special function in
+    `cupcake`, meaning it requires a `cupcake.json` metadata file.
 - `eleven`: Does not import `cupcake`, unlike all of the other projects.
     This package tests that consumers do not need `cupcake` to import
     a package that uses `cupcake`.
@@ -258,7 +255,7 @@ Instead, it is the default behavior chosen by `cupcake`.
 [`find_library`]: https://cmake.org/cmake/help/latest/command/find_library.html
 [`find_program`]: https://cmake.org/cmake/help/latest/command/find_program.html
 [`IMPORTED`]: https://cmake.org/cmake/help/latest/guide/importing-exporting/index.html#importing-targets
-[`find_conan_packages`]: ./cupcake/cmake/cupcake_find_conan_packages.cmake
+[`cupcake_find_packages`]: ./cupcake/cmake/cupcake_find_packages.cmake
 [`install`]: https://cmake.org/cmake/help/latest/command/install.html
 
 [1]: https://cmake.org/cmake/help/latest/manual/cmake-toolchains.7.html
