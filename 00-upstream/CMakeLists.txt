@@ -15,6 +15,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# These are special functions expecting a `cupcake.json`.
+# They are called in this template to test that
+# they quietly return if the file is missing.
 cupcake_find_packages(main)
 cupcake_link_libraries(zero.dependencies.main INTERFACE main)
 
