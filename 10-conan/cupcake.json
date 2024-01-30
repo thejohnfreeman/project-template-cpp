@@ -7,6 +7,9 @@
           "file": "zero",
           "targets": ["zero::libzero"]
         }
+      ],
+      "libraries": [
+        { "name": "ten", "links": [{ "target": "${PROJECT_NAME}.dependencies.main" }] }
       ]
     },
     "test": {
