@@ -57,18 +57,19 @@ def params(generator, flavor, shared, install_dir):
     return { k: values[k] for k in names }
 
 class Make:
-    def install(self, params, source_dir):
+    def install(self, params, source_dir, special=False):
         with tempfile.TemporaryDirectory() as build_dir:
             subprocess.run(
                 ['make', 'install'],
                 cwd=root / source_dir,
-                env={
-                    **os.environ,
+                env=os.environ | {
                     'build_dir': build_dir,
                     'generator': params['generator'],
                     'flavor': CMAKE_FLAVORS[params['flavor']],
                     'shared': 'ON' if params['shared'] else 'OFF',
                     'install_dir': params['install_dir'],
+                } | {
+                    'CUPCAKE_NO_SPECIAL': v for v in ['1'] if not special
                 },
                 check=True
             )
@@ -78,8 +79,7 @@ class Make:
         subprocess.run(
             ['make', 'test'],
             cwd=root / source_dir,
-            env={
-                **os.environ,
+            env=os.environ | {
                 'build_dir': build_dir,
                 'flavor': CMAKE_FLAVORS[params['flavor']],
             },
@@ -87,17 +87,22 @@ class Make:
         )
 
 class Cupcake:
-    def install(self, params, source_dir):
+    def install(self, params, source_dir, special=False):
         with tempfile.TemporaryDirectory() as build_dir:
-            subprocess.run([
-                'cupcake', 'install',
-                '--source-dir', root / source_dir,
-                '--build-dir', build_dir,
-                '--generator', params['generator'],
-                '--flavor', params['flavor'],
-                '--shared' if params['shared'] else '--static',
-                '--prefix', params['install_dir'],
-            ], check=True)
+            subprocess.run(
+                [
+                    'cupcake', 'install',
+                    '--source-dir', root / source_dir,
+                    '--build-dir', build_dir,
+                    '--generator', params['generator'],
+                    '--flavor', params['flavor'],
+                    '--shared' if params['shared'] else '--static',
+                    '--prefix', params['install_dir'],
+                ],
+                env=os.environ | {
+                    'CUPCAKE_NO_SPECIAL': v for v in ['1'] if not special
+                },
+                check=True)
             yield (source_dir, build_dir)
 
     def test(self, params, source_dir, build_dir):
@@ -176,7 +181,7 @@ def ten(builder, params):
         cwd=root / '00-upstream',
         check=True,
     )
-    yield from builder.install(params, '10-special')
+    yield from builder.install(params, '10-special', special=True)
 
 @pytest.fixture(scope='module')
 def eleven(builder, params, zero):
