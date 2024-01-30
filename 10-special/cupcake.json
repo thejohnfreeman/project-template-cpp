@@ -1,7 +1,7 @@
 {
   "groups": {
     "main": {
-      "dependencies": [
+      "imports": [
         {
           "name": "zero",
           "file": "zero",
@@ -9,11 +9,11 @@
         }
       ],
       "libraries": [
-        { "name": "ten", "links": [{ "target": "${PROJECT_NAME}.dependencies.main" }] }
+        { "name": "ten", "links": [{ "target": "${PROJECT_NAME}.imports.main" }] }
       ]
     },
     "test": {
-      "dependencies": [
+      "imports": [
         {
           "name": "doctest",
           "file": "doctest",

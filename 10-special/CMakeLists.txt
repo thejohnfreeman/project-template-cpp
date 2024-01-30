@@ -16,7 +16,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 cupcake_find_packages(main)
-cupcake_link_libraries(ten.dependencies.main INTERFACE main)
+cupcake_link_libraries(ten.imports.main INTERFACE main)
 
 cupcake_add_libraries(main)
 
