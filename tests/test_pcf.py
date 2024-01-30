@@ -1,8 +1,8 @@
-def test_zero(params, builder, zero):
+def test_00(params, builder, zero):
     builder.test(params, *zero)
 
-def test_one(params, builder, one):
+def test_01(params, builder, one):
     builder.test(params, *one)
 
-def test_three(params, builder, three):
+def test_03(params, builder, three):
     builder.test(params, *three)

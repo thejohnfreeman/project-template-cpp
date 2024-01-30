@@ -1,2 +1,2 @@
-def test_five(params, builder, five):
+def test_05(params, builder, five):
     builder.test(params, *five)
