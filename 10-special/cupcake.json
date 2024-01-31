@@ -22,6 +22,10 @@
           "file": "doctest",
           "targets": ["doctest::doctest"]
         }
+      ],
+      "tests": [
+        { "name": "ten", "links": [{ "target": "ten.imports.test" }, { "target": "ten.libten" }] },
+        { "name": "boolean", "links": [{ "target": "ten.imports.test" }, { "target": "ten.libten" }] }
       ]
     }
   }
