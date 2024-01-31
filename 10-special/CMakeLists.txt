@@ -19,9 +19,7 @@ cupcake_find_packages(main)
 cupcake_link_libraries(ten.imports.main INTERFACE main)
 
 cupcake_add_libraries(main)
-
-cupcake_add_executable(ten)
-target_link_libraries(${this} PRIVATE ten.libten)
+cupcake_add_executables(main)
 
 cupcake_enable_testing()
 
