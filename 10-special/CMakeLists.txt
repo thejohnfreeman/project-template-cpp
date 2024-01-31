@@ -19,7 +19,8 @@ cupcake_find_packages(main)
 cupcake_link_libraries(ten.imports.main INTERFACE main)
 
 cupcake_add_libraries(main)
-cupcake_add_executables(main)
+# Test default argument.
+cupcake_add_executables()
 
 cupcake_enable_testing()
 
