@@ -1,0 +1,31 @@
+{
+  "groups": {
+    "main": {
+      "imports": [
+        {
+          "name": "ten",
+          "file": "ten",
+          "targets": ["ten::libten"]
+        }
+      ],
+      "libraries": [
+        { "name": "diez", "links": [{ "target": "${PROJECT_NAME}.imports.main" }] }
+      ],
+      "executables": [
+        { "name": "diez", "links": [{ "target": "diez.libdiez" }] }
+      ]
+    },
+    "test": {
+      "imports": [
+        {
+          "name": "doctest",
+          "file": "doctest",
+          "targets": ["doctest::doctest"]
+        }
+      ],
+      "tests": [
+        { "name": "diez", "links": [{ "target": "diez.imports.test" }, { "target": "diez.libdiez" }] }
+      ]
+    }
+  }
+}

@@ -9,7 +9,7 @@
         }
       ],
       "libraries": [
-        { "name": "ten", "links": [{ "target": "${PROJECT_NAME}.imports.main" }] }
+        { "name": "ten", "links": ["${PROJECT_NAME}.imports.main"] }
       ],
       "executables": [
         { "name": "ten", "links": ["ten.libten"] }
@@ -24,7 +24,7 @@
         }
       ],
       "tests": [
-        { "name": "ten", "links": [{ "target": "ten.imports.test" }, { "target": "ten.libten" }] },
+        { "name": "ten", "links": ["ten.imports.test", "ten.libten"] },
         { "name": "boolean", "links": ["ten.imports.test", "ten.libten"] }
       ]
     }
