@@ -115,7 +115,7 @@ class Cupcake:
 def pytest_addoption(parser):
     parser.addoption('--builder', action='store', default='make')
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def builder(request):
     if request.config.option.builder == 'cupcake':
         return Cupcake()
