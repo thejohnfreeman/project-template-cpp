@@ -1,32 +1,25 @@
 {
-  "groups": {
-    "main": {
-      "imports": [
-        {
-          "name": "zero",
-          "file": "zero",
-          "targets": ["zero::libzero"]
-        }
-      ],
-      "libraries": [
-        { "name": "ten", "links": ["${PROJECT_NAME}.imports.main"] }
-      ],
-      "executables": [
-        { "name": "ten", "links": ["ten.libten"] }
-      ]
+  "imports": [
+    {
+      "name": "zero",
+      "file": "zero",
+      "targets": ["zero::libzero"]
     },
-    "test": {
-      "imports": [
-        {
-          "name": "doctest",
-          "file": "doctest",
-          "targets": ["doctest::doctest"]
-        }
-      ],
-      "tests": [
-        { "name": "ten", "links": ["ten.imports.test", "ten.libten"] },
-        { "name": "boolean", "links": ["ten.imports.test", "ten.libten"] }
-      ]
+    {
+      "name": "doctest",
+      "file": "doctest",
+      "targets": ["doctest::doctest"],
+      "groups": ["test"]
     }
-  }
+  ],
+  "libraries": [
+    { "name": "ten", "links": ["${PROJECT_NAME}.imports.main"] }
+  ],
+  "executables": [
+    { "name": "ten", "links": ["ten.libten"] }
+  ],
+  "tests": [
+    { "name": "ten", "links": ["ten.imports.test", "ten.libten"] },
+    { "name": "boolean", "links": ["ten.imports.test", "ten.libten"] }
+  ]
 }
