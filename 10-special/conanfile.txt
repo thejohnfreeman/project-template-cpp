@@ -1,5 +1,5 @@
 [requires]
-cupcake/alpha@github/thejohnfreeman
+cupcake.cmake/alpha@github/thejohnfreeman
 doctest/2.4.6
 zero/0.1.0
 
