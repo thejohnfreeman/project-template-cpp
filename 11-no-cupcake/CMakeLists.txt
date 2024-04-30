@@ -36,6 +36,17 @@ target_link_libraries(libeleven PUBLIC zero::libzero)
 add_executable(eleven src/eleven.cpp)
 target_link_libraries(eleven PRIVATE libeleven)
 
+set(has_runtime_dlls $<BOOL:$<TARGET_RUNTIME_DLLS:eleven>>)
+set(copy_runtime_dlls
+  ${CMAKE_COMMAND} -E copy
+  $<TARGET_RUNTIME_DLLS:eleven>
+  $<TARGET_FILE_DIR:eleven>
+)
+add_custom_command(TARGET eleven POST_BUILD
+  COMMAND "$<${has_runtime_dlls}:${copy_runtime_dlls}>"
+  COMMAND_EXPAND_LISTS
+)
+
 install(
   TARGETS eleven libeleven
   RUNTIME DESTINATION bin
