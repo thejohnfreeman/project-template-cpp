@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.21)
 
 set(PROJECT_DESCRIPTION "\
 An example project that imports another through a Find Module \
