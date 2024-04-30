@@ -8,15 +8,17 @@ concurrency:
 jobs:
   test:
     strategy:
-      fail-fast: false
       matrix:
         platform:
           - ubuntu
           - macos
         cmake:
-          - 3.19.x
           - 3.20.x
           - 3.21.x
+          - 3.22.x
+          - 3.27.x
+          - 3.28.x
+          - 3.29.x
     runs-on: ${{ matrix.platform }}-latest
     env:
       GENERATOR: 'Unix Makefiles,Ninja'
