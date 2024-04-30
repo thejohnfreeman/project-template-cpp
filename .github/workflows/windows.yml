@@ -8,6 +8,7 @@ concurrency:
 jobs:
   test:
     strategy:
+      fail-fast: false
       matrix:
         generator:
           - Visual Studio 16 2019
