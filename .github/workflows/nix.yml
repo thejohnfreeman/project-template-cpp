@@ -12,22 +12,21 @@ jobs:
         platform:
           - ubuntu
           - macos
-        generator:
-          - Ninja
-          - Unix Makefiles
-        shared:
-          - ON
-          - OFF
-        flavor:
-          - release
-          - debug
+        cmake:
+          - 3.27.x
+          - 3.28.x
+          - 3.29.x
     runs-on: ${{ matrix.platform }}-latest
     env:
-      GENERATOR: ${{ matrix.generator }}
-      SHARED: ${{ matrix.shared }}
-      FLAVOR: ${{ matrix.flavor }}
+      GENERATOR: 'Unix Makefiles,Ninja'
+      SHARED: 'OFF,ON'
+      FLAVOR: 'release,debug'
       install_dir: /usr/local
     steps:
+      - name: install CMake
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: ${{ matrix.cmake }}
       - name: checkout
         uses: actions/checkout@v4
         with:

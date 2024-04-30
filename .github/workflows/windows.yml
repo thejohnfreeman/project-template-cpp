@@ -11,18 +11,21 @@ jobs:
       matrix:
         generator:
           - Visual Studio 16 2019
-        shared:
-          - OFF
-        flavor:
-          - release
-          - debug
+        cmake:
+          - 3.27.x
+          - 3.28.x
+          - 3.29.x
     runs-on: windows-2019
     env:
       GENERATOR: ${{ matrix.generator }}
-      SHARED: ${{ matrix.shared }}
-      FLAVOR: ${{ matrix.flavor }}
+      SHARED: 'OFF'
+      FLAVOR: 'release,debug'
       install_dir: C:\\
     steps:
+      - name: install CMake
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: ${{ matrix.cmake }}
       - name: checkout
         uses: actions/checkout@v4
         with:
