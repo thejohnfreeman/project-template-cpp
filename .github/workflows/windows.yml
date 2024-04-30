@@ -21,7 +21,7 @@ jobs:
     runs-on: windows-2019
     env:
       GENERATOR: ${{ matrix.generator }}
-      SHARED: 'OFF'
+      SHARED: 'OFF,ON'
       FLAVOR: 'release,debug'
       install_dir: C:\\
     steps:
