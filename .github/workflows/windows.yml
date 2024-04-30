@@ -13,9 +13,9 @@ jobs:
         generator:
           - Visual Studio 16 2019
         cmake:
-          - 3.20.x
           - 3.21.x
           - 3.22.x
+          - 3.23.x
           - 3.27.x
           - 3.28.x
           - 3.29.x
