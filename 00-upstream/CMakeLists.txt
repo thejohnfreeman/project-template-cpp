@@ -74,7 +74,7 @@ endif()
 
 # external executables
 cupcake_assert(NOT TARGET zero::zero)
-#cupcake_assert(TARGET zero::executables) # all executables
+# cupcake_assert(TARGET zero::executables) # all executables?
 cupcake_assert(TARGET zero::executables::zero) # named executable (long)
 cupcake_assert(TARGET zero::e::zero) # named executable (short)
 cupcake_assert(TARGET zero::executable) # main executable

@@ -3,7 +3,7 @@
     {
       "name": "zero",
       "file": "zero",
-      "targets": ["zero::libraries::zero"]
+      "targets": ["zero::library"]
     },
     {
       "name": "doctest",

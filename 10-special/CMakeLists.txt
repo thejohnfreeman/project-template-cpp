@@ -27,3 +27,15 @@ cupcake_enable_testing()
 add_subdirectory(examples)
 
 cupcake_install_project()
+
+# external libraries
+cupcake_assert(TARGET zero::libraries) # all libraries
+cupcake_assert(TARGET zero::libraries::zero) # named library (long)
+cupcake_assert(TARGET zero::l::zero) # named library (short)
+cupcake_assert(TARGET zero::library) # main library
+
+# external executables
+# cupcake_assert(TARGET zero::executables) # all executables?
+# cupcake_assert(TARGET zero::executables::zero) # named executable (long) # TODO
+# cupcake_assert(TARGET zero::e::zero) # named executable (short) # TODO
+# cupcake_assert(TARGET zero::executable) # main executable # TODO
