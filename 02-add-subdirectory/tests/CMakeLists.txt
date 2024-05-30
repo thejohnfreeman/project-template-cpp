@@ -1,7 +1,7 @@
 cupcake_find_package(doctest PRIVATE)
 
 target_link_libraries(two.imports.test INTERFACE
-  two::libtwo
+  two.library
   doctest::doctest
 )
 

@@ -27,10 +27,10 @@ cupcake_find_package(one)
 # }
 
 cupcake_add_library(three)
-target_link_libraries(${this} PUBLIC one::libone)
+target_link_libraries(${this} PUBLIC one::library)
 
 cupcake_add_executable(aloha)
-target_link_libraries(${this} PRIVATE one::libone)
+target_link_libraries(${this} PRIVATE one::library)
 
 cupcake_enable_testing()
 

@@ -23,8 +23,8 @@ cupcake_add_library(nine)
 
 cupcake_add_executable(nine)
 target_link_libraries(${this} PRIVATE
-  zero::libzero
-  nine::libnine
+  zero::library
+  nine.library
 )
 
 cupcake_enable_testing()

@@ -31,7 +31,7 @@ if(BUILD_SHARED_LIBS)
 else()
   target_compile_definitions(libeleven PUBLIC ELEVEN_STATIC)
 endif()
-target_link_libraries(libeleven PUBLIC zero::libzero)
+target_link_libraries(libeleven PUBLIC zero::l::zero)
 
 add_executable(eleven src/eleven.cpp)
 target_link_libraries(eleven PRIVATE libeleven)

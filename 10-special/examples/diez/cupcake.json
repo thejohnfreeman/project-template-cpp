@@ -5,14 +5,14 @@
         {
           "name": "ten",
           "file": "ten",
-          "targets": ["ten::libten"]
+          "targets": ["ten::library"]
         }
       ],
       "libraries": [
         { "name": "diez", "links": [{ "target": "${PROJECT_NAME}.imports.main" }] }
       ],
       "executables": [
-        { "name": "diez", "links": [{ "target": "diez.libdiez" }] }
+        { "name": "diez", "links": [{ "target": "diez.library" }] }
       ]
     },
     "test": {
@@ -24,7 +24,7 @@
         }
       ],
       "tests": [
-        { "name": "diez", "links": [{ "target": "diez.imports.test" }, { "target": "diez.libdiez" }] }
+        { "name": "diez", "links": [{ "target": "diez.imports.test" }, { "target": "diez.library" }] }
       ]
     }
   }

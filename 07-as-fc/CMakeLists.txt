@@ -25,10 +25,10 @@ cupcake_find_package(two)
 # }
 
 cupcake_add_library(seven)
-target_link_libraries(${this} PRIVATE two::libtwo)
+target_link_libraries(${this} PRIVATE two::library)
 
 cupcake_add_executable(seven)
-target_link_libraries(${this} PRIVATE seven::libseven)
+target_link_libraries(${this} PRIVATE seven.library)
 
 cupcake_enable_testing()
 

@@ -71,7 +71,7 @@ ${built_executable} : ${cache} $(wildcard ${source_dir}/src/*.cpp)
 
 build : ${built_executable}
 
-built :
+exe :
 	${built_executable}
 
 force :

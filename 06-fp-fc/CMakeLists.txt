@@ -25,10 +25,10 @@ cupcake_find_package(one)
 # }
 
 cupcake_add_library(six)
-target_link_libraries(${this} PRIVATE one::libone)
+target_link_libraries(${this} PRIVATE one::library)
 
 cupcake_add_executable(six)
-target_link_libraries(${this} PRIVATE six::libsix)
+target_link_libraries(${this} PRIVATE six.library)
 
 cupcake_enable_testing()
 

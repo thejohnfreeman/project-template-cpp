@@ -7,17 +7,26 @@ cupcake_link_libraries(zero.imports.test INTERFACE test)
 cupcake_add_test(zero)
 target_link_libraries(
   ${this}
-  zero::libzero
+  zero.library
 )
 
 cupcake_add_test(boolean)
 target_link_libraries(
   ${this}
-  zero::libzero
+  zero.library
 )
 
 cupcake_add_test(version)
 target_link_libraries(
   ${this}
-  zero::libzero
+  zero.library
 )
+
+# internal tests
+cupcake_assert(TARGET zero.tests)
+cupcake_assert(TARGET zero.tests.zero)
+cupcake_assert(TARGET zero.t.zero)
+
+cupcake_assert(TARGET tests)
+cupcake_assert(TARGET tests.zero)
+cupcake_assert(TARGET t.zero)

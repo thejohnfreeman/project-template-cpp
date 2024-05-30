@@ -3,7 +3,7 @@
     {
       "name": "zero",
       "file": "zero",
-      "targets": ["zero::libzero"]
+      "targets": ["zero::libraries::zero"]
     },
     {
       "name": "doctest",
@@ -16,10 +16,10 @@
     { "name": "ten", "links": ["${PROJECT_NAME}.imports.main"] }
   ],
   "executables": [
-    { "name": "ten", "links": ["ten.libten"] }
+    { "name": "ten", "links": ["ten.library"] }
   ],
   "tests": [
-    { "name": "ten", "links": ["ten.imports.test", "ten.libten"] },
-    { "name": "boolean", "links": ["ten.imports.test", "ten.libten"] }
+    { "name": "ten", "links": ["ten.imports.test", "ten.library"] },
+    { "name": "boolean", "links": ["ten.imports.test", "ten.library"] }
   ]
 }

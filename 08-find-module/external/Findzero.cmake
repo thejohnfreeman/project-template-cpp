@@ -50,17 +50,17 @@ if(
   ${package}_LIBRARY AND
   ${package}_EXECUTABLE
 )
-  if(NOT TARGET zero::libzero)
-    add_library(zero::libzero UNKNOWN IMPORTED)
-    set_target_properties(zero::libzero PROPERTIES
+  if(NOT TARGET zero::libraries::zero)
+    add_library(zero::libraries::zero UNKNOWN IMPORTED)
+    set_target_properties(zero::libraries::zero PROPERTIES
       INTERFACE_INCLUDE_DIRECTORIES "${${package}_INCLUDE_DIR}"
       IMPORTED_LOCATION "${${package}_LIBRARY}"
       IMPORTED_LOCATION_DEBUG "${${package}_LIBRARY}"
       IMPORTED_LOCATION_RELEASE "${${package}_LIBRARY}"
     )
 
-    add_executable(zero::true IMPORTED)
-    set_target_properties(zero::true PROPERTIES
+    add_executable(zero::executables::true IMPORTED)
+    set_target_properties(zero::executables::true PROPERTIES
       IMPORTED_LOCATION "${${package}_EXECUTABLE}"
       IMPORTED_LOCATION_DEBUG "${${package}_EXECUTABLE}"
       IMPORTED_LOCATION_RELEASE "${${package}_EXECUTABLE}"
