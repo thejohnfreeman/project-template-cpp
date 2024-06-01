@@ -27,16 +27,25 @@ runs:
       with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-${{ inputs.key }}
-    # TODO: It seems like we did not implement the cache correctly.
-    - name: remove node-semver
+    - name: install Conan
       shell: bash
       run: |
-        pip uninstall node-semver
+        venv=${HOME}/.venvs/conan
+        python -m venv ${venv}
+        ${venv}/bin/pip install --upgrade pip
+        ${venv}/bin/pip install 'conan<2'
+        ln ${venv}/bin/conan ${HOME}/.local/bin/conan
+        echo ${HOME}/.local/bin >> ${GITHUB_PATH}
+    - name: check installation
+      shell: bash
+      run: |
+        type conan
+        conan --version
     - name: install packages
       shell: bash
       run: |
         pip install --upgrade pip
-        pip install wheel 'conan<2' poetry cupcake
+        pip install poetry cupcake
     - name: configure Conan
       shell: bash
       run: |
