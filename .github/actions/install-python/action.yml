@@ -34,6 +34,8 @@ runs:
         python -m venv ${venv}
         ${venv}/bin/pip install --upgrade pip
         ${venv}/bin/pip install 'conan<2'
+        ${venv}/bin/conan --version
+        mkdir -p ${HOME}/.local/bin
         ln ${venv}/bin/conan ${HOME}/.local/bin/conan
         echo ${HOME}/.local/bin >> ${GITHUB_PATH}
     - name: check installation
