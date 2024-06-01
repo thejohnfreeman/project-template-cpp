@@ -32,6 +32,10 @@ runs:
       run: |
         venv=${HOME}/.venvs/conan
         python -m venv ${venv}
+        ls -d ${HOME}/.venvs
+        ls -l ${HOME}/.venvs
+        ls -l ${venv}
+        ls -l ${venv}/bin
         ${venv}/bin/pip install --upgrade pip
         ${venv}/bin/pip install 'conan<2'
         ${venv}/bin/conan --version
