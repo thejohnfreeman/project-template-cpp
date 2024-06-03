@@ -32,6 +32,10 @@ runs:
       run: |
         pip install --upgrade pip
         pip install poetry cupcake
+    - name: install Conan
+      shell: bash
+      run: |
+        pipx install 'conan<2'
     - name: configure Conan
       shell: bash
       run: |

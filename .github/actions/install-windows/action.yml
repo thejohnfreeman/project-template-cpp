@@ -35,16 +35,6 @@ runs:
       uses: ./.github/actions/install-python
       with:
         key: ${{ inputs.cache-key-python }}
-    - name: install Conan
-      shell: bash
-      run: |
-        venv=${HOME}/.venvs/conan
-        python -m venv ${venv}
-        ${venv}/Scripts/pip install --upgrade pip
-        ${venv}/Scripts/pip install 'conan<2'
-        mkdir -p ${HOME}/.local/bin
-        ln ${venv}/Scripts/conan ${HOME}/.local/bin/conan
-        echo ${HOME}/.local/bin >> ${GITHUB_PATH}
     - name: check environment
       shell: pwsh
       run: |

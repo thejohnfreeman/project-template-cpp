@@ -11,16 +11,6 @@ runs:
       uses: ./.github/actions/install-python
       with:
         key: ${{ inputs.cache-key-python }}
-    - name: install Conan
-      shell: bash
-      run: |
-        venv=${HOME}/.venvs/conan
-        python -m venv ${venv}
-        ${venv}/bin/pip install --upgrade pip
-        ${venv}/bin/pip install 'conan<2'
-        mkdir -p ${HOME}/.local/bin
-        ln ${venv}/bin/conan ${HOME}/.local/bin/conan
-        echo ${HOME}/.local/bin >> ${GITHUB_PATH}
     - name: install Ninja on Linux
       if: startsWith(matrix.platform, 'ubuntu')
       shell: bash
