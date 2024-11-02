@@ -27,15 +27,10 @@ runs:
       with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-${{ inputs.key }}
-    - name: install packages
-      shell: bash
-      run: |
-        pip install --upgrade pip
-        pip install poetry cupcake
     - name: install Conan
       shell: bash
       run: |
-        pipx install 'conan<2'
+        pipx install 'conan<2' cupcake poetry
     - name: configure Conan
       shell: bash
       run: |
