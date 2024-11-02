@@ -30,7 +30,9 @@ runs:
     - name: install Conan
       shell: bash
       run: |
-        pipx install 'conan<2' cupcake poetry
+        pipx install 'conan<2'
+        pipx install cupcake
+        pipx install poetry
     - name: configure Conan
       shell: bash
       run: |
