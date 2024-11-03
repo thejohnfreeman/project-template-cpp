@@ -82,6 +82,7 @@ class Make:
 
 class Cupcake:
     def install(self, params, source_dir, special=False):
+        (root / source_dir / '.cupcake.toml').unlink(missing_ok=True)
         with tempfile.TemporaryDirectory() as build_dir:
             subprocess.run(
                 [
@@ -100,6 +101,7 @@ class Cupcake:
             yield (source_dir, build_dir)
 
     def test(self, params, source_dir, build_dir):
+        (root / source_dir / '.cupcake.toml').unlink(missing_ok=True)
         subprocess.run([
             'cupcake', 'test',
             '--source-dir', root / source_dir,
