@@ -8,6 +8,7 @@ class Zero(ConanFile):
     license = 'ISC'
     author = 'John Freeman <jfreeman08@gmail.com>'
     url = 'https://github.com/thejohnfreeman/project-template-cpp'
+    description = 'A project with no binary requirements.'
 
     settings = 'os', 'compiler', 'build_type', 'arch'
     options = {'shared': [True, False], 'fPIC': [True, False]}
