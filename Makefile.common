@@ -46,6 +46,7 @@ conanfile := $(wildcard conanfile.*)
 
 conan_toolchain := ${build_dir}/conan_toolchain.cmake
 
+# Windows will not tolerate line breaks in a command.
 ${conan_toolchain} : ${conanfile} | ${build_dir}
 	${CMAKE} -E chdir ${build_dir} ${CONAN} install ${source_dir} --build missing -s build_type=${flavor} --profile:build default --profile:host default
 
