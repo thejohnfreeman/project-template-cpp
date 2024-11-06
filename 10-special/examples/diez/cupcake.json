@@ -1,31 +1,24 @@
 {
-  "groups": {
-    "main": {
-      "imports": [
-        {
-          "name": "ten",
-          "file": "ten",
-          "targets": ["ten::library"]
-        }
-      ],
-      "libraries": [
-        { "name": "diez", "links": [{ "target": "${PROJECT_NAME}.imports.main" }] }
-      ],
-      "executables": [
-        { "name": "diez", "links": [{ "target": "diez.library" }] }
-      ]
+  "imports": [
+    {
+      "name": "ten",
+      "file": "ten",
+      "targets": ["ten::library"]
     },
-    "test": {
-      "imports": [
-        {
-          "name": "doctest",
-          "file": "doctest",
-          "targets": ["doctest::doctest"]
-        }
-      ],
-      "tests": [
-        { "name": "diez", "links": [{ "target": "diez.imports.test" }, { "target": "diez.library" }] }
-      ]
+    {
+      "name": "doctest",
+      "file": "doctest",
+      "targets": ["doctest::doctest"],
+      "groups": ["test"]
     }
-  }
+  ],
+  "libraries": [
+    { "name": "diez", "links": [{ "target": "${PROJECT_NAME}.imports.main" }] }
+  ],
+  "executables": [
+    { "name": "diez", "links": [{ "target": "diez.library" }] }
+  ],
+  "tests": [
+    { "name": "diez", "links": [{ "target": "diez.imports.test" }, { "target": "diez.library" }] }
+  ]
 }

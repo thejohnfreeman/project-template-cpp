@@ -12,8 +12,8 @@ cupcake_project()
 cupcake_find_packages(main)
 cupcake_link_libraries(${PROJECT_NAME}.imports.main INTERFACE main)
 
-cupcake_add_libraries(main)
-cupcake_add_executables(main)
+cupcake_add_libraries()
+cupcake_add_executables()
 
 cupcake_enable_testing()
 
