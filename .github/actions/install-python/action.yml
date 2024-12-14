@@ -4,8 +4,8 @@ description: |
 inputs:
   key:
     required: true
-  shell:
-    default: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
+  conan:
+    default: 1
 runs:
   using: composite
   steps:
@@ -30,10 +30,16 @@ runs:
     - name: install Conan
       shell: bash
       run: |
-        pipx install 'conan<2'
+        pipx install conan~=${{ inputs.conan }}.0
         pipx install cupcake
         pipx install poetry
     - name: configure Conan
+      if: inputs.conan == 1
       shell: bash
       run: |
         conan profile new default --detect
+    - name: configure Conan
+      if: inputs.conan == 2
+      shell: bash
+      run: |
+        conan profile detect

@@ -20,6 +20,9 @@ jobs:
           - 3.27.x
           - 3.28.x
           - 3.29.x
+        conan:
+          - 1
+          - 2
     runs-on: ${{ matrix.platform }}-latest
     env:
       GENERATOR: 'Unix Makefiles,Ninja'
@@ -39,6 +42,7 @@ jobs:
         uses: ./.github/actions/install-nix
         with:
           cache-key-python: ${{ secrets.CACHE_PYTHON }}
+          conan: ${{ matrix.conan }}
       - name: install pytest
         run: poetry install
       - name: export cupcake

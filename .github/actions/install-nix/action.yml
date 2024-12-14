@@ -4,6 +4,8 @@ description: |
 inputs:
   cache-key-python:
     required: true
+  conan:
+    default: 1
 runs:
   using: composite
   steps:
@@ -11,6 +13,7 @@ runs:
       uses: ./.github/actions/install-python
       with:
         key: ${{ inputs.cache-key-python }}
+        conan: ${{ inputs.conan }}
     - name: install Ninja on Linux
       if: startsWith(matrix.platform, 'ubuntu')
       shell: bash
