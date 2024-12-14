@@ -15,11 +15,11 @@ runs:
         key: ${{ inputs.cache-key-python }}
         conan: ${{ inputs.conan }}
     - name: install Ninja on Linux
-      if: startsWith(matrix.platform, 'ubuntu')
+      if: runner.os == 'Linux'
       shell: bash
       run: sudo apt install ninja-build
     - name: install Ninja on OSX
-      if: startsWith(matrix.platform, 'macos')
+      if: runner.os == 'macOS'
       shell: bash
       run: brew install ninja
     - name: check environment
@@ -29,6 +29,7 @@ runs:
         python --version
         conan --version
         cmake --version
-        gcc --version
+        ninja --version
+        g++ --version
         cupcake --version
         env
