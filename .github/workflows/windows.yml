@@ -19,7 +19,7 @@ jobs:
           - 3.27.x
           - 3.28.x
           - 3.29.x
-    runs-on: windows-2025
+    runs-on: windows-latest
     env:
       GENERATOR: ${{ matrix.generator }}
       SHARED: 'OFF,ON'

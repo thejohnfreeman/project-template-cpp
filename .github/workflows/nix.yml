@@ -23,6 +23,11 @@ jobs:
         conan:
           - 1
           - 2
+        exclude:
+          # Conan 1.x does not support Clang 17 (out-of-the-box),
+          # which is the default on macos-latest.
+          - platform: macos
+            conan: 1
     runs-on: ${{ matrix.platform }}-latest
     env:
       GENERATOR: 'Unix Makefiles,Ninja'
